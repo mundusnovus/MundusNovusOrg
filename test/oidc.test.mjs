@@ -1,0 +1,50 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync, statSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { createHash, createPublicKey, verify } from 'node:crypto';
+import { makeServer } from '../server.mjs';
+
+test('first-party OIDC code flow, signature, PKCE, replay and session revocation', async () => {
+  const dir = mkdtempSync(join(tmpdir(), 'cs-oidc-'));
+  const secret = 'test-only-client-secret-32-characters', callback = 'https://cloud.christiansystems.org/apps/user_oidc/code';
+  const server = makeServer({ DATA_DIR: dir, OIDC_CLIENTS: JSON.stringify([{ id: 'cloud', secret, redirectUris: [callback], requirePkce: true }]) });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  const base = 'http://127.0.0.1:' + server.address().port;
+  const get = (path, cookie) => fetch(base + path, { redirect: 'manual', headers: cookie ? { cookie } : {} });
+  const verifier = 'a'.repeat(64), challenge = createHash('sha256').update(verifier).digest('base64url');
+  const params = new URLSearchParams({ client_id: 'cloud', redirect_uri: callback, response_type: 'code', scope: 'openid profile', state: 'state-value', nonce: 'nonce-value', code_challenge: challenge, code_challenge_method: 'S256' });
+  const authorize = '/oauth/authorize?' + params;
+  const token = (code, extra = {}, auth = secret) => fetch(base + '/oauth/token', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded', authorization: 'Basic ' + Buffer.from('cloud:' + auth).toString('base64') }, body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: callback, code_verifier: verifier, ...extra }) });
+  try {
+    const discovery = await (await get('/.well-known/openid-configuration')).json();
+    assert.equal(discovery.issuer, 'https://social.christiansystems.org');
+    assert.equal(statSync(join(dir, 'oidc-rs256.pem')).mode & 0o777, 0o600);
+    const login = await get(authorize); assert.match(login.headers.get('location'), /^https:\/\/social.christiansystems.org\/signin\?return=/);
+    assert.equal((await get(authorize.replace(encodeURIComponent(callback), encodeURIComponent('https://evil.test/')))).status, 400);
+    const silent = await get(authorize + '&prompt=none'); assert.match(silent.headers.get('location'), /error=login_required/);
+    assert.equal((await get(authorize + '&client_id=other')).status, 400);
+    const signup = await fetch(base + '/api/signup', { method: 'POST', headers: { 'content-type': 'application/json', 'x-cs-social': '1' }, body: JSON.stringify({ name: 'anna', password: 'a sufficiently long password', display: 'Anna' }) });
+    assert.equal(signup.status, 200);
+    const cookie = signup.headers.get('set-cookie').split(';')[0];
+    const authorized = await get(authorize, cookie), location = new URL(authorized.headers.get('location'));
+    assert.equal(location.origin + location.pathname, callback); assert.equal(location.searchParams.get('state'), 'state-value');
+    const code = location.searchParams.get('code'); assert.ok(code);
+    assert.equal((await token(code, {}, 'wrong-secret')).status, 401);
+    assert.equal((await token(code, { code_verifier: 'b'.repeat(64) })).status, 400);
+    assert.equal((await token(code, { redirect_uri: callback + '/wrong' })).status, 400);
+    const exchange = await token(code); assert.equal(exchange.status, 200);
+    const result = await exchange.json(), [header, payload, signature] = result.id_token.split('.'), claims = JSON.parse(Buffer.from(payload, 'base64url'));
+    const jwks = await (await get('/oauth/jwks')).json();
+    assert.ok(verify('RSA-SHA256', Buffer.from(header + '.' + payload), createPublicKey({ key: jwks.keys[0], format: 'jwk' }), Buffer.from(signature, 'base64url')));
+    assert.equal(claims.sub, 'anna'); assert.equal(claims.aud, 'cloud'); assert.equal(claims.nonce, 'nonce-value');
+    const info = () => fetch(base + '/oauth/userinfo', { headers: { authorization: 'Bearer ' + result.access_token } });
+    assert.equal((await (await info()).json()).name, 'Anna');
+    assert.equal((await token(code)).status, 400);
+    const pending = new URL((await get(authorize, cookie)).headers.get('location')).searchParams.get('code');
+    await fetch(base + '/api/logout', { method: 'POST', headers: { cookie, 'x-cs-social': '1' } });
+    assert.equal((await info()).status, 401); assert.equal((await token(pending)).status, 400);
+    assert.equal((await get('/oauth/userinfo')).status, 401);
+  } finally { await new Promise(r => server.close(r)); rmSync(dir, { recursive: true, force: true }); }
+});

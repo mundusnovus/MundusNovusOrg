@@ -14,6 +14,7 @@ import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createGzip } from 'node:zlib';
+import { createOidc } from './social/oidc.mjs';
 import { createSocial } from './social/app.mjs';
 import { previewPds, remotePds } from './social/pds.mjs';
 
@@ -43,6 +44,8 @@ export function makeServer(env = process.env) {
   if (env.PDS_URL && !env.SESSION_SECRET) throw new Error('Set SESSION_SECRET: it protects the PDS sessions Social keeps.');
   const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.christiansystems.org',
     secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean), staff: parseStaff(env.STAFF) });
+
+  const oidc = env.OIDC_CLIENTS ? createOidc({ social, dataDir, issuer: env.OIDC_ISSUER || 'https://social.christiansystems.org', clients: JSON.parse(env.OIDC_CLIENTS) }) : null;
 
   function file(req, res, path) {
     let rel = normalize(decodeURIComponent(path)).replace(/^(\.\.[/\\])+/, '');
@@ -85,6 +88,7 @@ export function makeServer(env = process.env) {
       const { kind, base } = site(req), scheme = secure ? 'https://' : 'http://', to = (sub, p) => scheme + (sub ? sub + '.' : '') + base + p + url.search;
       if (path === '/healthz') { res.writeHead(200, { 'content-type': 'text/plain' }); return res.end('ok'); }
       if (kind === 'www') return redirect(res, to('', path));
+      if (oidc && await oidc.serve(req, res)) return;
       if (await social.serve(req, res, secure, '/api/', env.COOKIE_DOMAIN)) return; // one account everywhere: every address answers /api/
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
       if (SHARED.test(path)) return file(req, res, path) || notFound(res);

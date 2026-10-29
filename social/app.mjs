@@ -478,6 +478,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
 
   return {
     db, LIMITS,
+    sessionUser(req) { const u = who(req); return u && !u.viaKey ? u : null; },
     /** Serves the API under `prefix`. Returns true when it handled the request. */
     async serve(req, res, secure, prefix = '/api/', domain) {
       cookieDomain = domain || null;
