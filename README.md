@@ -71,7 +71,7 @@ domains `christiansystems.org`, `www.`, `sprite.`, `box.` and `social.christians
 | `PDS_ADMIN_PASSWORD` | The same admin password the PDS uses |
 | `PDS_HANDLE_DOMAIN` | `pds.christiansystems.org` |
 | `SESSION_SECRET` | 64 random hex characters. Keep it: it protects stored sessions. |
-| `ADMIN_NAMES` | Comma-separated Social names of the moderators |
+| `STAFF` | Social's owner and moderators, with titles: `dac=owner:Chief Organizer, anna=moderator`. The owner can also name moderators and titles from the Moderation page; names set here can't be changed there. |
 
 ## Tests
 

@@ -154,3 +154,42 @@ test('remote PDS client speaks XRPC', async () => {
   assert.equal(calls[2][2], 'Bearer a'); assert.equal(calls[2][3].repo, 'did:plc:x');
   assert.match(pds.blobUrl('did:plc:x', 'bafk'), /^https:\/\/pds\.test\/xrpc\/com\.atproto\.sync\.getBlob\?did=did%3Aplc%3Ax&cid=bafk$/);
 });
+
+test('the owner, moderators and titles', async () => {
+  const { parseStaff } = await import('../server.mjs');
+  assert.deepEqual(parseStaff('DAC=owner:Chief Organizer, anna = moderator, bad'), { dac: { role: 'owner', title: 'Chief Organizer' }, anna: { role: 'moderator', title: null } });
+  const { server, client } = await start({ STAFF: 'dac=owner:Chief Organizer, mod-anna=moderator', ADMIN_NAMES: '' });
+  try {
+    const dac = client(), mod = client(), joe = client(), sam = client();
+    await dac('POST', 'signup', { name: 'dac', password: 'the owner password' });
+    await mod('POST', 'signup', { name: 'mod-anna', password: 'moderator password' });
+    await joe('POST', 'signup', { name: 'joe', password: 'a member password' });
+    await sam('POST', 'signup', { name: 'sam', password: 'another member pw' });
+    const me = await dac('GET', 'me'); assert.equal(me.user.role, 'owner'); assert.equal(me.user.title, 'Chief Organizer');
+    const post = await dac('POST', 'posts', { text: 'Welcome, everyone.' });
+    assert.equal(post.post.author.title, 'Chief Organizer');
+    assert.equal((await joe('GET', 'users/dac')).user.title, 'Chief Organizer');
+    // only the owner manages people; settings outrank the database
+    assert.equal((await mod('GET', 'admin/people')).status, 403);
+    assert.ok((await dac('GET', 'admin/people?q=')).people.length >= 4);
+    assert.equal((await dac('POST', 'admin/people/mod-anna', { role: 'member' })).status, 403);
+    const joeNow = await dac('POST', 'admin/people/joe', { role: 'moderator', title: 'Parish Liaison' });
+    assert.equal(joeNow.person.role, 'moderator'); assert.equal(joeNow.person.title, 'Parish Liaison');
+    // a moderator cannot suspend another moderator or the owner; the owner can suspend and restore anyone
+    await sam('POST', 'reports', { user: 'dac', reason: 'test' });
+    const r = (await mod('GET', 'admin/reports')).reports[0];
+    assert.equal((await mod('POST', 'admin/reports/' + r.id, { action: 'suspend' })).status, 403);
+    assert.equal((await dac('POST', 'admin/people/sam', { suspended: true })).person.suspended, true);
+    assert.equal((await sam('GET', 'me')).user, null);
+    assert.equal((await dac('POST', 'admin/people/sam', { suspended: false })).person.suspended, false);
+    assert.equal((await dac('POST', 'admin/people/dac', { suspended: true })).status, 400);
+    // moderators can put back a post they removed
+    assert.equal((await sam('POST', 'login', { name: 'sam', password: 'another member pw' })).status, 200); // suspension signed Sam out
+    const p = await sam('POST', 'posts', { text: 'Fine post' });
+    await joe('POST', 'reports', { post: p.post.id, reason: 'mistake' });
+    const rep = (await mod('GET', 'admin/reports')).reports.find((x) => x.post && x.post.id === p.post.id);
+    await mod('POST', 'admin/reports/' + rep.id, { action: 'remove' });
+    assert.equal((await joe('GET', 'posts/' + p.post.id)).post.removed, true);
+    assert.equal((await mod('POST', 'admin/posts/' + p.post.id + '/restore')).post.removed, false);
+  } finally { server.close(); }
+});

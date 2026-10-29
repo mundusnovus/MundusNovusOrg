@@ -8,6 +8,7 @@
 //   PORT, DATA_DIR (where Social keeps its index), PDS_URL (how this server reaches the PDS), PDS_PUBLIC_URL (how
 //   browsers reach it, for pictures), PDS_ADMIN_PASSWORD, PDS_HANDLE_DOMAIN, SESSION_SECRET, ADMIN_NAMES, and
 //   COOKIE_DOMAIN (christiansystems.org), so one sign-in counts on every address: one Christian Systems account.
+//   STAFF names Social's owner and moderators, with titles: dac=owner:Chief Organizer, anna=moderator
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
@@ -24,6 +25,16 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
 const SHARED = /^\/(brand|media|css|js|downloads\/files)\//, APPS = ['sprite', 'box'];
 const SECURITY = { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'permissions-policy': 'camera=(), microphone=(), geolocation=()', 'x-frame-options': 'SAMEORIGIN' };
 
+// STAFF="dac=owner:Chief Organizer, anna=moderator" -> { dac: { role: 'owner', title: 'Chief Organizer' }, anna: { role: 'moderator' } }
+export function parseStaff(text) {
+  const out = {};
+  for (const part of String(text || '').split(',')) {
+    const m = /^\s*@?([a-z0-9-]+)\s*=\s*(owner|moderator|member)\s*(?::\s*(.+?))?\s*$/i.exec(part);
+    if (m) out[m[1].toLowerCase()] = { role: m[2].toLowerCase(), title: m[3] || null };
+  }
+  return out;
+}
+
 export function makeServer(env = process.env) {
   const dataDir = env.DATA_DIR || join(ROOT, '..', '.data');
   mkdirSync(dataDir, { recursive: true });
@@ -31,7 +42,7 @@ export function makeServer(env = process.env) {
   if (!env.PDS_URL) console.log('Social is in preview: accounts live in memory until PDS_URL is set.');
   if (env.PDS_URL && !env.SESSION_SECRET) throw new Error('Set SESSION_SECRET: it protects the PDS sessions Social keeps.');
   const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.christiansystems.org',
-    secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim()).filter(Boolean) });
+    secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean), staff: parseStaff(env.STAFF) });
 
   function file(req, res, path) {
     let rel = normalize(decodeURIComponent(path)).replace(/^(\.\.[/\\])+/, '');

@@ -66,7 +66,7 @@
     var el = h('article', { class: 'post' + (o.focus ? ' focus' : ''), 'aria-label': p.author.display + ': ' + p.text.slice(0, 80) });
     if (p.repostedBy) el.appendChild(h('p', { class: 'note', text: '↻ ' + p.repostedBy.display + ' reposted' }));
     var body = h('div', {},
-      h('div', { class: 'who' }, h('a', { href: '/@' + p.author.name, onclick: link }, h('b', { text: p.author.display })), p.author.agent ? h('span', { class: 'tag-agent', title: 'Run by ' + (p.author.operator || 'a person'), text: 'Assistant' }) : null,
+      h('div', { class: 'who' }, h('a', { href: '/@' + p.author.name, onclick: link }, h('b', { text: p.author.display })), p.author.title ? h('span', { class: 'tag-title', text: p.author.title }) : null, p.author.agent ? h('span', { class: 'tag-agent', title: 'Run by ' + (p.author.operator || 'a person'), text: 'Assistant' }) : null,
         h('small', { text: '@' + p.author.name }), h('small', { text: '·' }), h('a', { href: '/post/' + p.id, onclick: link }, h('small', {}, h('time', { datetime: new Date(p.created).toISOString(), title: new Date(p.created).toLocaleString(), text: ago(p.created) })))),
       p.text ? h('p', { class: 'text' }, richText(p.text)) : null,
       p.images.length ? h('div', { class: 'pics n' + p.images.length }, p.images.map(function (i) { return h('img', { src: i.url, alt: i.alt, loading: 'lazy' }); })) : null,
@@ -199,7 +199,8 @@
       box.appendChild(h('section', { class: 'prof' },
         h('div', { class: 'prof-top' }, avatar(u, true), mine ? h('a', { class: 'btn', href: '/settings', onclick: link, text: 'Edit profile' }) : h('div', {},
           me && u.followsYou ? h('a', { class: 'btn', href: '/messages/' + u.name, onclick: link, text: 'Message' }) : null, ' ', follow)),
-        h('h2', {}, u.display, u.agent ? h('span', { class: 'tag-agent', text: 'Assistant' }) : null),
+        h('h2', {}, u.display, u.title ? h('span', { class: 'tag-title', text: u.title }) : null, u.agent ? h('span', { class: 'tag-agent', text: 'Assistant' }) : null),
+        u.title ? h('p', { class: 'handle', text: u.title + ' of Christian Systems' }) : null,
         h('div', { class: 'handle', text: '@' + u.name + (u.followsYou ? ' · follows you' : '') }),
         u.agent ? h('p', { class: 'handle', text: 'An assistant account, run by ' + u.operator + '.' }) : null,
         u.bio ? h('p', { class: 'bio' }, richText(u.bio)) : null,
@@ -341,8 +342,9 @@
     return [head('Settings'), saveP, keysBox, codesBox, out];
   };
   V.moderation = function () {
-    var box = h('div');
+    var box = h('div'), peopleBox = h('div');
     api('GET', 'admin/reports').then(function (r) {
+      box.appendChild(h('div', { class: 'section' }, h('h3', { text: 'Reports' })));
       if (!r.reports.length) box.appendChild(empty('All clear', 'No open reports.'));
       r.reports.forEach(function (x) {
         function act(a) { return h('button', { class: 'btn', type: 'button', text: a[0].toUpperCase() + a.slice(1), onclick: function () { api('POST', 'admin/reports/' + x.id, { action: a, note: prompt('A short note for the record (optional)') || '' }).then(function () { toast('Done'); route(); }).catch(function (e) { toast(e.message); }); } }); }
@@ -350,7 +352,26 @@
           h('div', {}, x.post ? act('remove') : null, ' ', act('suspend'), ' ', act('dismiss'))));
       });
     }).catch(function (e) { box.appendChild(empty('Not for you', e.message)); });
-    return [head('Moderation', true), box];
+    if (me && me.role === 'owner') {
+      // the owner's tools: roles, titles, suspending and restoring accounts
+      var q = h('input', { type: 'search', placeholder: 'Find a person', 'aria-label': 'Find a person' }), list = h('div');
+      function draw(p) {
+        var role = h('select', { 'aria-label': 'Role for @' + p.name, disabled: p.pinned }, ['member', 'moderator', 'owner'].map(function (r) { return h('option', { value: r, text: r[0].toUpperCase() + r.slice(1), selected: p.role === r }); }));
+        var title = h('input', { value: p.title || '', placeholder: 'Title (shown on their posts)', maxlength: 48, 'aria-label': 'Title for @' + p.name, disabled: p.pinned });
+        var save = h('button', { class: 'btn', type: 'button', text: 'Save', disabled: p.pinned, onclick: function () { api('POST', 'admin/people/' + p.name, { role: role.value, title: title.value }).then(function () { toast('Saved'); }).catch(function (e) { toast(e.message); }); } });
+        var sus = h('button', { class: 'btn', type: 'button', text: p.suspended ? 'Restore account' : 'Suspend', hidden: p.name === me.name, onclick: function () {
+          if (!p.suspended && !confirm('Suspend @' + p.name + '? They are signed out everywhere until you restore them.')) return;
+          api('POST', 'admin/people/' + p.name, { suspended: !p.suspended }).then(function (r) { p = r.person; row.replaceWith(draw(p)); toast(p.suspended ? 'Suspended' : 'Restored'); }).catch(function (e) { toast(e.message); }); } });
+        var row = h('div', { class: 'section person-row' }, h('div', { class: 'row', style: 'padding:0;border:0' }, avatar(p), h('div', { class: 'grow' }, h('b', { text: p.display }), h('small', { text: '@' + p.name + (p.suspended ? ' · suspended' : '') + (p.pinned ? ' · set on the server' : '') }))),
+          h('div', { class: 'person-tools' }, role, title, save, sus));
+        return row;
+      }
+      function find() { api('GET', 'admin/people?q=' + encodeURIComponent(q.value)).then(function (r) { list.textContent = ''; r.people.forEach(function (p) { list.appendChild(draw(p)); }); }).catch(function (e) { toast(e.message); }); }
+      q.addEventListener('input', function () { clearTimeout(q.t); q.t = setTimeout(find, 250); });
+      peopleBox.append(h('div', { class: 'section' }, h('h3', { text: 'People' }), h('p', { text: 'As the owner you choose who moderates and the titles people carry, and you can suspend or restore any account.' }), h('div', { class: 'field' }, q)), list);
+      find();
+    }
+    return [head('Moderation', true), peopleBox, box];
   };
   V.rules = function () {
     return [head('Rules', true), h('div', { class: 'form' }, h('h2', { class: 'display', text: 'Be good to each other' }),

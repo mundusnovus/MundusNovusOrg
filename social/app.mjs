@@ -30,7 +30,9 @@ create table if not exists reports (id integer primary key, reporter_id integer,
 
 const LIMITS = { text: 300, images: 4, imageBytes: 1_000_000, perHour: 60, agentPerHour: 6, bio: 256, display: 64 };
 const NAME = /^[a-z0-9](?:[a-z0-9-]{1,18}[a-z0-9])$/;
-const ROUTE_WORDS = ['like', 'repost', 'follow', 'read', 'join', 'keys', 'profile', 'recovery', 'reports'];
+const ROUTE_WORDS = ['like', 'repost', 'follow', 'read', 'join', 'keys', 'profile', 'recovery', 'reports', 'people', 'posts', 'restore'];
+// roles, stored in users.admin: members 0, moderators 1 (reports, removing posts, suspending members), the owner 2 (everything)
+const ROLES = { member: 0, moderator: 1, owner: 2 }, ROLE_NAME = ['member', 'moderator', 'owner'];
 const RESERVED = new Set([...ROUTE_WORDS, 'admin', 'root', 'support', 'help', 'social', 'api', 'www', 'pds', 'christian', 'systems', 'christiansystems', 'mod', 'moderator', 'official']);
 
 class HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }
@@ -38,15 +40,20 @@ const fail = (status, message) => { throw new HttpError(status, message); };
 const now = () => Date.now();
 const sha = (s) => createHash('sha256').update(s).digest('hex');
 
-export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.christiansystems.org', secret, admins = [] }) {
+export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.christiansystems.org', secret, admins = [], staff = {} }) {
+  // staff comes from the STAFF setting (name=role:Title, ...); ADMIN_NAMES are moderators. Settings outrank the database.
+  admins.forEach((n) => { if (!staff[n]) staff[n] = { role: 'moderator', title: null }; });
   const db = new DatabaseSync(dbPath);
   db.exec('pragma journal_mode = wal; pragma foreign_keys = off;');
   db.exec(SCHEMA);
+  try { db.exec('alter table users add column title text'); } catch { /* already there */ }
   const key = createHash('sha256').update(secret || 'preview-only-secret').digest();
   const q = (sql) => db.prepare(sql);
   const one = (sql, ...a) => q(sql).get(...a);
   const all = (sql, ...a) => q(sql).all(...a);
   const run = (sql, ...a) => q(sql).run(...a);
+  function applyStaff() { for (const [name, s] of Object.entries(staff)) run('update users set admin = ?, title = ? where name = ?', ROLES[s.role] || 0, s.title || null, name); }
+  applyStaff();
 
   // ---------------------------------------------------------------- secrets at rest
   function seal(obj) {
@@ -77,7 +84,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
   // ---------------------------------------------------------------- views
   function person(u, me) {
     if (!u) return null;
-    const p = { name: u.name, handle: u.handle, display: u.display || u.name, bio: u.bio, avatar: u.avatar ? pds.blobUrl(u.did, u.avatar) : null, agent: !!u.agent, operator: u.operator || null, suspended: !!u.suspended };
+    const p = { name: u.name, handle: u.handle, display: u.display || u.name, bio: u.bio, avatar: u.avatar ? pds.blobUrl(u.did, u.avatar) : null, agent: !!u.agent, operator: u.operator || null, suspended: !!u.suspended, title: u.title || null };
     if (me !== undefined) {
       p.followers = one('select count(*) n from follows where target_id = ?', u.id).n;
       p.following = one('select count(*) n from follows where user_id = ?', u.id).n;
@@ -142,8 +149,9 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
     let s;
     try { s = await pds.createAccount({ handle, password }); } catch (e) { fail(e.status === 400 ? 409 : 502, e.status === 400 ? (e.message || 'That name is taken.') : 'The account server is not answering. Try again soon.'); }
     const r = run('insert into users (did, handle, name, display, agent, operator, admin, tokens, created) values (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      s.did, handle, name, String(b.display || '').slice(0, LIMITS.display), agent ? 1 : 0, agent ? String(b.operator).slice(0, 64) : null, admins.includes(name) ? 1 : 0,
+      s.did, handle, name, String(b.display || '').slice(0, LIMITS.display), agent ? 1 : 0, agent ? String(b.operator).slice(0, 64) : null, 0,
       seal({ did: s.did, accessJwt: s.accessJwt, refreshJwt: s.refreshJwt }), now());
+    applyStaff();
     const u = usersById(Number(r.lastInsertRowid));
     await withPds(u, (ss) => pds.putRecord(ss, 'app.bsky.actor.profile', 'self', { $type: 'app.bsky.actor.profile', displayName: u.display || name, description: '' })).catch(() => {});
     const list = codes();
@@ -364,10 +372,36 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
     const r = one('select * from reports where id = ?', id); if (!r) fail(404, 'No such report.');
     const action = String(b.action || ''), note = String(b.note || '').slice(0, 300);
     if (action === 'remove' && r.post_id) run('update posts set removed = 1 where id = ?', r.post_id);
-    else if (action === 'suspend') { const u = usersById(r.user_id); run('update users set suspended = 1 where id = ?', u.id); run('delete from sessions where user_id = ?', u.id); run('delete from apikeys where user_id = ?', u.id); await pds.takedown(u.did, true).catch(() => {}); }
+    else if (action === 'suspend') { const u = usersById(r.user_id); if (u.admin >= me.admin) fail(403, 'Only the owner can suspend a moderator, and nobody can suspend the owner.'); run('update users set suspended = 1 where id = ?', u.id); run('delete from sessions where user_id = ?', u.id); run('delete from apikeys where user_id = ?', u.id); await pds.takedown(u.did, true).catch(() => {}); }
     else if (action !== 'dismiss') fail(400, 'Choose remove, suspend or dismiss.');
     run("update reports set status = 'closed', resolved_by = ?, note = ? where id = ?", me.id, action + (note ? ': ' + note : ''), id);
     return { ok: true };
+  }
+  function people(me, text) {
+    if (me.admin < ROLES.owner) fail(403, 'Only the owner can manage people.');
+    const like = '%' + String(text || '').replace(/[%_]/g, '').slice(0, 64) + '%';
+    return all('select * from users where name like ? or display like ? order by admin desc, created desc limit 50', like, like)
+      .map((u) => Object.assign(person(u), { role: ROLE_NAME[u.admin] || 'member', pinned: !!staff[u.name] }));
+  }
+  async function setPerson(me, name, b) {
+    if (me.admin < ROLES.owner) fail(403, 'Only the owner can manage people.');
+    const u = one('select * from users where name = ?', name); if (!u) fail(404, 'No such person.');
+    if (staff[u.name] && (b.role !== undefined || b.title !== undefined)) fail(403, 'This person\'s role and title are set in the STAFF setting on the server.');
+    if (b.role !== undefined) { if (!(b.role in ROLES)) fail(400, 'Roles are member, moderator and owner.'); run('update users set admin = ? where id = ?', ROLES[b.role], u.id); }
+    if (b.title !== undefined) run('update users set title = ? where id = ?', String(b.title || '').trim().slice(0, 48) || null, u.id);
+    if (b.suspended !== undefined) {
+      if (u.id === me.id) fail(400, 'You cannot suspend yourself.');
+      run('update users set suspended = ? where id = ?', b.suspended ? 1 : 0, u.id);
+      if (b.suspended) { run('delete from sessions where user_id = ?', u.id); run('delete from apikeys where user_id = ?', u.id); }
+      await pds.takedown(u.did, !!b.suspended).catch(() => {});
+    }
+    const x = usersById(u.id); return Object.assign(person(x), { role: ROLE_NAME[x.admin] || 'member', pinned: !!staff[x.name] });
+  }
+  function restorePost(me, id) {
+    if (me.admin < ROLES.moderator) fail(403, 'Only moderators can restore posts.');
+    const p = one('select * from posts where id = ?', id); if (!p) fail(404, 'No such post.');
+    if (!p.text) fail(400, 'Its author deleted it; it cannot be restored.');
+    run('update posts set removed = 0 where id = ?', id); return view(one('select * from posts where id = ?', id), me);
   }
   function newKey(me, label) {
     const k = 'cs_' + randomBytes(24).toString('base64url');
@@ -407,7 +441,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
       case 'POST login': { const r = await login(body); res.setHeader('set-cookie', cookie(r.session, secure)); return { user: r.user }; }
       case 'POST recover': { const r = await recover(body); res.setHeader('set-cookie', cookie(r.session, secure)); return { user: r.user }; }
       case 'POST logout': if (me) run('delete from sessions where id = ?', me.sid); res.setHeader('set-cookie', cookie('', secure)); return { ok: true };
-      case 'GET me': return { user: me ? Object.assign(person(me, me), { admin: !!me.admin, unread: one('select count(*) n from notifications where user_id = ? and read = 0', me.id).n }) : null };
+      case 'GET me': return { user: me ? Object.assign(person(me, me), { admin: !!me.admin, role: ROLE_NAME[me.admin] || 'member', unread: one('select count(*) n from notifications where user_id = ? and read = 0', me.id).n }) : null };
       case 'POST me/profile': return { user: await profile(need(), body) };
       case 'POST me/recovery': { need(); await pds.createSession(me.handle, String(body.password || '')).catch(() => fail(401, 'Wrong password.')); run('delete from recovery where user_id = ?', me.id); const l = codes(); for (const c of l) run('insert into recovery values (?, ?)', me.id, sha(c)); return { recoveryCodes: l }; }
       case 'GET me/keys': return { keys: keys(need()) };
@@ -434,6 +468,9 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
       case 'POST reports': return report(need(), body);
       case 'GET admin/reports': return { reports: reports(need()) };
       case 'POST admin/reports/:': return resolve(need(), Number(parts[2]), body);
+      case 'GET admin/people': return { people: people(need(), new URL(req.url, 'http://x').searchParams.get('q')) };
+      case 'POST admin/people/:': return { person: await setPerson(need(), parts[2], body) };
+      case 'POST admin/posts/:/restore': return { post: restorePost(need(), Number(parts[2])) };
       case 'GET blob/:': { const b = pds.blobs && pds.blobs.get(arg); if (!b) fail(404, 'Not found.'); res.writeHead(200, { 'content-type': b.type, 'cache-control': 'public, max-age=31536000, immutable' }); res.end(Buffer.from(b.bytes)); return undefined; }
       default: fail(404, 'Not found.');
     }
