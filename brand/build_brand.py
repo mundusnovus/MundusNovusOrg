@@ -38,6 +38,8 @@ def mark_rects(c=None):
 
 
 FACES = {
+    "cloud": [(19, 29, 26, 12, "cream"), (23, 24, 18, 6, "cream"), (28, 20, 8, 5, "cream"), (29, 30, 6, 14, "gold"), (25, 34, 14, 4, "gold")],
+    "office": [(23, 19, 18, 26, "cream"), (27, 24, 10, 3, "red"), (27, 30, 10, 3, "red"), (27, 36, 6, 3, "red"), (19, 23, 3, 22, "gold")],
     # each product keeps the chip and puts its own sign on the die (a 64 grid, inside 18..46)
     "sprite": [(29, 17, 6, 6, "cream"), (29, 25, 6, 6, "cream"), (21, 25, 6, 6, "cream"), (37, 25, 6, 6, "cream"), (29, 33, 6, 6, "gold"), (29, 41, 6, 6, "cream")],
     "box": [(20, 34, 5, 10, "cream"), (27, 26, 5, 18, "cream"), (34, 30, 5, 14, "gold"), (41, 22, 4, 22, "cream")],
