@@ -100,6 +100,7 @@
 			lastHash = h2; dirty = h2 !== savedHash; refreshTitle();
 			clearTimeout(autosaveTimer);
 			if (dirty) autosaveTimer = setTimeout(autosave, 5000);
+			if (dirty && root.csCloudUI) root.csCloudUI.changed();
 		}, 250);
 	}
 	async function autosave() {
@@ -410,6 +411,13 @@
 			toast("Theme: " + (next === NS.theme.name ? "Christian Systems" : next));
 		});
 		$("cbAbout").addEventListener("click", aboutDialog);
+		// Christian Cloud: open, save and (when switched on) autosave songs in the person's /ChristianBox folder
+		if (root.csCloudUI) {
+			root.csCloudUI.attach({ folder: "/ChristianBox", ext: ".beepbox", name: function () { return currentName; }, serialize: songToText,
+				open: function (name, text) { if (!confirmDiscard()) return; try { loadSong(parseSongText(text), name, null); toast("Opened " + name + " from Cloud"); } catch (e) { toast("Could not open " + name + ": " + (e && e.message || e), true); } },
+				saved: function (text, bad) { if (bad) toast(text, true); } });
+			$("cbCloud").addEventListener("click", function () { root.csCloudUI.show(); });
+		} else $("cbCloud").hidden = true;
 		document.addEventListener("click", closeMenus);
 		// desktop shortcuts (BeepBox itself maps Ctrl+S to its export dialog and Ctrl+O to import)
 		root.addEventListener("keydown", function (ev) {

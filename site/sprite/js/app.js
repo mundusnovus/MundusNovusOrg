@@ -15,7 +15,7 @@
     flipH: 'shift+h', flipV: 'shift+v', brushBigger: ']', brushSmaller: '['
   };
   var ACTION_LABELS = {
-    'file.new': 'New sprite', 'file.open': 'Open', 'file.save': 'Save', 'file.saveAs': 'Save as', 'file.export': 'Export', undo: 'Undo', redo: 'Redo', copy: 'Copy', cut: 'Cut', paste: 'Paste', delete: 'Clear selection', selectAll: 'Select all', deselect: 'Deselect', invertSel: 'Invert selection',
+    'file.new': 'New sprite', 'file.open': 'Open', 'file.save': 'Save', 'file.saveAs': 'Save as', 'file.export': 'Export', 'file.cloud': 'Christian Cloud', undo: 'Undo', redo: 'Redo', copy: 'Copy', cut: 'Cut', paste: 'Paste', delete: 'Clear selection', selectAll: 'Select all', deselect: 'Deselect', invertSel: 'Invert selection',
     swapColors: 'Swap colours', zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoomFit: 'Zoom to fit', zoom100: 'Zoom 1:1... (x8)', toggleGrid: 'Toggle grid', togglePixelGrid: 'Toggle pixel grid', toggleOnion: 'Toggle onion skin', symX: 'Mirror X', symY: 'Mirror Y', cycleTile: 'Cycle tiling mode',
     framePrev: 'Previous frame', frameNext: 'Next frame', frameFirst: 'First frame', frameLast: 'Last frame', play: 'Play / pause', frameNew: 'New frame', frameDup: 'Duplicate frame', layerNew: 'New layer', toggleDocks: 'Show / hide side panels', focusAI: 'Focus AI prompt', 'help.keys': 'Keyboard shortcuts',
     flipH: 'Flip horizontally', flipV: 'Flip vertically', brushBigger: 'Bigger brush', brushSmaller: 'Smaller brush'
@@ -223,7 +223,7 @@
       d.undoStack.length = 0; this.useDoc(d);
     },
     'file.open': function () { return this.fileOpenDialog(); },
-    'file.save': function () { return this.save(false); }, 'file.saveAs': function () { return this.save(true); }, 'file.export': function () { return this.exportDialog(); },
+    'file.save': function () { return this.save(false); }, 'file.cloud': function () { if (window.csCloudUI) window.csCloudUI.show(); }, 'file.saveAs': function () { return this.save(true); }, 'file.export': function () { return this.exportDialog(); },
     undo: function (_, S, doc) { if (this.editor.stroke || this.editor.poly) return; doc.undo(); }, redo: function (_, S, doc) { if (this.editor.stroke || this.editor.poly) return; doc.redo(); },
     copy: function (_, S, d, ed) { ed.copy(false); }, cut: function (_, S, d, ed) { ed.copy(true); }, paste: function (_, S, d, ed) { ed.paste(); },
     delete: function (_, S, d, ed) { ed.clearSelection(); },
@@ -420,7 +420,7 @@
     var self = this, S = this.S, doc = function () { return S.doc; }, ed = function () { return self.editor; };
     function it(label, action, extra) { return Object.assign({ label: label, action: action }, extra || {}); }
     return [
-      { label: 'File', items: function () { return [it('New...', 'file.new'), it('Open...', 'file.open'), { label: 'Open recent', submenu: function () { return self.recentItems(); } }, '-', it('Save', 'file.save'), it('Save as...', 'file.saveAs'), '-', it('Export...', 'file.export'), '-', it('Close window', 'quit')]; } },
+      { label: 'File', items: function () { return [it('New...', 'file.new'), it('Open...', 'file.open'), { label: 'Open recent', submenu: function () { return self.recentItems(); } }, '-', it('Save', 'file.save'), it('Save as...', 'file.saveAs'), it('Christian Cloud...', 'file.cloud'), '-', it('Export...', 'file.export'), '-', it('Close window', 'quit')]; } },
       { label: 'Edit', items: function () { return [it('Undo', 'undo', { disabled: function () { return !doc().canUndo(); } }), it('Redo', 'redo', { disabled: function () { return !doc().canRedo(); } }), '-', it('Cut', 'cut'), it('Copy', 'copy'), it('Paste', 'paste'), it('Clear', 'delete'), '-', it('Select all', 'selectAll'), it('Deselect', 'deselect'), it('Invert selection', 'invertSel'), '-',
         it('Flip horizontally', 'flipH'), it('Flip vertically', 'flipV'), it('Rotate 90°', 'rotate90'), it('Rotate...', 'rotateDlg'), it('Shift...', 'shiftDlg'), '-', it('Outline...', 'outlineDlg'), it('Drop shadow...', 'shadowDlg'), it('Shade by light direction...', 'lightDlg'), it('Replace colour...', 'replaceDlg'), it('Adjust hue/saturation...', 'hueDlg'), '-', it('Keyboard shortcuts...', 'help.keys')]; } },
       { label: 'Sprite', items: [it('Canvas size...', 'canvasSize'), it('Scale sprite...', 'scaleSprite'), it('Crop to content', 'cropContent'), it('Crop to selection', 'cropSelection'), '-', it('Flip sprite horizontally', 'flipSpriteH'), it('Flip sprite vertically', 'flipSpriteV'), '-',
@@ -480,7 +480,13 @@
     this.statusL = h('span', null, 'Ready'); this.statusC = h('span', { class: 'grow' }); this.statusR = h('span', null);
     var status = h('footer', { class: 'status' }, this.statusL, this.statusC, this.statusR);
     root.append(top, h('div', { class: 'main' }, this.toolbox, center, dock), this.timeline, status);
+    // Christian Cloud: open, save and (when switched on) autosave sprites in the person's /ChristianSprite folder
+    if (window.csCloudUI) window.csCloudUI.attach({ folder: '/ChristianSprite', ext: '.asprite.json', name: function () { return baseOf(S.doc.name); },
+      serialize: function () { return JSON.stringify(S.doc.toJSON()); },
+      open: function (name, text) { self.openFileObj({ name: name + '.asprite.json', data: text, binary: false }); },
+      saved: function (text, bad) { if (bad) U.toast(text, 'error'); } });
     S.onChange(function (k) {
+      if (window.csCloudUI && S.doc.dirty()) window.csCloudUI.changed();
       self.setTitle(); self.updateStatus(self.editor.hover); undoB.disabled = !S.doc.canUndo(); redoB.disabled = !S.doc.canRedo();
       if (k === 'busy') root.classList.toggle('busy', !!S.busy);
       self.syncView();

@@ -14,7 +14,7 @@
   // ---------------------------------------------------------------- addresses and the account
   // Links to the other Christian Systems addresses carry data-sub (and data-path); they are rewritten from this page's
   // own address, so they also work on a test machine. One Christian Systems account is shared by every address.
-  var ROOT = location.host.replace(/^(www|sprite|box|social)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
+  var ROOT = location.host.replace(/^(www|sprite|box|social|cloud|office)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
   document.querySelectorAll('a[data-sub]').forEach(function (a) { a.href = SUB(a.dataset.sub === 'main' ? '' : a.dataset.sub, a.dataset.path); });
   (function () {
     var slot = $('account'); if (!slot) return;

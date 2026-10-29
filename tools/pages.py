@@ -29,7 +29,8 @@ def page(path, title, desc, body, url, here=None, main_class=""):
 
 def also(*keys):
     cards = {"sprite": ("ChristianSprite", "Pixel art and animation.", "sprite"), "box": ("ChristianBox", "Music, from chiptune to a full band.", "box"),
-             "social": ("Social", "Share what you make, with one Christian Systems account.", "social")}
+             "social": ("Social", "Share what you make, with one Christian Systems account.", "social"),
+             "cloud": ("Christian Cloud", "3 GB for your files, saved from every app.", "cloud")}
     out = ['<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Christian Systems</h2><div class="cards">']
     for k in keys:
         n, d, sub = cards[k]
@@ -84,7 +85,7 @@ SPRITE = """
   <div class="reveal"><h3>An assistant at your side</h3><p>It works with your own Anthropic key, kept on your device, and every step can be undone. Or <a href="#agent">ask your own agent</a>.</p></div>
 </div></section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="sprite"></div></section>
-""" + agent("sprite", "ChristianSprite", ("a sprite", "a 32 by 32 knight with a lantern, four frames of walking, in warm colours"), "the .asprite.json project and a sprite sheet") + also("box", "social")
+""" + agent("sprite", "ChristianSprite", ("a sprite", "a 32 by 32 knight with a lantern, four frames of walking, in warm colours"), "the .asprite.json project and a sprite sheet") + also("box", "cloud")
 
 BOX = """
 <section class="hero app-hero" aria-labelledby="hero-title">
@@ -127,12 +128,18 @@ BOX = """
   <ol class="tracks reveal" id="tracks"></ol>
 </section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="box"></div></section>
-""" + agent("box", "ChristianBox", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "social")
+""" + agent("box", "ChristianBox", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "cloud")
 
 DOWNLOADS = """
 <h1 class="display">Downloads</h1>
 <p>Every Christian Systems app, free, for every platform. Pick yours; we started with this computer's.</p>
 <div data-downloads></div>
+<h2 class="display" id="cloud-office">Christian Cloud and Christian Office</h2>
+<p>The desktop apps for Cloud (keeps a folder on your computer in sync) and Office (edit documents offline) are built for Windows, macOS and Linux with every release.</p>
+<ul class="dl">
+<li><a href="https://github.com/christiansystems/ChristianCloud/releases/latest"><b>Christian Cloud for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
+<li><a href="https://github.com/christiansystems/ChristianOffice/releases/latest"><b>Christian Office for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
+</ul>
 <h2 class="display" id="all">Every file</h2>
 <p>Each file has a SHA-256 checksum, so you can check it arrived unchanged.</p>
 <div data-download-table></div>

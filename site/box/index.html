@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; script-src 'self' file: 'unsafe-eval'; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: data: blob:; object-src 'none'; connect-src 'self' https://api.anthropic.com">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; script-src 'self' file: 'unsafe-eval'; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: data: blob:; object-src 'none'; connect-src 'self' https://api.anthropic.com https://cloud.christiansystems.org">
 <title>ChristianBox</title>
 <meta name="description" content="A free, open-source music maker from Christian Systems, built on BeepBox.">
 <meta name="theme-color" content="#140708">
@@ -21,6 +21,7 @@
 			<div class="cb-menu"><button class="cb-btn" id="cbRecent" aria-haspopup="menu" title="Recent songs">Recent</button><div class="cb-drop" id="cbRecentDrop" role="menu"></div></div>
 			<button class="cb-btn" id="cbSave" title="Save (Ctrl+S)">Save</button>
 			<button class="cb-btn" id="cbSaveAs" title="Save as (Ctrl+Shift+S)">Save as…</button>
+			<button class="cb-btn" id="cbCloud" title="Open, save and autosave in Christian Cloud">Cloud</button>
 			<div class="cb-menu"><button class="cb-btn" id="cbExport" aria-haspopup="menu" title="Export audio, MIDI or a game bundle">Export</button>
 				<div class="cb-drop" id="cbExportDrop" role="menu">
 					<button data-export="mastered">Mastered MP3, ready to share…</button>
@@ -43,6 +44,8 @@
 	<div class="cb-modal" id="cbModal"><div class="cb-card" id="cbCard" role="dialog" aria-modal="true"></div></div>
 
 	<script src="brand/cs-host.js"></script>
+	<script src="brand/cs-cloud.js"></script>
+	<script src="brand/cs-cloud-ui.js"></script>
 	<script src="beepbox_editor.min.js"></script>
 	<script src="box/theory.js"></script>
 	<script src="box/presets-band.js"></script>
