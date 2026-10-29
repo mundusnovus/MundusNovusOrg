@@ -1,0 +1,18 @@
+{
+  "name": "ChristianBox",
+  "short_name": "Box",
+  "description": "A free, open-source music maker built on BeepBox.",
+  "id": "/box/",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#140708",
+  "theme_color": "#140708",
+  "categories": ["music", "entertainment", "productivity"],
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "file_handlers": [{ "action": "./", "accept": { "application/json": [".beepbox", ".json"] } }]
+}

@@ -1,0 +1,29 @@
+/* Christian Systems app chrome: what every app shares on top of tokens.css. The frosted bar, sheets, dialogs and
+   controls; each app keeps its own layout. */
+.cs, .cs * { box-sizing: border-box; }
+.cs {
+  --cs-fill: color-mix(in srgb, var(--cs-fg) 8%, transparent);
+  --cs-fill-2: color-mix(in srgb, var(--cs-fg) 14%, transparent);
+  --cs-glass-edge: color-mix(in srgb, var(--cs-fg) 10%, transparent);
+  --cs-shadow-2: 0 18px 48px rgb(0 0 0 / .28);
+  --cs-wallpaper: radial-gradient(120% 80% at 50% 120%, color-mix(in srgb, var(--cs-red) 16%, transparent), transparent 60%);
+  font-family: var(--cs-text); color: var(--cs-fg); background: var(--cs-bg);
+}
+.cs :focus-visible { outline: 3px solid var(--cs-focus); outline-offset: 2px; border-radius: var(--cs-radius-s); }
+.cs ::selection { background: color-mix(in srgb, var(--cs-gold) 40%, transparent); }
+.cs-display { font-family: var(--cs-display); text-transform: uppercase; letter-spacing: .02em; -webkit-font-smoothing: none; }
+
+/* the key dialog the host shows */
+dialog.cs-keys { border: 1px solid var(--cs-line); border-radius: var(--cs-radius-l); padding: 0; width: min(440px, 92vw); color: var(--cs-fg); background: var(--cs-surface); box-shadow: var(--cs-shadow-2, 0 18px 48px rgb(0 0 0 / .3)); }
+dialog.cs-keys::backdrop { background: rgb(10 3 4 / .45); backdrop-filter: blur(6px); }
+dialog.cs-keys[open] { animation: cs-sheet var(--cs-med) var(--cs-ease-out); }
+dialog.cs-keys form { padding: 22px; display: grid; gap: 12px; }
+dialog.cs-keys h2 { margin: 0; font: 400 20px var(--cs-display); text-transform: uppercase; -webkit-font-smoothing: none; }
+dialog.cs-keys p { margin: 0; color: var(--cs-fg-2); font-size: 14px; line-height: 1.5; }
+dialog.cs-keys label { display: grid; gap: 6px; font-size: 13px; color: var(--cs-fg-2); }
+dialog.cs-keys input, dialog.cs-keys select { font: 14px var(--cs-mono); padding: 10px 12px; border-radius: var(--cs-radius-s); border: 1px solid var(--cs-line); background: var(--cs-bg); color: var(--cs-fg); }
+dialog.cs-keys menu { display: flex; gap: 8px; margin: 6px 0 0; padding: 0; }
+dialog.cs-keys menu span { flex: 1; }
+dialog.cs-keys button { font: 600 14px var(--cs-text); padding: 9px 14px; border-radius: var(--cs-radius-s); border: 1px solid var(--cs-line); background: var(--cs-surface-2); color: var(--cs-fg); cursor: pointer; }
+dialog.cs-keys button.primary { background: var(--cs-accent); border-color: transparent; color: #fff; }
+@keyframes cs-sheet { from { opacity: 0; transform: translateY(12px) scale(.98); } }

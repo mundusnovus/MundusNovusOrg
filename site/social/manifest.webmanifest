@@ -1,0 +1,4 @@
+{ "name": "Christian Systems Social", "short_name": "Social", "id": "/social/", "start_url": "/social/", "scope": "/social/", "display": "standalone",
+  "background_color": "#140708", "theme_color": "#140708",
+  "icons": [{ "src": "/brand/logo/products/social/social-192.png", "sizes": "192x192", "type": "image/png" }, { "src": "/brand/logo/products/social/social-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/brand/logo/products/social/social-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }] }

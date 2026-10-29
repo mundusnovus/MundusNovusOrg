@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christian Systems</title>
+<meta name="description" content="Free, open-source tools for making pixel art and music, in your browser or on your desktop.">
+<meta name="theme-color" content="#140708">
+<meta property="og:title" content="Christian Systems">
+<meta property="og:description" content="Free, open-source tools for making pixel art and music.">
+<meta property="og:image" content="https://christiansystems.org/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://christiansystems.org/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/brand/logo/ChristianSystems.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png">
+<link rel="preload" href="/brand/font/Chancel-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/brand/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
+  <nav aria-label="Main">
+    <a href="#sprite">Sprite</a><a href="#box">Box</a><a href="#music">Music</a><a href="/social/">Social</a><a href="/source/">Source</a>
+  </nav>
+  <a class="btn small" href="/downloads/">Download</a>
+</header>
+
+<main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+    <canvas class="hero-mark" id="heroMark" width="64" height="64" aria-hidden="true"></canvas>
+    <h1 id="hero-title" class="display reveal">Make something good.</h1>
+    <p class="lede reveal">Pixel art and music, drawn and written with an assistant at your side. In your browser, on your desktop, at no cost.</p>
+    <div class="actions reveal">
+      <a class="btn primary" href="/sprite/">Open Sprite</a>
+      <a class="btn primary" href="/box/">Open Box</a>
+      <a class="btn" href="/downloads/">Download</a>
+    </div>
+  </section>
+
+  <section class="product" id="sprite" aria-labelledby="sprite-title">
+    <div class="copy reveal">
+      <img class="app-icon" src="/brand/logo/products/sprite/sprite-128.png" width="64" height="64" alt="">
+      <h2 id="sprite-title" class="display">Christian<wbr><b>Sprite</b></h2>
+      <p>Layers, frames and onion skin. Shading and dither brushes, outlines, rotation that keeps pixels clean. Sheets for Godot, GIFs for everyone else.</p>
+      <p class="quiet">Describe a sprite and the assistant draws it with the same tools you use, one step you can undo at a time.</p>
+      <div class="actions"><a class="btn primary" href="/sprite/">Open in your browser</a><a class="btn" href="/downloads/#sprite">Download</a></div>
+    </div>
+    <figure class="window reveal" aria-label="A sprite being drawn, pixel by pixel">
+      <div class="window-bar"><i></i><i></i><i></i><span>lantern.asprite.json</span></div>
+      <div class="sprite-stage">
+        <canvas id="spriteCanvas" width="16" height="16"></canvas>
+        <ol class="palette" id="spritePalette" aria-hidden="true"></ol>
+      </div>
+    </figure>
+  </section>
+
+  <section class="product flip" id="box" aria-labelledby="box-title">
+    <div class="copy reveal">
+      <img class="app-icon" src="/brand/logo/products/box/box-128.png" width="64" height="64" alt="">
+      <h2 id="box-title" class="display">Christian<wbr><b>Box</b></h2>
+      <p>Chiptune or a whole band: guitars, bass, organ, strings, choir and a real drum kit. Power-chord riffs, a mix that balances itself, and MP3s ready to share.</p>
+      <p class="quiet">Built on BeepBox. Every song on this page was written with it.</p>
+      <div class="actions"><a class="btn primary" href="/box/">Open in your browser</a><a class="btn" href="/downloads/#box">Download</a></div>
+    </div>
+    <figure class="window reveal" aria-label="The notes of the song now playing">
+      <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">first-light.beepbox</span></div>
+      <canvas class="roll" id="roll" width="640" height="360"></canvas>
+      <button class="roll-play" id="rollPlay" type="button" aria-label="Play this song">▶</button>
+    </figure>
+  </section>
+
+  <section class="music" id="music" aria-labelledby="music-title">
+    <div class="album reveal">
+      <img id="albumCover" src="/media/music/covers/album-600.png" width="600" height="600" alt="Freely Given, cover">
+      <div>
+        <p class="eyebrow">The soundtrack</p>
+        <h2 id="music-title" class="display">Freely Given</h2>
+        <p class="quiet" id="albumMeta">Eight tracks · Christian Systems · 2026</p>
+        <div class="player" id="player" aria-label="Music player">
+          <button class="btn primary round" id="playBtn" type="button" aria-label="Play">▶</button>
+          <div class="now"><strong id="nowTitle">First Light</strong><span id="nowAbout"></span>
+            <div class="progress" id="progress" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i id="progressFill"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ol class="tracks reveal" id="tracks"></ol>
+  </section>
+
+  <section class="open" id="open" aria-labelledby="open-title">
+    <h2 id="open-title" class="display reveal">Yours to keep.</h2>
+    <div class="cards">
+      <article class="card reveal"><h3>Every line, open</h3><p>Sprite, Box, Social and this site are published in full under the Christian Systems License, which is the GNU GPL, version 3. Read it, change it, share it.</p><a href="/source/">The source</a></article>
+      <article class="card reveal"><h3>Run here, or anywhere</h3><p>The apps run on our servers at no cost to you, install from the browser, or download for macOS, Windows and Linux. They work offline.</p><a href="/downloads/">Downloads</a></article>
+      <article class="card reveal"><h3>Your work stays yours</h3><p>No account and no tracking. Files stay on your device. The assistant uses your own key and talks only to Anthropic.</p><a href="/source/#privacy">How it works</a></article>
+    </div>
+  </section>
+
+  <section class="social" id="social" aria-labelledby="social-title">
+    <div class="copy reveal">
+      <p class="eyebrow">Share what you make</p>
+      <h2 id="social-title" class="display">Social</h2>
+      <p>A calm place to share what you make, on the open AT Protocol. Your account, your posts and your followers move with you.</p>
+      <a class="btn primary" href="/social/">Open Social</a>
+    </div>
+    <div class="feed reveal" aria-hidden="true">
+      <div class="post"><img src="/media/music/covers/06-cornerstone-600.png" alt=""><div><b>Cornerstone</b><span>New track, made in Box. Pipe organ, choir and too many guitars.</span></div></div>
+      <div class="post"><img src="/brand/logo/products/sprite/sprite-128.png" alt=""><div><b>Lantern, 32 × 32</b><span>Eight frames of flicker. Sheet and Godot file in the replies.</span></div></div>
+      <div class="post"><img src="/media/music/covers/07-works-of-mercy-600.png" alt=""><div><b>Food drive this Saturday</b><span>The parish hall, nine until noon. Bring a friend.</span></div></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Christian Systems</span></div>
+  <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
+  <nav aria-label="Footer"><a href="/downloads/">Downloads</a><a href="/source/">Source</a><a href="/source/#license">License</a><a href="/social/">Social</a></nav>
+</footer>
+</body>
+</html>

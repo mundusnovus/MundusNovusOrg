@@ -1,0 +1,95 @@
+{
+ "album": "Freely Given",
+ "artist": "Christian Systems",
+ "year": "2026",
+ "tracks": [
+  {
+   "n": 1,
+   "slug": "first-light",
+   "title": "First Light",
+   "about": "Morning, before anyone else is up. A pulse, an organ, then the whole band at once.",
+   "key": "E minor",
+   "tempo": 160,
+   "seconds": 145.5,
+   "gainDb": 7.3,
+   "peakDbfs": -1.07
+  },
+  {
+   "n": 2,
+   "slug": "common-ground",
+   "title": "Common Ground",
+   "about": "Two guitars that disagree for a while, and a piano that keeps them in the same room.",
+   "key": "A minor",
+   "tempo": 168,
+   "seconds": 150,
+   "gainDb": 9.6,
+   "peakDbfs": -1.04
+  },
+  {
+   "n": 3,
+   "slug": "many-hands",
+   "title": "Many Hands",
+   "about": "Brass and a synth lead trading the tune, with a sixteenth-note pulse under everyone.",
+   "key": "D minor",
+   "tempo": 172,
+   "seconds": 146.5,
+   "gainDb": 10.5,
+   "peakDbfs": -1.04
+  },
+  {
+   "n": 4,
+   "slug": "open-hand",
+   "title": "Open Hand",
+   "about": "Heavy and slow to anger. Metal hits on the off-beat, a choir above the noise.",
+   "key": "G minor",
+   "tempo": 150,
+   "seconds": 155.2,
+   "gainDb": 7.3,
+   "peakDbfs": -1.18
+  },
+  {
+   "n": 5,
+   "slug": "signal",
+   "title": "Signal",
+   "about": "A message tapped out again and again until somebody answers.",
+   "key": "E minor",
+   "tempo": 176,
+   "seconds": 143.2,
+   "gainDb": 10.5,
+   "peakDbfs": -1.07
+  },
+  {
+   "n": 6,
+   "slug": "cornerstone",
+   "title": "Cornerstone",
+   "about": "The stone the builders rejected. A pipe organ and a choir under the loudest guitars on the record.",
+   "key": "B minor",
+   "tempo": 164,
+   "seconds": 153.7,
+   "gainDb": 6.3,
+   "peakDbfs": -1.2
+  },
+  {
+   "n": 7,
+   "slug": "works-of-mercy",
+   "title": "Works of Mercy",
+   "about": "Feed, give drink, clothe, shelter, visit, bury. A piano keeps count; the strings do the work.",
+   "key": "C minor",
+   "tempo": 156,
+   "seconds": 149.2,
+   "gainDb": 8.4,
+   "peakDbfs": -1.03
+  },
+  {
+   "n": 8,
+   "slug": "freely-given",
+   "title": "Freely Given",
+   "about": "Freely you have received; freely give. The last track turns to the major key and keeps going.",
+   "key": "D major",
+   "tempo": 160,
+   "seconds": 157.5,
+   "gainDb": 6.7,
+   "peakDbfs": -1.09
+  }
+ ]
+}
