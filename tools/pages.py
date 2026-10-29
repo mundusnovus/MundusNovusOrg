@@ -38,6 +38,29 @@ def also(*keys):
     return "\n".join(out)
 
 
+def agent(key, name, ask, gives):
+    prompt = ("Make me %s with %s. Get it from https://github.com/christiansystems/%s (download the ZIP or clone it), "
+              "read AGENTS.md in it, and follow it. Here is what I want: %s. When you are done, give me %s.") % (ask[0], name, name, ask[1], gives)
+    return """
+<section class="agent" id="agent" aria-labelledby="agent-title">
+  <div class="copy reveal">
+    <p class="eyebrow">Work with your agent</p>
+    <h2 id="agent-title" class="display">Ask your agent</h2>
+    <p>%s comes with instructions for AI agents. An agent that can run code can use the same tools as the editor's own assistant, and hand you a file you can open here and keep working on.</p>
+    <ol class="steps">
+      <li><b>Claude.</b> In the Claude desktop app, open Cowork, give it a folder to work in, and paste the prompt.</li>
+      <li><b>ChatGPT.</b> Start a task in agent mode, or in Codex, and paste the prompt.</li>
+      <li><b>Change the last sentence</b> to say what you want. Then open the file it gives you in the <a href="/app/">editor</a>.</li>
+    </ol>
+  </div>
+  <figure class="prompt reveal">
+    <pre id="prompt-%s">%s</pre>
+    <button class="btn primary" type="button" data-copy="prompt-%s">Copy the prompt</button>
+  </figure>
+</section>
+""" % (name, key, prompt.replace("&", "&amp;").replace("<", "&lt;"), key)
+
+
 SPRITE = """
 <section class="hero app-hero" aria-labelledby="hero-title">
   <img class="app-icon reveal" src="/brand/logo/products/sprite/sprite-256.png" width="112" height="112" alt="">
@@ -58,10 +81,10 @@ SPRITE = """
   <div class="reveal"><h3>Clean transforms</h3><p>Outline, drop shadow, light-direction shading, and rotation that keeps pixels crisp.</p></div>
   <div class="reveal"><h3>Palettes</h3><p>Build ramps, import GPL, hex, JASC or PNG, or start from a classic.</p></div>
   <div class="reveal"><h3>Ready for games</h3><p>Sprite sheets with Aseprite-compatible JSON and Godot resources, plus PNG, GIF and APNG.</p></div>
-  <div class="reveal"><h3>An assistant at your side</h3><p>It works with your own Anthropic key, kept on your device, and every step can be undone.</p></div>
+  <div class="reveal"><h3>An assistant at your side</h3><p>It works with your own Anthropic key, kept on your device, and every step can be undone. Or <a href="#agent">ask your own agent</a>.</p></div>
 </div></section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="sprite"></div></section>
-""" + also("box", "social")
+""" + agent("sprite", "ChristianSprite", ("a sprite", "a 32 by 32 knight with a lantern, four frames of walking, in warm colours"), "the .asprite.json project and a sprite sheet") + also("box", "social")
 
 BOX = """
 <section class="hero app-hero" aria-labelledby="hero-title">
@@ -83,7 +106,7 @@ BOX = """
   <div class="reveal"><h3>Riffs</h3><p>Power chords that chug, gallop or push, and a pulse bass that hammers.</p></div>
   <div class="reveal"><h3>A mix that balances itself</h3><p>Auto mix listens to each part and sets the volumes against the lead.</p></div>
   <div class="reveal"><h3>Ready to share</h3><p>Mastered MP3s with even loudness, title tags and cover art. WAV, MIDI and seamless game loops too.</p></div>
-  <div class="reveal"><h3>The Composer</h3><p>Describe a song and it writes one, or asks before it changes yours. It works with your own Anthropic key.</p></div>
+  <div class="reveal"><h3>The Composer</h3><p>Describe a song and it writes one, or asks before it changes yours. It works with your own Anthropic key. Or <a href="#agent">ask your own agent</a>.</p></div>
   <div class="reveal"><h3>Built on BeepBox</h3><p>Every BeepBox song opens here. ChristianBox is free and open source, like BeepBox itself.</p></div>
 </div></section>
 <section class="music" id="music" aria-labelledby="music-title">
@@ -104,7 +127,7 @@ BOX = """
   <ol class="tracks reveal" id="tracks"></ol>
 </section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="box"></div></section>
-""" + also("sprite", "social")
+""" + agent("box", "ChristianBox", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "social")
 
 DOWNLOADS = """
 <h1 class="display">Downloads</h1>

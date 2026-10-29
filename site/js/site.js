@@ -93,6 +93,13 @@
     }).catch(function () {});
   });
 
+  document.querySelectorAll('[data-copy]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var t = $(b.dataset.copy).textContent, done = function () { var was = b.textContent; b.textContent = 'Copied'; setTimeout(function () { b.textContent = was; }, 1800); };
+      if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, function () {}); else { var r = document.createRange(); r.selectNodeContents($(b.dataset.copy)); getSelection().removeAllRanges(); getSelection().addRange(r); }
+    });
+  });
+
   // ---------------------------------------------------------------- the bar and arrivals
   var bar = $('bar');
   if (bar) addEventListener('scroll', function () { bar.classList.toggle('scrolled', scrollY > 8); }, { passive: true });

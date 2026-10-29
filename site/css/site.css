@@ -173,3 +173,12 @@ section { padding: clamp(72px, 12vw, 160px) max(var(--cs-space), env(safe-area-i
 .features h3 { margin: 0 0 6px; font-size: var(--cs-step-1); } .features p { margin: 0; color: var(--cs-fg-2); }
 .download-section { max-width: 1140px; margin: 0 auto; }
 .download-section h2 { font-size: var(--cs-step-3); margin: 0 0 6px; }
+
+/* ask your agent */
+.agent { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 5vw, 72px); align-items: center; max-width: 1140px; margin: 0 auto; }
+.agent h2 { font-size: var(--cs-step-3); margin: 0 0 14px; }
+.agent p { font-size: var(--cs-step-0); color: var(--cs-fg-2); max-width: 46ch; }
+.steps { padding-left: 1.2em; display: grid; gap: 10px; color: var(--cs-fg-2); max-width: 46ch; } .steps b { color: var(--cs-fg); }
+.prompt { margin: 0; padding: 22px; border-radius: var(--cs-radius-l); background: var(--cs-ink); color: var(--cs-cream); box-shadow: var(--cs-shadow); display: grid; gap: 16px; justify-items: start; }
+.prompt pre { margin: 0; white-space: pre-wrap; font: 15px/1.6 var(--cs-mono); }
+@media (max-width: 900px) { .agent { grid-template-columns: 1fr; } }
