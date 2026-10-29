@@ -8,32 +8,32 @@
 <meta name="theme-color" content="#140708">
 <link rel="icon" type="image/svg+xml" href="/brand/logo/products/social/social-icon.svg">
 <link rel="apple-touch-icon" href="/brand/logo/products/social/social-180.png">
-<link rel="manifest" href="/social/manifest.webmanifest">
+<link rel="manifest" href="/manifest.webmanifest">
 <link rel="stylesheet" href="/brand/tokens.css">
-<link rel="stylesheet" href="/social/social.css">
-<script src="/social/social.js" defer></script>
+<link rel="stylesheet" href="/social.css">
+<script src="/social.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#view">Skip to content</a>
 <div class="shell">
   <nav class="rail" aria-label="Social">
-    <a class="rail-brand" href="/social/" aria-label="Social home"><img src="/brand/logo/products/social/social-icon.svg" width="32" height="32" alt=""><span>Social</span></a>
-    <a href="/social/" data-nav="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
-    <a href="/social/everyone" data-nav="everyone"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Everyone</span></a>
-    <a href="/social/search" data-nav="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Search</span></a>
-    <a href="/social/notifications" data-nav="notifications" data-auth><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/></svg><span>Notifications</span><b class="badge" id="badge" hidden></b></a>
-    <a href="/social/messages" data-nav="messages" data-auth><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg><span>Messages</span></a>
-    <a href="/social/communities" data-nav="communities"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M12 20c0-3 3-5 6-5s4 2 4 5"/></svg><span>Communities</span></a>
-    <a href="/social/me" data-nav="me" data-auth><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profile</span></a>
-    <a href="/social/settings" data-nav="settings" data-auth class="rail-extra"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg><span>Settings</span></a>
+    <a class="rail-brand" href="/" aria-label="Social home"><img src="/brand/logo/products/social/social-icon.svg" width="32" height="32" alt=""><span>Social</span></a>
+    <a href="/" data-nav="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Home</span></a>
+    <a href="/everyone" data-nav="everyone"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg><span>Everyone</span></a>
+    <a href="/search" data-nav="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg><span>Search</span></a>
+    <a href="/notifications" data-nav="notifications" data-auth><svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4"/></svg><span>Notifications</span><b class="badge" id="badge" hidden></b></a>
+    <a href="/messages" data-nav="messages" data-auth><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg><span>Messages</span></a>
+    <a href="/communities" data-nav="communities"><svg viewBox="0 0 24 24"><circle cx="8" cy="9" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-3 3-5 6-5s6 2 6 5M12 20c0-3 3-5 6-5s4 2 4 5"/></svg><span>Communities</span></a>
+    <a href="/me" data-nav="me" data-auth><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Profile</span></a>
+    <a href="/settings" data-nav="settings" data-auth class="rail-extra"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg><span>Settings</span></a>
     <button class="post-btn" id="composeBtn" type="button" data-auth><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg><span>Post</span></button>
-    <a class="post-btn ghost" href="/social/join" data-guest><span>Join</span></a>
+    <a class="post-btn ghost" href="/join" data-guest><span>Join</span></a>
   </nav>
   <main id="view" tabindex="-1" aria-live="polite"></main>
   <aside class="side" aria-label="More">
-    <form class="side-search" role="search" action="/social/search"><input name="q" type="search" placeholder="Search" aria-label="Search"></form>
+    <form class="side-search" role="search" action="/search"><input name="q" type="search" placeholder="Search" aria-label="Search"></form>
     <section class="side-card" id="sideCard"></section>
-    <p class="side-foot"><a href="/">Christian Systems</a> · <a href="/source/">Source</a> · <a href="/social/rules">Rules</a></p>
+    <p class="side-foot"><a href="https://christiansystems.org/" data-main="/">Christian Systems</a> · <a href="https://christiansystems.org/source/" data-main="/source/">Source</a> · <a href="/rules" data-local>Rules</a></p>
   </aside>
 </div>
 <dialog class="sheet" id="composer" aria-label="New post"></dialog>

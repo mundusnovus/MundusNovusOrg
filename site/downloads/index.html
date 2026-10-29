@@ -6,67 +6,49 @@
 <title>Downloads · Christian Systems</title>
 <meta name="description" content="Download ChristianSprite and ChristianBox for macOS, Windows and Linux.">
 <meta name="theme-color" content="#140708">
-<meta property="og:title" content="Christian Systems">
-<meta property="og:description" content="Free, open-source tools for making pixel art and music.">
+<meta property="og:title" content="Downloads · Christian Systems">
+<meta property="og:description" content="Download ChristianSprite and ChristianBox for macOS, Windows and Linux.">
 <meta property="og:image" content="https://christiansystems.org/brand/logo/og-1200x630.png">
-<meta property="og:url" content="https://christiansystems.org/">
+<meta property="og:url" content="https://christiansystems.org/downloads/">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/brand/logo/ChristianSystems.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg">
 <link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png">
 <link rel="preload" href="/brand/font/Chancel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
-<script>
-fetch('/downloads/files/downloads.json').then(function (r) { return r.json(); }).then(function (m) {
-  var root = document.getElementById('apps'); root.textContent = '';
-  var icons = { sprite: '/brand/logo/products/sprite/sprite-128.png', box: '/brand/logo/products/box/box-128.png' };
-  m.apps.forEach(function (a) {
-    var sec = document.createElement('section'); sec.id = a.key; sec.style.padding = '0';
-    sec.innerHTML = '<div class="app-head"><img class="app-icon" width="56" height="56" alt=""><div><h2 class="display"></h2><p class="quiet" style="margin:0"></p></div></div><ul class="dl"></ul>';
-    sec.querySelector('img').src = icons[a.key]; sec.querySelector('h2').textContent = a.name + ' ' + a.version; sec.querySelector('p').textContent = a.about;
-    a.files.forEach(function (f) {
-      var li = document.createElement('li'), x = document.createElement('a');
-      x.href = '/downloads/files/' + f.file; x.download = '';
-      x.innerHTML = '<b></b><small></small><span>Download</span>';
-      x.querySelector('b').textContent = f.label;
-      x.querySelector('small').textContent = f.file + ' · ' + (f.bytes / 1048576).toFixed(1) + ' MB · SHA-256 ' + f.sha256.slice(0, 16) + '…';
-      x.querySelector('small').title = f.sha256;
-      li.appendChild(x); sec.querySelector('ul').appendChild(li);
-    });
-    root.appendChild(sec);
-  });
-  if (location.hash) { var t = document.querySelector(location.hash); if (t) t.scrollIntoView(); }
-}).catch(function () { document.getElementById('apps').innerHTML = '<p>The download list is not available right now.</p>'; });
-</script>
+<script src="/js/site.js" defer></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
+  <a class="brand" href="/" data-sub="main" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
   <nav aria-label="Main">
-    <a href="/#sprite">Sprite</a><a href="/#box">Box</a><a href="/#music">Music</a><a href="/social/">Social</a><a href="/source/">Source</a>
+    <a href="https://sprite.christiansystems.org/" data-sub="sprite">Sprite</a><a href="https://box.christiansystems.org/" data-sub="box">Box</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a><a href="/downloads/" data-sub="main" data-path="/downloads/" aria-current="page">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a>
   </nav>
-  <a class="btn small" href="/downloads/">Download</a>
+  <span id="account"></span>
 </header>
 
 <main id="main" class="page">
 <h1 class="display">Downloads</h1>
-<p>Both apps run in your browser with nothing to install: open <a href="/sprite/">Sprite</a> or <a href="/box/">Box</a>, then choose Install in the address bar to keep one on your computer. They work offline once installed.</p>
-<p>Or download one for your computer:</p>
-<div id="apps"><p class="quiet">Loading the list…</p></div>
+<p>Every Christian Systems app, free, for every platform. Pick yours; we started with this computer's.</p>
+<div data-downloads></div>
+<h2 class="display" id="all">Every file</h2>
+<p>Each file has a SHA-256 checksum, so you can check it arrived unchanged.</p>
+<div data-download-table></div>
 <h2 class="display">Opening them the first time</h2>
 <ul>
 <li><b>macOS.</b> Open the disk image and drag the app to Applications. The first time, right-click the app and choose Open, because it is not yet notarized by Apple.</li>
 <li><b>Windows.</b> Unzip the folder and double-click the <code>.cmd</code> file. The app opens in Microsoft Edge as its own window.</li>
-<li><b>Linux.</b> Install the <code>.deb</code> with your software installer, or unpack the <code>.tar.gz</code> and run the launcher inside. It opens as its own window in Chromium, Chrome, Edge or Brave.</li>
+<li><b>Linux.</b> Install the <code>.deb</code> with your software installer, or unpack the <code>.tar.gz</code> and run the launcher inside.</li>
+<li><b>Phones and tablets.</b> Open <a href="https://sprite.christiansystems.org/app/" data-sub="sprite" data-path="/app/">Sprite</a> or <a href="https://box.christiansystems.org/app/" data-sub="box" data-path="/app/">Box</a> in your browser and add it to your home screen.</li>
 </ul>
-<p class="quiet">Every file has a SHA-256 checksum, so you can check that it arrived unchanged.</p>
+<p>The source of every app is on the <a href="/source/" data-sub="main" data-path="/source/">source page</a>.</p>
 </main>
 
 <footer class="foot">
   <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Christian Systems</span></div>
   <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
-  <nav aria-label="Footer"><a href="/downloads/">Downloads</a><a href="/source/">Source</a><a href="/source/#license">License</a><a href="/social/">Social</a></nav>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a></nav>
 </footer>
 </body>
 </html>

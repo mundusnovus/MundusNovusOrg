@@ -11,6 +11,88 @@
     new IntersectionObserver(function (es) { es.forEach(function (e) { fn(e.isIntersecting); }); }, { threshold: 0.15 }).observe(el);
   }
 
+  // ---------------------------------------------------------------- addresses and the account
+  // Links to the other Christian Systems addresses carry data-sub (and data-path); they are rewritten from this page's
+  // own address, so they also work on a test machine. One Christian Systems account is shared by every address.
+  var ROOT = location.host.replace(/^(www|sprite|box|social)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
+  document.querySelectorAll('a[data-sub]').forEach(function (a) { a.href = SUB(a.dataset.sub === 'main' ? '' : a.dataset.sub, a.dataset.path); });
+  (function () {
+    var slot = $('account'); if (!slot) return;
+    fetch('/api/me', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (r) {
+      var a = document.createElement('a'); a.className = 'account';
+      if (r.user) {
+        a.href = SUB('social', '/@' + r.user.name); a.title = 'Your Christian Systems account';
+        if (r.user.avatar) { var i = document.createElement('img'); i.src = r.user.avatar; i.alt = ''; a.appendChild(i); }
+        else { var b = document.createElement('span'); b.className = 'initial'; b.textContent = (r.user.display || r.user.name)[0]; a.appendChild(b); }
+        var n = document.createElement('span'); n.className = 'account-name'; n.textContent = r.user.display; a.appendChild(n);
+      } else { a.href = SUB('social', '/signin?return=' + encodeURIComponent(location.href)); a.textContent = 'Sign in'; }
+      slot.appendChild(a);
+    }).catch(function () {});
+  })();
+
+  // ---------------------------------------------------------------- downloads
+  // <div data-downloads data-app="box"> shows one app (or, without data-app, every app) for one platform at a time,
+  // starting with this computer's. <div data-download-table> lists every file with its size and checksum.
+  var PLATFORMS = [['macos', 'macOS'], ['windows', 'Windows'], ['linux', 'Linux'], ['browser', 'In your browser']];
+  function thisComputer() {
+    var p = ((navigator.userAgentData && navigator.userAgentData.platform) || navigator.platform || navigator.userAgent || '').toLowerCase(), ua = navigator.userAgent.toLowerCase();
+    if (/iphone|ipad|android/.test(ua)) return 'browser';
+    return /mac/.test(p) ? 'macos' : /win/.test(p) ? 'windows' : /linux|x11/.test(p) ? 'linux' : 'browser';
+  }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  var ICONS = { sprite: '/brand/logo/products/sprite/sprite-128.png', box: '/brand/logo/products/box/box-128.png' };
+  var HOW = { macos: 'Open the disk image and drag the app to Applications. The first time, right-click it and choose Open.', windows: 'Unzip the folder and double-click the .cmd file inside. It opens in Microsoft Edge as its own window.',
+    linux: 'Install the .deb, or unpack the .tar.gz and run the launcher inside. It opens as its own window in Chromium, Chrome, Edge or Brave.', browser: 'Nothing to install. Open it, and choose Install in your browser to keep it like an app. It works offline.' };
+  var manifest = null;
+  function getManifest() { return manifest || (manifest = fetch('/downloads/files/downloads.json').then(function (r) { return r.json(); })); }
+  document.querySelectorAll('[data-downloads]').forEach(function (box) {
+    var only = box.dataset.app, current = thisComputer();
+    var tabs = el('div', 'platforms'), cards = el('div', 'dl-cards'), how = el('p', 'quiet dl-how');
+    tabs.setAttribute('role', 'tablist');
+    box.append(tabs, cards, how);
+    getManifest().then(function (m) {
+      var apps = m.apps.filter(function (a) { return !only || a.key === only; });
+      function show(k) {
+        current = k;
+        tabs.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.k === k)); });
+        cards.textContent = '';
+        apps.forEach(function (a) {
+          var files = a.files.filter(function (f) { return f.platform === k; }), card = el('article', 'dl-card');
+          var top = el('div', 'dl-top'), img = el('img'); img.src = ICONS[a.key]; img.alt = ''; img.width = img.height = 48;
+          top.append(img, el('div', null)); top.lastChild.append(el('b', null, a.name), el('small', null, 'Version ' + a.version));
+          card.appendChild(top);
+          if (k === 'browser') { var o = el('a', 'btn primary', 'Open ' + a.name); o.href = SUB(a.key, '/app/'); card.appendChild(o); }
+          files.forEach(function (f) {
+            var x = el('a', 'btn' + (files.indexOf(f) ? '' : ' primary')); x.href = '/downloads/files/' + f.file; x.setAttribute('download', '');
+            x.textContent = (k === 'linux' ? (/\.deb$/.test(f.file) ? '.deb' : '.tar.gz') + ' · ' : 'Download · ') + (f.bytes / 1048576).toFixed(1) + ' MB';
+            card.appendChild(x);
+          });
+          if (k !== 'browser' && files[0]) card.appendChild(el('small', 'dl-for', files[0].label.replace(/ \(\.deb\)$/, '')));
+          cards.appendChild(card);
+        });
+        how.textContent = HOW[k];
+      }
+      PLATFORMS.forEach(function (p) {
+        var b = el('button', null, p[1] + (p[0] === thisComputer() ? ' (this computer)' : '')); b.type = 'button'; b.dataset.k = p[0]; b.setAttribute('role', 'tab');
+        b.addEventListener('click', function () { show(p[0]); }); tabs.appendChild(b);
+      });
+      show(current);
+    }).catch(function () { cards.appendChild(el('p', null, 'The download list is not available right now.')); });
+  });
+  document.querySelectorAll('[data-download-table]').forEach(function (box) {
+    getManifest().then(function (m) {
+      var t = el('table', 'dl-table'), head = el('tr'); ['File', 'For', 'Size', 'SHA-256'].forEach(function (h) { head.appendChild(el('th', null, h)); });
+      t.appendChild(el('thead')).appendChild(head);
+      var body = t.appendChild(el('tbody'));
+      m.apps.forEach(function (a) { a.files.forEach(function (f) {
+        var tr = el('tr'), td = el('td'), x = el('a', null, f.file); x.href = '/downloads/files/' + f.file; x.setAttribute('download', ''); td.appendChild(x);
+        var sum = el('td', 'sum'); sum.appendChild(el('code', null, f.sha256)); tr.append(td, el('td', null, f.label), el('td', null, (f.bytes / 1048576).toFixed(1) + ' MB'), sum); body.appendChild(tr);
+      }); });
+      box.appendChild(t);
+      box.appendChild(el('p', 'quiet', 'Made ' + m.made + '. To check a file on macOS or Linux: shasum -a 256 <file>. On Windows: certutil -hashfile <file> SHA256.'));
+    }).catch(function () {});
+  });
+
   // ---------------------------------------------------------------- the bar and arrivals
   var bar = $('bar');
   if (bar) addEventListener('scroll', function () { bar.classList.toggle('scrolled', scrollY > 8); }, { passive: true });

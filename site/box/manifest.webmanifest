@@ -2,7 +2,7 @@
   "name": "ChristianBox",
   "short_name": "Box",
   "description": "A free, open-source music maker built on BeepBox.",
-  "id": "/box/",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

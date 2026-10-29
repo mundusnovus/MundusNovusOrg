@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChristianSprite</title>
+<meta name="description" content="A free, open-source pixel-art editor and animator. Use it in your browser or download it.">
+<meta name="theme-color" content="#140708">
+<meta property="og:title" content="ChristianSprite">
+<meta property="og:description" content="A free, open-source pixel-art editor and animator. Use it in your browser or download it.">
+<meta property="og:image" content="https://christiansystems.org/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://sprite.christiansystems.org/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/brand/logo/ChristianSystems.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png">
+<link rel="preload" href="/brand/font/Chancel-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/brand/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" data-sub="main" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
+  <nav aria-label="Main">
+    <a href="https://sprite.christiansystems.org/" data-sub="sprite" aria-current="page">Sprite</a><a href="https://box.christiansystems.org/" data-sub="box">Box</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a>
+  </nav>
+  <span id="account"></span>
+</header>
+
+<main id="main">
+<section class="hero app-hero" aria-labelledby="hero-title">
+  <img class="app-icon reveal" src="/brand/logo/products/sprite/sprite-256.png" width="112" height="112" alt="">
+  <h1 id="hero-title" class="display reveal">Christian<b>Sprite</b></h1>
+  <p class="lede reveal">Draw, animate and export pixel art. Describe a sprite and the assistant draws it with you, one step you can undo at a time.</p>
+  <div class="actions reveal"><a class="btn primary" href="/app/">Open the editor</a><a class="btn" href="#download">Download</a></div>
+</section>
+<section class="product" aria-label="A sprite being drawn">
+  <figure class="window reveal" style="grid-column: 1 / -1; max-width: 760px; margin: 0 auto; width: 100%" aria-label="A sprite being drawn, pixel by pixel">
+    <div class="window-bar"><i></i><i></i><i></i><span>lantern.asprite.json</span></div>
+    <div class="sprite-stage"><canvas id="spriteCanvas" width="16" height="16"></canvas><ol class="palette" id="spritePalette" aria-hidden="true"></ol></div>
+  </figure>
+</section>
+<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--cs-step-3); margin: 0 0 48px">What it does</h2>
+<div class="features">
+  <div class="reveal"><h3>Layers and frames</h3><p>Blend modes, onion skin, tags and playback. Indexed or full colour.</p></div>
+  <div class="reveal"><h3>Brushes that shade</h3><p>Pixel-perfect pencil, shading and dither brushes, gradients, mirror and tiled drawing.</p></div>
+  <div class="reveal"><h3>Clean transforms</h3><p>Outline, drop shadow, light-direction shading, and rotation that keeps pixels crisp.</p></div>
+  <div class="reveal"><h3>Palettes</h3><p>Build ramps, import GPL, hex, JASC or PNG, or start from a classic.</p></div>
+  <div class="reveal"><h3>Ready for games</h3><p>Sprite sheets with Aseprite-compatible JSON and Godot resources, plus PNG, GIF and APNG.</p></div>
+  <div class="reveal"><h3>An assistant at your side</h3><p>It works with your own Anthropic key, kept on your device, and every step can be undone.</p></div>
+</div></section>
+<section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="sprite"></div></section>
+<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Christian Systems</h2><div class="cards">
+<article class="card reveal"><h3>ChristianBox</h3><p>Music, from chiptune to a full band.</p><a href="https://box.christiansystems.org/" data-sub="box">Open Box</a></article>
+<article class="card reveal"><h3>Social</h3><p>Share what you make, with one Christian Systems account.</p><a href="https://social.christiansystems.org/" data-sub="social">Open Social</a></article>
+<article class="card reveal"><h3>Everything, downloadable</h3><p>Every app for every platform, with checksums.</p><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a></article></div></section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Christian Systems</span></div>
+  <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a></nav>
+</footer>
+</body>
+</html>

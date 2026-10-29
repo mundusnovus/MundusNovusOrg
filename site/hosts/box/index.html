@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChristianBox</title>
+<meta name="description" content="A free, open-source music maker built on BeepBox. Use it in your browser or download it.">
+<meta name="theme-color" content="#140708">
+<meta property="og:title" content="ChristianBox">
+<meta property="og:description" content="A free, open-source music maker built on BeepBox. Use it in your browser or download it.">
+<meta property="og:image" content="https://christiansystems.org/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://box.christiansystems.org/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/brand/logo/ChristianSystems.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png">
+<link rel="preload" href="/brand/font/Chancel-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/brand/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" data-sub="main" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
+  <nav aria-label="Main">
+    <a href="https://sprite.christiansystems.org/" data-sub="sprite">Sprite</a><a href="https://box.christiansystems.org/" data-sub="box" aria-current="page">Box</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a>
+  </nav>
+  <span id="account"></span>
+</header>
+
+<main id="main">
+<section class="hero app-hero" aria-labelledby="hero-title">
+  <img class="app-icon reveal" src="/brand/logo/products/box/box-256.png" width="112" height="112" alt="">
+  <h1 id="hero-title" class="display reveal">Christian<b>Box</b></h1>
+  <p class="lede reveal">Write music, from chiptune to a whole band. The Composer writes with you, and every change can be undone.</p>
+  <div class="actions reveal"><a class="btn primary" href="/app/">Open the editor</a><a class="btn" href="#download">Download</a></div>
+</section>
+<section class="product" aria-label="The notes of the song now playing">
+  <figure class="window reveal" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto; width: 100%" aria-label="The notes of the song now playing">
+    <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">first-light.beepbox</span></div>
+    <canvas class="roll" id="roll" width="640" height="360"></canvas>
+    <button class="roll-play" id="rollPlay" type="button" aria-label="Play this song">▶</button>
+  </figure>
+</section>
+<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--cs-step-3); margin: 0 0 48px">What it does</h2>
+<div class="features">
+  <div class="reveal"><h3>A band</h3><p>Distorted and clean guitars, bass, organ, strings, choir, piano, bells and a real drum kit.</p></div>
+  <div class="reveal"><h3>Riffs</h3><p>Power chords that chug, gallop or push, and a pulse bass that hammers.</p></div>
+  <div class="reveal"><h3>A mix that balances itself</h3><p>Auto mix listens to each part and sets the volumes against the lead.</p></div>
+  <div class="reveal"><h3>Ready to share</h3><p>Mastered MP3s with even loudness, title tags and cover art. WAV, MIDI and seamless game loops too.</p></div>
+  <div class="reveal"><h3>The Composer</h3><p>Describe a song and it writes one, or asks before it changes yours. It works with your own Anthropic key.</p></div>
+  <div class="reveal"><h3>Built on BeepBox</h3><p>Every BeepBox song opens here. ChristianBox is free and open source, like BeepBox itself.</p></div>
+</div></section>
+<section class="music" id="music" aria-labelledby="music-title">
+  <div class="album reveal">
+    <img id="albumCover" src="/media/music/covers/album-600.png" width="600" height="600" alt="Freely Given, cover">
+    <div>
+      <p class="eyebrow">Made in ChristianBox</p>
+      <h2 id="music-title" class="display">Freely Given</h2>
+      <p class="quiet" id="albumMeta">Eight tracks · Christian Systems · 2026</p>
+      <div class="player" id="player" aria-label="Music player">
+        <button class="btn primary round" id="playBtn" type="button" aria-label="Play">▶</button>
+        <div class="now"><strong id="nowTitle">First Light</strong><span id="nowAbout"></span>
+          <div class="progress" id="progress" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i id="progressFill"></i></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ol class="tracks reveal" id="tracks"></ol>
+</section>
+<section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="box"></div></section>
+<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Christian Systems</h2><div class="cards">
+<article class="card reveal"><h3>ChristianSprite</h3><p>Pixel art and animation.</p><a href="https://sprite.christiansystems.org/" data-sub="sprite">Open Sprite</a></article>
+<article class="card reveal"><h3>Social</h3><p>Share what you make, with one Christian Systems account.</p><a href="https://social.christiansystems.org/" data-sub="social">Open Social</a></article>
+<article class="card reveal"><h3>Everything, downloadable</h3><p>Every app for every platform, with checksums.</p><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a></article></div></section>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Christian Systems</span></div>
+  <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a></nav>
+</footer>
+</body>
+</html>

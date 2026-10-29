@@ -2,7 +2,7 @@
   "name": "ChristianSprite",
   "short_name": "Sprite",
   "description": "A free, open-source pixel-art editor and animator.",
-  "id": "/sprite/",
+  "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",

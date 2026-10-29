@@ -71,4 +71,5 @@ def downloads():
 
 if __name__ == "__main__":
     brand(); apps(); rolls(); downloads()
+    import runpy; runpy.run_path(os.path.join(REPO, "tools", "pages.py"))
     print("built", SITE)

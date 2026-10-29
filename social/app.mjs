@@ -377,6 +377,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
   function keys(me) { return all('select id, label, created, used from apikeys where user_id = ? order by created desc', me.id); }
 
   // ---------------------------------------------------------------- HTTP
+  let cookieDomain = null;
   function who(req) {
     const auth = req.headers.authorization || '';
     if (auth.startsWith('Bearer cs_')) {
@@ -391,7 +392,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
     const u = s && usersById(s.user_id);
     return u && !u.suspended ? Object.assign(u, { sid }) : null;
   }
-  function cookie(sid, secure) { return 'cs_social=' + sid + '; Path=/social; HttpOnly; SameSite=Lax; Max-Age=' + (sid ? 2592000 : 0) + (secure ? '; Secure' : ''); }
+  function cookie(sid, secure) { return 'cs_social=' + sid + '; Path=/' + (cookieDomain ? '; Domain=' + cookieDomain : '') + '; HttpOnly; SameSite=Lax; Max-Age=' + (sid ? 2592000 : 0) + (secure ? '; Secure' : ''); }
 
   async function handle(req, res, path, body, secure) {
     const me = who(req), m = req.method, need = () => me || fail(401, 'Sign in first.'), parts = path.split('/').filter(Boolean);
@@ -440,10 +441,11 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
 
   return {
     db, LIMITS,
-    /** Serves /social/api/*. Returns true when it handled the request. */
-    async serve(req, res, secure) {
+    /** Serves the API under `prefix`. Returns true when it handled the request. */
+    async serve(req, res, secure, prefix = '/api/', domain) {
+      cookieDomain = domain || null;
       const url = new URL(req.url, 'http://local');
-      if (!url.pathname.startsWith('/social/api/')) return false;
+      if (!url.pathname.startsWith(prefix)) return false;
       let body = {};
       try {
         if (req.method !== 'GET' && req.method !== 'DELETE') {
@@ -452,7 +454,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
           const text = Buffer.concat(chunks).toString();
           body = text ? JSON.parse(text) : {};
         }
-        const out = await handle(req, res, url.pathname.slice('/social/api/'.length), body, secure);
+        const out = await handle(req, res, url.pathname.slice(prefix.length), body, secure);
         if (out !== undefined) { res.writeHead(200, { 'content-type': 'application/json', 'cache-control': 'no-store' }); res.end(JSON.stringify(out)); }
       } catch (e) {
         const status = e instanceof HttpError ? e.status : e instanceof SyntaxError ? 400 : 500;

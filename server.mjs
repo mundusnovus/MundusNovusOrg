@@ -1,6 +1,13 @@
-// christiansystems.org: serves the site (site/) and Christian Systems Social (/social, API under /social/api).
-// No dependencies beyond Node 24.
-//   PORT, DATA_DIR (where Social keeps its index), PDS_URL, PDS_ADMIN_PASSWORD, PDS_HANDLE_DOMAIN, SESSION_SECRET, ADMIN_NAMES
+// Christian Systems on the web, one server for every address. It looks at the host name:
+//   christiansystems.org     the main site (site/), with /downloads for everything
+//   www.…                    sends people to christiansystems.org
+//   sprite.… and box.…       each app's home page (site/hosts/<app>/), the live editor at /app/, and its downloads
+//   social.…                 Christian Systems Social (site/social/), its API at /api/
+// Brand files, music and downloads (/brand/, /media/, /downloads/files/, /css/, /js/) are shared by every address.
+// No dependencies beyond Node 24. Settings:
+//   PORT, DATA_DIR (where Social keeps its index), PDS_URL (how this server reaches the PDS), PDS_PUBLIC_URL (how
+//   browsers reach it, for pictures), PDS_ADMIN_PASSWORD, PDS_HANDLE_DOMAIN, SESSION_SECRET, ADMIN_NAMES, and
+//   COOKIE_DOMAIN (christiansystems.org), so one sign-in counts on every address: one Christian Systems account.
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
@@ -14,12 +21,13 @@ const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=
   '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff': 'font/woff', '.ttf': 'font/ttf',
   '.mp3': 'audio/mpeg', '.txt': 'text/plain; charset=utf-8', '.dmg': 'application/x-apple-diskimage', '.zip': 'application/zip', '.deb': 'application/vnd.debian.binary-package',
   '.gz': 'application/gzip', '.icns': 'image/icns' };
+const SHARED = /^\/(brand|media|css|js|downloads\/files)\//, APPS = ['sprite', 'box'];
 const SECURITY = { 'x-content-type-options': 'nosniff', 'referrer-policy': 'strict-origin-when-cross-origin', 'permissions-policy': 'camera=(), microphone=(), geolocation=()', 'x-frame-options': 'SAMEORIGIN' };
 
 export function makeServer(env = process.env) {
   const dataDir = env.DATA_DIR || join(ROOT, '..', '.data');
   mkdirSync(dataDir, { recursive: true });
-  const pds = env.PDS_URL ? remotePds({ url: env.PDS_URL, adminPassword: env.PDS_ADMIN_PASSWORD }) : previewPds();
+  const pds = env.PDS_URL ? remotePds({ url: env.PDS_URL, publicUrl: env.PDS_PUBLIC_URL, adminPassword: env.PDS_ADMIN_PASSWORD }) : previewPds();
   if (!env.PDS_URL) console.log('Social is in preview: accounts live in memory until PDS_URL is set.');
   if (env.PDS_URL && !env.SESSION_SECRET) throw new Error('Set SESSION_SECRET: it protects the PDS sessions Social keeps.');
   const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.christiansystems.org',
@@ -48,16 +56,43 @@ export function makeServer(env = process.env) {
     return true;
   }
 
+  // "social.christiansystems.org" -> { kind: 'social', base: 'christiansystems.org' }; anything unknown is the main site
+  function site(req) {
+    const host = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost').split(',')[0].trim().toLowerCase();
+    const first = host.split('.')[0];
+    return ['www', 'social', 'sprite', 'box'].includes(first) && host.includes('.') ? { kind: first, base: host.slice(first.length + 1) } : { kind: 'main', base: host };
+  }
+  function redirect(res, to) { res.writeHead(301, { location: to, 'cache-control': 'public, max-age=3600' }); res.end(); }
+  function notFound(res) {
+    res.writeHead(404, { ...SECURITY, 'content-type': 'text/html; charset=utf-8' });
+    createReadStream(join(ROOT, '404.html')).on('error', () => res.end('Not found')).pipe(res);
+  }
+
   return createServer(async (req, res) => {
     try {
-      const url = new URL(req.url, 'http://local'), secure = req.headers['x-forwarded-proto'] === 'https';
-      if (url.pathname === '/healthz') { res.writeHead(200, { 'content-type': 'text/plain' }); return res.end('ok'); }
-      if (await social.serve(req, res, secure)) return;
+      const url = new URL(req.url, 'http://local'), secure = req.headers['x-forwarded-proto'] === 'https', path = url.pathname;
+      const { kind, base } = site(req), scheme = secure ? 'https://' : 'http://', to = (sub, p) => scheme + (sub ? sub + '.' : '') + base + p + url.search;
+      if (path === '/healthz') { res.writeHead(200, { 'content-type': 'text/plain' }); return res.end('ok'); }
+      if (kind === 'www') return redirect(res, to('', path));
+      if (await social.serve(req, res, secure, '/api/', env.COOKIE_DOMAIN)) return; // one account everywhere: every address answers /api/
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
-      if (file(req, res, url.pathname)) return;
-      if (url.pathname.startsWith('/social/') && file(req, res, '/social/index.html')) return; // the app routes /social/@name, /social/post/1 ...
-      res.writeHead(404, { ...SECURITY, 'content-type': 'text/html; charset=utf-8' });
-      createReadStream(join(ROOT, '404.html')).on('error', () => res.end('Not found')).pipe(res);
+      if (SHARED.test(path)) return file(req, res, path) || notFound(res);
+
+      if (kind === 'social') {
+        if (file(req, res, '/social' + path) || file(req, res, '/social/index.html')) return; // the app's own routes: /@name, /post/1 ...
+        return notFound(res);
+      }
+      if (APPS.includes(kind)) {
+        if (path === '/app') return redirect(res, '/app/');
+        if (path.startsWith('/app/')) return file(req, res, '/' + kind + path.slice(4)) || notFound(res);
+        return file(req, res, '/hosts/' + kind + path) || notFound(res);
+      }
+      // the main site; the apps and Social now live at their own addresses
+      const old = /^\/(sprite|box|social)(\/.*)?$/.exec(path);
+      if (old) return redirect(res, to(old[1], old[1] === 'social' ? (old[2] || '/') : '/app' + (old[2] || '/')));
+      if (path.startsWith('/hosts/')) return notFound(res);
+      if (file(req, res, path)) return;
+      notFound(res);
     } catch (e) { console.error(e); if (!res.headersSent) res.writeHead(500); res.end(); }
   });
 }

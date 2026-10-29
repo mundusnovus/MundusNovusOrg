@@ -11,7 +11,7 @@ async function start(env = {}) {
   function client() {
     let cookie = '';
     return async (method, path, body, headers = {}) => {
-      const r = await fetch(base + '/social/api/' + path, { method, headers: { 'x-cs-social': '1', cookie, ...(body ? { 'content-type': 'application/json' } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
+      const r = await fetch(base + '/api/' + path, { method, headers: { 'x-forwarded-host': 'social.christiansystems.test', 'x-cs-social': '1', cookie, ...(body ? { 'content-type': 'application/json' } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
       const set = r.headers.get('set-cookie'); if (set) cookie = set.split(';')[0];
       return { status: r.status, ...(await r.json().catch(() => ({}))) };
     };
@@ -19,14 +19,36 @@ async function start(env = {}) {
   return { server, base, client };
 }
 
-test('site and app shell are served', async () => {
+test('every address serves its part of the site', async () => {
   const { server, base } = await start();
+  const get = (host, p, h = {}) => fetch(base + p, { headers: { 'x-forwarded-host': host, ...h }, redirect: 'manual' });
   try {
-    for (const p of ['/', '/social/', '/social/@someone', '/social/post/4', '/downloads/', '/source/', '/healthz']) assert.equal((await fetch(base + p)).status, 200, p);
-    assert.equal((await fetch(base + '/nope')).status, 404);
-    assert.equal((await fetch(base + '/../server.mjs')).status, 404);
-    const h = await fetch(base + '/', { headers: { 'accept-encoding': 'gzip' } });
-    assert.equal(h.headers.get('x-content-type-options'), 'nosniff');
+    const main = 'christiansystems.test', ok = async (host, p, has) => { const r = await get(host, p); assert.equal(r.status, 200, host + p); if (has) assert.match(await r.text(), has, host + p); };
+    await ok(main, '/', /Make something good/); await ok(main, '/downloads/', /data-downloads/); await ok(main, '/source/'); await ok(main, '/healthz');
+    await ok('sprite.' + main, '/', /What it does/); await ok('sprite.' + main, '/app/', /ChristianSprite/); await ok('sprite.' + main, '/app/js/tools.js');
+    await ok('box.' + main, '/', /Made in ChristianBox/); await ok('box.' + main, '/app/', /ChristianBox/); await ok('box.' + main, '/app/box/songtools.js');
+    await ok('social.' + main, '/', /social\.js/); await ok('social.' + main, '/@someone', /social\.js/); await ok('social.' + main, '/social.css');
+    for (const host of [main, 'sprite.' + main, 'box.' + main, 'social.' + main]) { await ok(host, '/brand/tokens.css'); await ok(host, '/downloads/files/downloads.json'); }
+    assert.equal((await get(main, '/api/me')).status, 200); // one account everywhere: every address answers /api/
+    assert.equal((await get('box.' + main, '/api/me')).status, 200);
+    const redirects = [['www.' + main, '/source/', 'http://' + main + '/source/'], [main, '/sprite/', 'http://sprite.' + main + '/app/'], [main, '/box/x.js', 'http://box.' + main + '/app/x.js'],
+      [main, '/social/@ann', 'http://social.' + main + '/@ann'], ['sprite.' + main, '/app', '/app/']];
+    for (const [host, p, to] of redirects) { const r = await get(host, p); assert.equal(r.status, 301, host + p); assert.equal(r.headers.get('location'), to); }
+    assert.equal((await get(main, '/nope')).status, 404);
+    assert.equal((await get(main, '/hosts/box/')).status, 404);
+    assert.equal((await get(main, '/../server.mjs')).status, 404);
+    assert.equal((await get('sprite.' + main, '/app/../../server.mjs')).status, 404);
+    assert.equal((await get(main, '/')).headers.get('x-content-type-options'), 'nosniff');
+  } finally { server.close(); }
+});
+
+test('one sign-in counts on every address', async () => {
+  const { server, base } = await start({ COOKIE_DOMAIN: 'christiansystems.test' });
+  try {
+    const r = await fetch(base + '/api/signup', { method: 'POST', headers: { 'x-forwarded-host': 'social.christiansystems.test', 'content-type': 'application/json', 'x-cs-social': '1' }, body: JSON.stringify({ name: 'una', password: 'one account for all' }) });
+    const set = r.headers.get('set-cookie'); assert.match(set, /Domain=christiansystems\.test/); assert.match(set, /Path=\//);
+    const me = await (await fetch(base + '/api/me', { headers: { 'x-forwarded-host': 'box.christiansystems.test', cookie: set.split(';')[0] } })).json();
+    assert.equal(me.user.name, 'una');
   } finally { server.close(); }
 });
 
@@ -45,7 +67,7 @@ test('accounts, posts, replies, likes, follows, feeds, messages, communities and
     assert.equal((await bot('POST', 'signup', { name: 'helper', password: 'assistant password', agent: true, operator: '@ann' })).status, 200);
 
     // without the header a cross-site form could post; with it, it works
-    assert.equal((await fetch(server.address() && 'http://127.0.0.1:' + server.address().port + '/social/api/posts', { method: 'POST' })).status, 401);
+    assert.equal((await fetch('http://127.0.0.1:' + server.address().port + '/api/posts', { method: 'POST', headers: { 'x-forwarded-host': 'social.christiansystems.test' } })).status, 401);
     const p1 = await ann('POST', 'posts', { text: 'First light in the #studio, with @ben. https://christiansystems.org' });
     assert.equal(p1.status, 200); assert.equal(p1.post.author.name, 'ann');
     assert.equal((await ann('POST', 'posts', { text: 'x'.repeat(301) })).status, 400);
@@ -53,7 +75,7 @@ test('accounts, posts, replies, likes, follows, feeds, messages, communities and
     const png = Buffer.from('89504e470d0a1a0a0000000d4948445200000001000000010806000000', 'hex').toString('base64');
     const pic = await ann('POST', 'posts', { text: 'A lantern', images: [{ type: 'image/png', data: png, alt: 'a lantern' }] });
     assert.equal(pic.post.images.length, 1); assert.equal(pic.post.images[0].alt, 'a lantern');
-    const blob = await fetch('http://127.0.0.1:' + server.address().port + new URL(pic.post.images[0].url, 'http://x').pathname); assert.equal(blob.headers.get('content-type'), 'image/png');
+    const blob = await fetch('http://127.0.0.1:' + server.address().port + new URL(pic.post.images[0].url, 'http://x').pathname, { headers: { 'x-forwarded-host': 'social.christiansystems.test' } }); assert.equal(blob.headers.get('content-type'), 'image/png');
 
     const reply = await ben('POST', 'posts', { text: 'Lovely', replyTo: p1.post.id });
     const th = await anon('GET', 'posts/' + reply.post.id); assert.equal(th.ancestors[0].id, p1.post.id);

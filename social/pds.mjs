@@ -15,8 +15,8 @@ function tid() { // record keys in AT Protocol's timestamp-identifier style
   return out;
 }
 
-export function remotePds({ url, adminPassword, fetchImpl = fetch }) {
-  const base = url.replace(/\/+$/, '');
+export function remotePds({ url, publicUrl, adminPassword, fetchImpl = fetch }) {
+  const base = url.replace(/\/+$/, ''), open = (publicUrl || url).replace(/\/+$/, ''); // the server may reach the PDS privately; browsers use its public address
   async function call(method, nsid, { token, admin, params, body, type } = {}) {
     const q = params ? '?' + new URLSearchParams(params) : '';
     const headers = {};
@@ -33,7 +33,7 @@ export function remotePds({ url, adminPassword, fetchImpl = fetch }) {
   }
   return {
     preview: false,
-    blobUrl: (did, cid) => base + '/xrpc/com.atproto.sync.getBlob?' + new URLSearchParams({ did, cid }),
+    blobUrl: (did, cid) => open + '/xrpc/com.atproto.sync.getBlob?' + new URLSearchParams({ did, cid }),
     async createAccount({ handle, password }) {
       const { code } = await call('POST', 'com.atproto.server.createInviteCode', { admin: true, body: { useCount: 1 } });
       const email = 'u' + randomBytes(9).toString('hex') + '@accounts.invalid'; // the PDS wants one; nobody is asked for theirs
@@ -59,7 +59,7 @@ export function previewPds() {
   return {
     preview: true,
     blobs,
-    blobUrl: (did, cid) => '/social/api/blob/' + cid,
+    blobUrl: (did, cid) => '/api/blob/' + cid,
     async createAccount({ handle, password }) {
       if ([...accounts.values()].some((a) => a.handle === handle)) throw new XrpcError(400, 'HandleNotAvailable', 'That name is taken.');
       const a = { did: 'did:plc:' + randomBytes(12).toString('hex'), handle, pw: hash(password), records: new Map() };

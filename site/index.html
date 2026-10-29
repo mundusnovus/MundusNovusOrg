@@ -21,11 +21,11 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
+  <a class="brand" href="/" data-sub="main" aria-label="Christian Systems, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Christian <b>Systems</b></span></a>
   <nav aria-label="Main">
-    <a href="#sprite">Sprite</a><a href="#box">Box</a><a href="#music">Music</a><a href="/social/">Social</a><a href="/source/">Source</a>
+    <a href="https://sprite.christiansystems.org/" data-sub="sprite">Sprite</a><a href="https://box.christiansystems.org/" data-sub="box">Box</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a><a href="/downloads/">Downloads</a><a href="/source/">Source</a>
   </nav>
-  <a class="btn small" href="/downloads/">Download</a>
+  <span id="account"></span>
 </header>
 
 <main id="main">
@@ -34,8 +34,8 @@
     <h1 id="hero-title" class="display reveal">Make something good.</h1>
     <p class="lede reveal">Pixel art and music, drawn and written with an assistant at your side. In your browser, on your desktop, at no cost.</p>
     <div class="actions reveal">
-      <a class="btn primary" href="/sprite/">Open Sprite</a>
-      <a class="btn primary" href="/box/">Open Box</a>
+      <a class="btn primary" href="https://sprite.christiansystems.org/app/" data-sub="sprite" data-path="/app/">Open Sprite</a>
+      <a class="btn primary" href="https://box.christiansystems.org/app/" data-sub="box" data-path="/app/">Open Box</a>
       <a class="btn" href="/downloads/">Download</a>
     </div>
   </section>
@@ -46,7 +46,7 @@
       <h2 id="sprite-title" class="display">Christian<wbr><b>Sprite</b></h2>
       <p>Layers, frames and onion skin. Shading and dither brushes, outlines, rotation that keeps pixels clean. Sheets for Godot, GIFs for everyone else.</p>
       <p class="quiet">Describe a sprite and the assistant draws it with the same tools you use, one step you can undo at a time.</p>
-      <div class="actions"><a class="btn primary" href="/sprite/">Open in your browser</a><a class="btn" href="/downloads/#sprite">Download</a></div>
+      <div class="actions"><a class="btn primary" href="https://sprite.christiansystems.org/app/" data-sub="sprite" data-path="/app/">Open in your browser</a><a class="btn" href="https://sprite.christiansystems.org/" data-sub="sprite">More about Sprite</a></div>
     </div>
     <figure class="window reveal" aria-label="A sprite being drawn, pixel by pixel">
       <div class="window-bar"><i></i><i></i><i></i><span>lantern.asprite.json</span></div>
@@ -63,7 +63,7 @@
       <h2 id="box-title" class="display">Christian<wbr><b>Box</b></h2>
       <p>Chiptune or a whole band: guitars, bass, organ, strings, choir and a real drum kit. Power-chord riffs, a mix that balances itself, and MP3s ready to share.</p>
       <p class="quiet">Built on BeepBox. Every song on this page was written with it.</p>
-      <div class="actions"><a class="btn primary" href="/box/">Open in your browser</a><a class="btn" href="/downloads/#box">Download</a></div>
+      <div class="actions"><a class="btn primary" href="https://box.christiansystems.org/app/" data-sub="box" data-path="/app/">Open in your browser</a><a class="btn" href="https://box.christiansystems.org/" data-sub="box">More about Box</a></div>
     </div>
     <figure class="window reveal" aria-label="The notes of the song now playing">
       <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">first-light.beepbox</span></div>
@@ -103,8 +103,8 @@
     <div class="copy reveal">
       <p class="eyebrow">Share what you make</p>
       <h2 id="social-title" class="display">Social</h2>
-      <p>A calm place to share what you make, on the open AT Protocol. Your account, your posts and your followers move with you.</p>
-      <a class="btn primary" href="/social/">Open Social</a>
+      <p>A calm place to share what you make, on the open AT Protocol. One Christian Systems account signs you in everywhere, and your posts and followers move with you.</p>
+      <a class="btn primary" href="https://social.christiansystems.org/" data-sub="social">Open Social</a>
     </div>
     <div class="feed reveal" aria-hidden="true">
       <div class="post"><img src="/media/music/covers/06-cornerstone-600.png" alt=""><div><b>Cornerstone</b><span>New track, made in Box. Pipe organ, choir and too many guitars.</span></div></div>
@@ -117,7 +117,7 @@
 <footer class="foot">
   <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Christian Systems</span></div>
   <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
-  <nav aria-label="Footer"><a href="/downloads/">Downloads</a><a href="/source/">Source</a><a href="/source/#license">License</a><a href="/social/">Social</a></nav>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.christiansystems.org/" data-sub="social">Social</a></nav>
 </footer>
 </body>
 </html>
