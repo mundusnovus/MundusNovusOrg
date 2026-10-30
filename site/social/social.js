@@ -226,13 +226,13 @@
   };
   V.notifications = function () {
     if (!me) return needSignIn();
-    var box = h('div'), words = { like: [ICON.like, 'liked your post'], repost: [ICON.repost, 'reposted your post'], reply: [ICON.reply, 'replied'], mention: [ICON.reply, 'mentioned you'], follow: ['', 'followed you'] };
+    var box = h('div'), words = { like: [ICON.like, 'liked your post'], repost: [ICON.repost, 'reposted your post'], reply: [ICON.reply, 'replied'], mention: [ICON.reply, 'mentioned you'], follow: ['', 'followed you'], share: ['', 'shared with you in Christian Cloud'] };
     api('GET', 'notifications').then(function (r) {
       if (!r.notifications.length) box.appendChild(empty('Nothing yet', 'Likes, replies and new followers will show up here.'));
       r.notifications.forEach(function (n) {
         var w = words[n.kind] || ['', n.kind];
-        box.appendChild(h('a', { class: 'row' + (n.read ? '' : ' unread'), href: n.post ? '/post/' + n.post.id : '/@' + n.actor.name, onclick: link },
-          avatar(n.actor), h('div', { class: 'grow' }, h('span', {}, h('b', { text: n.actor.display }), ' ' + w[1]), h('small', { text: n.post ? n.post.text : ago(n.created) })), h('small', { text: ago(n.created) })));
+        box.appendChild(h('a', { class: 'row' + (n.read ? '' : ' unread'), href: n.url && /^https:\/\/cloud\.christiansystems\.org\//.test(n.url) ? n.url : n.post ? '/post/' + n.post.id : '/@' + n.actor.name, onclick: n.url ? null : link },
+          avatar(n.actor), h('div', { class: 'grow' }, h('span', {}, h('b', { text: n.actor.display }), ' ' + w[1]), h('small', { text: n.detail || (n.post ? n.post.text : ago(n.created)) })), h('small', { text: ago(n.created) })));
       });
       api('POST', 'notifications/read').then(refreshMe);
     });

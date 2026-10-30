@@ -8,6 +8,7 @@
 //   PORT, DATA_DIR (where Social keeps its index), PDS_URL (how this server reaches the PDS), PDS_PUBLIC_URL (how
 //   browsers reach it, for pictures), PDS_ADMIN_PASSWORD, PDS_HANDLE_DOMAIN, SESSION_SECRET, ADMIN_NAMES, and
 //   COOKIE_DOMAIN (christiansystems.org), so one sign-in counts on every address: one Christian Systems account.
+//   SERVICE_SECRET lets Christian Cloud ask Social for contacts and record shares on the PDS.
 //   STAFF names Social's owner and moderators, with titles: dac=owner:Chief Organizer, anna=moderator
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
@@ -43,7 +44,7 @@ export function makeServer(env = process.env) {
   if (!env.PDS_URL) console.log('Social is in preview: accounts live in memory until PDS_URL is set.');
   if (env.PDS_URL && !env.SESSION_SECRET) throw new Error('Set SESSION_SECRET: it protects the PDS sessions Social keeps.');
   const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.christiansystems.org',
-    secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean), staff: parseStaff(env.STAFF) });
+    secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean), staff: parseStaff(env.STAFF), serviceSecret: env.SERVICE_SECRET || null });
 
   const oidc = env.OIDC_CLIENTS ? createOidc({ social, dataDir, issuer: env.OIDC_ISSUER || 'https://social.christiansystems.org', clients: JSON.parse(env.OIDC_CLIENTS) }) : null;
 

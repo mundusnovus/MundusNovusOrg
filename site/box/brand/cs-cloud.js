@@ -62,7 +62,7 @@ const client={
   // Do not silently overwrite later if a proxy fails to return an ETag.
   return r.headers.get('etag');
  },
- editorUrl(id){return origin+'/apps/eurooffice/'+encodeURIComponent(id);}
+ editorUrl(id){return origin+'/edit/'+encodeURIComponent(id);}
 };
 global.csCloud=client;
 })(window);

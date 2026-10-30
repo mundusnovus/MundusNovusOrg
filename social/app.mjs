@@ -1,7 +1,7 @@
 // Christian Systems Social: the API under /social/api. Accounts and records live on the PDS (see pds.mjs); this
 // keeps an index in SQLite for feeds, search, notifications, messages, communities and moderation.
 import { DatabaseSync } from 'node:sqlite';
-import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto';
+import { createCipheriv, createDecipheriv, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
 import { XrpcError } from './pds.mjs';
 
 const SCHEMA = `
@@ -40,13 +40,15 @@ const fail = (status, message) => { throw new HttpError(status, message); };
 const now = () => Date.now();
 const sha = (s) => createHash('sha256').update(s).digest('hex');
 
-export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.christiansystems.org', secret, admins = [], staff = {} }) {
+export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.christiansystems.org', secret, admins = [], staff = {}, serviceSecret = null }) {
   // staff comes from the STAFF setting (name=role:Title, ...); ADMIN_NAMES are moderators. Settings outrank the database.
   admins.forEach((n) => { if (!staff[n]) staff[n] = { role: 'moderator', title: null }; });
   const db = new DatabaseSync(dbPath);
   db.exec('pragma journal_mode = wal; pragma foreign_keys = off;');
   db.exec(SCHEMA);
   try { db.exec('alter table users add column title text'); } catch { /* already there */ }
+  try { db.exec('alter table notifications add column url text'); } catch { /* already there */ }
+  try { db.exec('alter table notifications add column detail text'); } catch { /* already there */ }
   const key = createHash('sha256').update(secret || 'preview-only-secret').digest();
   const q = (sql) => db.prepare(sql);
   const one = (sql, ...a) => q(sql).get(...a);
@@ -308,7 +310,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
   function notifications(me) {
     return all('select * from notifications where user_id = ? order by created desc limit 60', me.id).map((n) => {
       const p = n.post_id ? one('select * from posts where id = ?', n.post_id) : null;
-      return { id: n.id, kind: n.kind, created: n.created, read: !!n.read, actor: person(usersById(n.actor_id)), post: p ? view(p, me) : null };
+      return { id: n.id, kind: n.kind, created: n.created, read: !!n.read, actor: person(usersById(n.actor_id)), post: p ? view(p, me) : null, url: n.url || null, detail: n.detail || null };
     });
   }
   function conversations(me) {
@@ -428,7 +430,43 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.chr
   }
   function cookie(sid, secure) { return 'cs_social=' + sid + '; Path=/' + (cookieDomain ? '; Domain=' + cookieDomain : '') + '; HttpOnly; SameSite=Lax; Max-Age=' + (sid ? 2592000 : 0) + (secure ? '; Secure' : ''); }
 
+  // ---------------------------------------------------------------- services: Christian Cloud asks, server to server
+  // Contacts are your Social friends (people you follow and people who follow you). A Cloud share is written as an
+  // org.christiansystems.cloud.share record in the sharer's own repository on the PDS, and the other person is told.
+  function service(req, path, body) {
+    const given = String(req.headers['x-cs-service'] || '');
+    if (!serviceSecret || given.length !== serviceSecret.length || !timingSafeEqual(Buffer.from(given), Buffer.from(serviceSecret))) fail(403, 'Not a Christian Systems service.');
+    const q = new URL(req.url, 'http://x').searchParams, byName = (n) => one('select * from users where name = ? and suspended = 0', String(n || '').toLowerCase());
+    const brief = (u) => ({ name: u.name, display: u.display || u.name, did: u.did, avatar: u.avatar ? pds.blobUrl(u.did, u.avatar) : null, title: u.title || null });
+    if (req.method === 'GET' && path === 'service/person') { const u = byName(q.get('name')); if (!u) fail(404, 'No such person.'); return { person: brief(u) }; }
+    if (req.method === 'GET' && path === 'service/contacts') {
+      const u = byName(q.get('name')); if (!u) fail(404, 'No such person.');
+      const rows = all(`select u.*, exists(select 1 from follows where user_id = ? and target_id = u.id) you_follow, exists(select 1 from follows where user_id = u.id and target_id = ?) follows_you
+        from users u where u.suspended = 0 and u.id != ? and (u.id in (select target_id from follows where user_id = ?) or u.id in (select user_id from follows where target_id = ?))`, u.id, u.id, u.id, u.id, u.id);
+      return { contacts: rows.map((r) => Object.assign(brief(r), { youFollow: !!r.you_follow, followsYou: !!r.follows_you, mutual: !!(r.you_follow && r.follows_you) }))
+        .sort((a, b) => (b.mutual - a.mutual) || a.display.localeCompare(b.display)) };
+    }
+    if (req.method === 'POST' && path === 'service/cloud-share') {
+      const from = byName(body.from), to = byName(body.to); if (!from || !to) fail(404, 'No such person.');
+      const file = body.file || {}, perm = body.perm === 'edit' ? 'edit' : 'view';
+      return withPds(from, (s) => pds.createRecord(s, 'org.christiansystems.cloud.share', { $type: 'org.christiansystems.cloud.share', subject: to.did,
+        item: { id: String(file.id || ''), name: String(file.name || '').slice(0, 240), kind: file.dir ? 'folder' : 'file' }, permission: perm, url: String(body.url || ''), createdAt: new Date().toISOString() }))
+        .then((r) => {
+          run('insert into notifications (user_id, actor_id, kind, created, url, detail) values (?, ?, ?, ?, ?, ?)', to.id, from.id, 'share', now(), String(body.url || ''), String(file.name || '').slice(0, 240));
+          return { uri: r.uri };
+        });
+    }
+    if (req.method === 'POST' && path === 'service/cloud-unshare') {
+      const from = byName(body.from); if (!from) fail(404, 'No such person.');
+      const uri = String(body.uri || ''), m = /^at:\/\/([^/]+)\/org\.christiansystems\.cloud\.share\/([A-Za-z0-9._~:-]+)$/.exec(uri);
+      if (!m || m[1] !== from.did) fail(400, 'Not a share record of this person.');
+      return withPds(from, (s) => pds.deleteRecord(s, 'org.christiansystems.cloud.share', m[2])).then(() => ({ ok: true }));
+    }
+    fail(404, 'Not found.');
+  }
+
   async function handle(req, res, path, body, secure) {
+    if (path.startsWith('service/')) return service(req, path, body);
     const me = who(req), m = req.method, need = () => me || fail(401, 'Sign in first.'), parts = path.split('/').filter(Boolean);
     const keyOnly = me && me.viaKey && /^(me\/keys|me\/recovery|logout)/.test(path);
     if (keyOnly) fail(403, 'API keys cannot manage keys or sessions.');

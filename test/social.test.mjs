@@ -193,3 +193,26 @@ test('the owner, moderators and titles', async () => {
     assert.equal((await mod('POST', 'admin/posts/' + p.post.id + '/restore')).post.removed, false);
   } finally { server.close(); }
 });
+
+test('Christian Cloud service: contacts from Social, shares recorded on the PDS', async () => {
+  const { server, client, base } = await start({ SERVICE_SECRET: 's'.repeat(40) });
+  try {
+    const ann = client(), ben = client(), cy = client();
+    await ann('POST', 'signup', { name: 'ann', password: 'a long password ok' });
+    await ben('POST', 'signup', { name: 'ben', display: 'Ben', password: 'a long password ok' });
+    await cy('POST', 'signup', { name: 'cyril', password: 'a long password ok' });
+    await ann('POST', 'users/ben/follow'); await ben('POST', 'users/ann/follow'); await cy('POST', 'users/ann/follow');
+    const svc = (method, path, body, secret = 's'.repeat(40)) => fetch(base + '/api/service/' + path, { method, headers: { 'x-cs-service': secret, 'content-type': 'application/json' }, body: body ? JSON.stringify(body) : undefined });
+    assert.equal((await svc('GET', 'contacts?name=ann', null, 'wrong')).status, 403);
+    const c = await (await svc('GET', 'contacts?name=ann')).json();
+    assert.deepEqual(c.contacts.map((x) => [x.name, x.mutual]), [['ben', true], ['cyril', false]]); // friends first
+    assert.equal((await (await svc('GET', 'person?name=ben')).json()).person.display, 'Ben');
+    assert.equal((await svc('GET', 'person?name=nobody')).status, 404);
+    const rec = await (await svc('POST', 'cloud-share', { from: 'ann', to: 'ben', perm: 'edit', file: { id: 7, name: 'Choir', dir: true }, url: 'https://cloud.christiansystems.org/shared/7' })).json();
+    assert.match(rec.uri, /^at:\/\/did:plc:[a-f0-9]+\/org\.christiansystems\.cloud\.share\//);
+    const notes = await ben('GET', 'notifications');
+    assert.equal(notes.notifications[0].kind, 'share'); assert.equal(notes.notifications[0].detail, 'Choir'); assert.equal(notes.notifications[0].url, 'https://cloud.christiansystems.org/shared/7');
+    assert.equal((await svc('POST', 'cloud-unshare', { from: 'ben', uri: rec.uri })).status, 400); // not Ben's record
+    assert.equal((await (await svc('POST', 'cloud-unshare', { from: 'ann', uri: rec.uri })).json()).ok, true);
+  } finally { server.close(); }
+});
