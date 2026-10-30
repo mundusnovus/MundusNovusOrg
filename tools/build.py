@@ -1,6 +1,6 @@
-"""Builds christiansystems.org into site/.
+"""Builds mundusnovus.org into site/.
 
-Copies the brand, the two apps (from ChristianSprite and ChristianBox checked out beside this repository), and the
+Copies the brand, the two apps (from MNSprite and MNBox checked out beside this repository), and the
 desktop downloads (from dist/, made by tools/package.py) into site/, and writes a small note file per track for the
 note roll on the home page. Railway serves site/ exactly as it is in the repository, so commit what this writes.
 
@@ -34,8 +34,8 @@ def brand():
 
 
 def apps():
-    replace_dir(os.path.join(ROOT, "ChristianSprite", "src", "app"), os.path.join(SITE, "sprite"))
-    replace_dir(os.path.join(ROOT, "ChristianBox", "src", "app"), os.path.join(SITE, "box"))
+    replace_dir(os.path.join(ROOT, "MNSprite", "src", "app"), os.path.join(SITE, "sprite"))
+    replace_dir(os.path.join(ROOT, "MNBox", "src", "app"), os.path.join(SITE, "box"))
 
 
 def rolls():

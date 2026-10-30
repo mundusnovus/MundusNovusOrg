@@ -1,4 +1,4 @@
-/* ChristianBox: start-up, toolbar, file handling, autosave, export dialogs. Glues BeepBox's editor to our layer. */
+/* MNBox: start-up, toolbar, file handling, autosave, export dialogs. Glues BeepBox's editor to our layer. */
 (function (root) {
 	"use strict";
 	const NS = (root.CBox = root.CBox || {});
@@ -18,7 +18,7 @@
 
 	// ---------------------------------------------------------------- first-run preferences (must precede the editor)
 	if (!lsGet("layout")) lsSet("layout", "long");
-	if (!lsGet("colorTheme") || lsGet("colorTheme") === "amerika") lsSet("colorTheme", "christian");
+	if (!lsGet("colorTheme") || lsGet("colorTheme") === "amerika" || lsGet("colorTheme") === "christian") lsSet("colorTheme", "mundus"); // older names of this theme
 	// Keep the song out of the address bar: undo history lives in sessionStorage instead of the (file://) URL.
 	if (lsGet("displayBrowserUrl") == null) lsSet("displayBrowserUrl", "false");
 	NS.theme.install();
@@ -117,7 +117,7 @@
 	}
 	async function openFile(file) {
 		if (!file) return;
-		if (file.binary) { toast("That is an audio/MIDI file; ChristianBox opens .beepbox and .json songs.", true); return; }
+		if (file.binary) { toast("That is an audio/MIDI file; MNBox opens .beepbox and .json songs.", true); return; }
 		if (!confirmDiscard()) return;
 		try {
 			const song = parseSongText(file.data);
@@ -253,7 +253,7 @@
 		const frame = function (id, body) { const hd = new Uint8Array(10); for (let i = 0; i < 4; i++) hd[i] = id.charCodeAt(i); const n = body.length; hd[4] = n >>> 24; hd[5] = n >>> 16 & 255; hd[6] = n >>> 8 & 255; hd[7] = n & 255; return [hd, body]; };
 		const text = function (id, str) { const u = new Uint8Array(3 + str.length * 2); u[0] = 1; u[1] = 0xFF; u[2] = 0xFE; for (let i = 0; i < str.length; i++) { u[3 + 2 * i] = str.charCodeAt(i) & 255; u[4 + 2 * i] = str.charCodeAt(i) >>> 8; } return frame(id, u); };
 		let parts = [];
-		[["TIT2", meta.title], ["TPE1", meta.artist], ["TALB", meta.album], ["TYER", meta.year], ["TCON", meta.genre], ["TSSE", "ChristianBox"]].forEach(function (f) { if (f[1]) parts = parts.concat(text(f[0], String(f[1]))); });
+		[["TIT2", meta.title], ["TPE1", meta.artist], ["TALB", meta.album], ["TYER", meta.year], ["TCON", meta.genre], ["TSSE", "MNBox"]].forEach(function (f) { if (f[1]) parts = parts.concat(text(f[0], String(f[1]))); });
 		if (cover) { const head = new TextEncoder().encode("\0" + cover.type + "\0\x03Cover\0"), body = new Uint8Array(head.length + cover.bytes.length); body.set(head); body.set(cover.bytes, head.length); parts = parts.concat(frame("APIC", body)); }
 		const size = parts.reduce(function (n, p) { return n + p.length; }, 0), hd = new Uint8Array(10);
 		hd.set([73, 68, 51, 3, 0, 0, size >>> 21 & 127, size >>> 14 & 127, size >>> 7 & 127, size & 127]);
@@ -310,10 +310,10 @@
 	function aboutDialog() {
 		const A = NS.about;
 		modal(function (card, close) {
-			card.appendChild(h("h2", { class: "cs-display", text: "ChristianBox" }));
-			card.appendChild(h("p", { text: "ChristianBox " + A.appVersion + " is a free music maker from Christian Systems, built on BeepBox " + A.beepboxVersion + ", with the Composer, which writes and changes songs with you." }));
+			card.appendChild(h("h2", { class: "mn-display", text: "MNBox" }));
+			card.appendChild(h("p", { text: "MNBox " + A.appVersion + " is a free music maker from Mundus Novus, built on BeepBox " + A.beepboxVersion + ", with the Composer, which writes and changes songs with you." }));
 			card.appendChild(h("p", { text: "Your songs stay on this device. The Composer sends your requests to Anthropic only when you add your own key, and the key never leaves this device for anywhere else." }));
-			card.appendChild(h("p", { text: "Free and open source under the Christian Systems License 1.0 (GPL-3.0-only). BeepBox is by John Nesky and contributors, under the MIT licence below; ChristianBox is not affiliated with BeepBox. The MP3 encoder (lamejs, from LAME) is used under the LGPL." }));
+			card.appendChild(h("p", { text: "Free and open source under the Mundus Novus License 1.0 (GPL-3.0-only). BeepBox is by John Nesky and contributors, under the MIT licence below; MNBox is not affiliated with BeepBox. The MP3 encoder (lamejs, from LAME) is used under the LGPL." }));
 			card.appendChild(h("pre", { text: A.beepboxLicense }));
 			const ok = h("button", { class: "cb-btn cb-accent", text: "Close" }); ok.addEventListener("click", close);
 			card.appendChild(h("div", { class: "cb-actions" }, [ok]));
@@ -408,12 +408,12 @@
 			const names = NS.theme.names; const cur = doc.prefs.colorTheme;
 			const next = names[(names.indexOf(cur) + 1) % names.length];
 			doc.prefs.colorTheme = next; B.ColorConfig.setTheme(next); doc.prefs.save(); doc.notifier.changed();
-			toast("Theme: " + (next === NS.theme.name ? "Christian Systems" : next));
+			toast("Theme: " + (next === NS.theme.name ? "Mundus Novus" : next));
 		});
 		$("cbAbout").addEventListener("click", aboutDialog);
-		// Christian Cloud: open, save and (when switched on) autosave songs in the person's /ChristianBox folder
+		// MNCloud: open, save and (when switched on) autosave songs in the person's /MNBox folder
 		if (root.csCloudUI) {
-			root.csCloudUI.attach({ folder: "/ChristianBox", ext: ".beepbox", name: function () { return currentName; }, serialize: songToText,
+			root.csCloudUI.attach({ folder: "/MNBox", ext: ".beepbox", name: function () { return currentName; }, serialize: songToText,
 				open: function (name, text) { if (!confirmDiscard()) return; try { loadSong(parseSongText(text), name, null); toast("Opened " + name + " from Cloud"); } catch (e) { toast("Could not open " + name + ": " + (e && e.message || e), true); } },
 				saved: function (text, bad) { if (bad) toast(text, true); } });
 			$("cbCloud").addEventListener("click", function () { root.csCloudUI.show(); });

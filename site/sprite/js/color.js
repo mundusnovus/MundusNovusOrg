@@ -68,7 +68,7 @@
   // ---------------------------------------------------------------- built-in palettes
   function L(s) { return s.trim().split(/\s+/).map(function (h) { return parse(h); }); }
   var PALETTES = [
-    { id: 'christian', name: 'Christian Systems', colors: L('140708 1f0b0d 4a0a0f 7d0f16 a8151b e3261c f2492f ff7a52 b87a14 f2b33d ffd36b e8d8c3 f6ebdd ffffff') },
+    { id: 'mundus', name: 'Mundus Novus', colors: L('140708 1f0b0d 4a0a0f 7d0f16 a8151b e3261c f2492f ff7a52 b87a14 f2b33d ffd36b e8d8c3 f6ebdd ffffff') },
     { id: 'night', name: 'Night', colors: L('060307 0d070e 170b16 23101f 34142b 3f0a16 5e0c1b 8a1121 b0182b d42a3a d9577f f8afc6 f7ad45 fbecc0 e8ddd0 fff6ea') },
     { id: 'pico8', name: 'PICO-8', colors: L('000000 1d2b53 7e2553 008751 ab5236 5f574f c2c3c7 fff1e8 ff004d ffa300 ffec27 00e436 29adff 83769c ff77a8 ffccaa') },
     { id: 'sweetie16', name: 'Sweetie 16', colors: L('1a1c2c 5d275d b13e53 ef7d57 ffcd75 a7f070 38b764 257179 29366f 3b5dc9 41a6f6 73eff7 f4f4f4 94b0c2 566c86 333c57') },

@@ -1,4 +1,4 @@
-/* ChristianBox: "Export for game" bundles and plain WAV export into the folder the person chose (or downloads).
+/* MNBox: "Export for game" bundles and plain WAV export into the folder the person chose (or downloads).
  *
  * A game bundle is a folder  exports/<name>/  containing
  *   <name>.wav            16-bit stereo, intro + one loop, with a 'smpl' loop chunk (Godot and most engines honour it)
@@ -15,7 +15,7 @@
 })(typeof self !== "undefined" ? self : this, function (A) {
 	"use strict";
 
-	const GENERATOR = "ChristianBox (BeepBox 4.2.2 synth)";
+	const GENERATOR = "MNBox (BeepBox 4.2.2 synth)";
 
 	function safeName(name) {
 		const n = String(name || "song").trim().replace(/[^A-Za-z0-9._ -]+/g, "").replace(/\s+/g, "_").replace(/^[.-]+/, "").slice(0, 60);
@@ -53,13 +53,13 @@
 
 	function readme(name, meta, hasOgg) {
 		return [
-			name + " - exported from ChristianBox",
+			name + " - exported from MNBox",
 			"",
 			"Files",
 			"  " + name + ".wav        intro + one seamless loop (" + meta.length_seconds + " s), loop points embedded",
 			hasOgg ? "  " + name + ".ogg        same audio as Ogg Vorbis (smaller; use this one in games)" : "  (no .ogg: ffmpeg or a desktop Ogg helper was not available; run `amerika-box-ogg " + name + ".wav` later)",
 			"  " + name + ".json       loop and tempo metadata",
-			"  " + name + ".song.json  the BeepBox song, open it in ChristianBox to edit",
+			"  " + name + ".song.json  the BeepBox song, open it in MNBox to edit",
 			"",
 			"Loop: starts at " + meta.loop_start_seconds + " s (" + meta.loop_start_samples + " samples), ends at " + meta.loop_end_seconds + " s (" + meta.loop_end_samples + " samples).",
 			"",
@@ -70,7 +70,7 @@
 			"  3. Load it with: var stream: AudioStream = load(\"res://audio/music/" + name + "/" + name + (hasOgg ? ".ogg" : ".wav") + "\")",
 			"     $AudioStreamPlayer.stream = stream ; $AudioStreamPlayer.play()",
 			"",
-			"BeepBox is by John Nesky (MIT licence). ChristianBox is not affiliated with BeepBox.",
+			"BeepBox is by John Nesky (MIT licence). MNBox is not affiliated with BeepBox.",
 			"",
 		].join("\n");
 	}

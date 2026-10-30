@@ -1,7 +1,7 @@
-# The Christian Systems License
+# The Mundus Novus License
 
-Everything Christian Systems makes is free and open source, under the
-**Christian Systems License 1.0**. You can read the full text in [LICENSE](LICENSE).
+Everything Mundus Novus makes is free and open source, under the
+**Mundus Novus License 1.0**. You can read the full text in [LICENSE](LICENSE).
 
 ## What it means
 
@@ -22,7 +22,7 @@ Everything Christian Systems makes is free and open source, under the
 ## Other people's work
 
 Third-party parts keep their own licenses, and those licenses sit beside
-them. Examples are BeepBox (MIT) and lamejs (LGPL) in ChristianBox, and the
+them. Examples are BeepBox (MIT) and lamejs (LGPL) in MNBox, and the
 AT Protocol libraries in Social and the PDS.
 
 ## Contributing

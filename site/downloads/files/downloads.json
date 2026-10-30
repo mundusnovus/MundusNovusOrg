@@ -1,75 +1,75 @@
 {
- "made": "2026-10-29",
+ "made": "2026-10-30",
  "apps": [
   {
    "key": "sprite",
-   "name": "ChristianSprite",
-   "version": "2.0.0",
+   "name": "MNSprite",
+   "version": "2.1.0",
    "about": "A free pixel-art editor and animator with an assistant that draws with you.",
    "files": [
     {
-     "file": "ChristianSprite-2.0.0-macOS.dmg",
+     "file": "MNSprite-2.1.0-macOS.dmg",
      "platform": "macos",
      "label": "macOS 13 or later, Apple silicon and Intel",
-     "bytes": 500469,
-     "sha256": "a69dd65281c9cda884c437851b125a1ae98a778618046bda917f0f41989e3b89"
+     "bytes": 506591,
+     "sha256": "d54b8415d68a936a82dc839d7f3d9d6493aaa33debcc1449f39be4111e407c4b"
     },
     {
-     "file": "ChristianSprite-2.0.0-Windows.zip",
+     "file": "MNSprite-2.1.0-Windows.zip",
      "platform": "windows",
      "label": "Windows 10 or 11",
-     "bytes": 140192,
-     "sha256": "3447101a6e6bb025f7f33433edd079ffa0f7aeeb120596cce4715a7c6a4a94e2"
+     "bytes": 144636,
+     "sha256": "8530b90b874782738e5ccf675dc9120cafcfbee493f91770de4567699f4337c3"
     },
     {
-     "file": "christian-sprite_2.0.0_all.deb",
+     "file": "mn-sprite_2.1.0_all.deb",
      "platform": "linux",
      "label": "Debian, Ubuntu and relatives (.deb)",
-     "bytes": 133784,
-     "sha256": "6801fa124d6ea0bd4ba2fdc448c2d2f17f9ed5eb5ef55855d2b3f2e5bda110f1"
+     "bytes": 137456,
+     "sha256": "9cd8ec4d23dedd6bbd4540b816ec81df7b4fdf02fd284c00fb4114019e762b6b"
     },
     {
-     "file": "ChristianSprite-2.0.0-Linux.tar.gz",
+     "file": "MNSprite-2.1.0-Linux.tar.gz",
      "platform": "linux",
      "label": "Any Linux (.tar.gz)",
-     "bytes": 133304,
-     "sha256": "69acebb8dbc6887079aa4c19adddaa17cd57c151cdf9dda78c36ffac8afd0104"
+     "bytes": 137028,
+     "sha256": "cff12a2d31eb049c9e77541cf4cd6a69a7d11484f53318e1ab02b911ee5a54de"
     }
    ]
   },
   {
    "key": "box",
-   "name": "ChristianBox",
-   "version": "4.0.0",
+   "name": "MNBox",
+   "version": "4.1.0",
    "about": "A free music maker built on BeepBox, with a Composer that writes music with you.",
    "files": [
     {
-     "file": "ChristianBox-4.0.0-macOS.dmg",
+     "file": "MNBox-4.1.0-macOS.dmg",
      "platform": "macos",
      "label": "macOS 13 or later, Apple silicon and Intel",
-     "bytes": 776976,
-     "sha256": "90eef78dc400a5d64f41153f4b5479a5141381913f3dacb0c67c4055309aab29"
+     "bytes": 785088,
+     "sha256": "50ee9322c4ca2611f378349fc74ada4c7881b1a8737c64f16d6af846f23efb24"
     },
     {
-     "file": "ChristianBox-4.0.0-Windows.zip",
+     "file": "MNBox-4.1.0-Windows.zip",
      "platform": "windows",
      "label": "Windows 10 or 11",
-     "bytes": 356760,
-     "sha256": "f42ccd07b74f8be470f15d81ac1b5fa90b3118ac7e37b53db2a37036c33c48d1"
+     "bytes": 361196,
+     "sha256": "869400c19482e5635a827a90f89adab2acf751f6099a85ee021f756823b33ccd"
     },
     {
-     "file": "christian-box_4.0.0_all.deb",
+     "file": "mn-box_4.1.0_all.deb",
      "platform": "linux",
      "label": "Debian, Ubuntu and relatives (.deb)",
-     "bytes": 354244,
-     "sha256": "df96560b80f382513158be3d0eb5c1de143c50f57d493a5a558a105a343dff7e"
+     "bytes": 358472,
+     "sha256": "e79ac8b1c94c4abaa9a0d6ad1057c5a790e1af71cd2b8266681b67566c275307"
     },
     {
-     "file": "ChristianBox-4.0.0-Linux.tar.gz",
+     "file": "MNBox-4.1.0-Linux.tar.gz",
      "platform": "linux",
      "label": "Any Linux (.tar.gz)",
-     "bytes": 353794,
-     "sha256": "5a59f643ba55f10285ceaa9ed60ec7324c554cdce4e34dab033376cee1b8ad22"
+     "bytes": 358044,
+     "sha256": "1491c2419441760a9750674783de1c265d1c8bf4f5c3a93e9c926af1b9204658"
     }
    ]
   }

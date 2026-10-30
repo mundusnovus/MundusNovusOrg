@@ -1,10 +1,10 @@
-/* christiansystems.org: the mark that draws itself, a sprite being drawn, the album player and the note roll
+/* mundusnovus.org: the mark that draws itself, a sprite being drawn, the album player and the note roll
    that follows it. Everything waits until it is on screen, and holds still for people who ask for less motion. */
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (id) { return document.getElementById(id); };
-  var C = { ink: '#140708', night: '#1f0b0d', coal: '#2a1416', wine: '#4a0a0f', red: '#e3261c', deep: '#a8151b', gold: '#f2b33d', light: '#ffd36b', goldDeep: '#b87a14', cream: '#f6ebdd', bright: '#f2492f' };
+  var C = { ink: '#0c1222', night: '#131c31', coal: '#1c2742', abyss: '#0c2558', sea: '#2a62c9', deep: '#17449a', gold: '#e9b04b', light: '#ffd47e', goldDeep: '#a8761a', cream: '#f4ecdb', bright: '#4a82e6', ember: '#c4432d' };
   function onScreen(el, fn) {
     if (!el) return;
     if (!('IntersectionObserver' in window)) return fn(true);
@@ -12,8 +12,8 @@
   }
 
   // ---------------------------------------------------------------- addresses and the account
-  // Links to the other Christian Systems addresses carry data-sub (and data-path); they are rewritten from this page's
-  // own address, so they also work on a test machine. One Christian Systems account is shared by every address.
+  // Links to the other Mundus Novus addresses carry data-sub (and data-path); they are rewritten from this page's
+  // own address, so they also work on a test machine. One Mundus Novus account is shared by every address.
   var ROOT = location.host.replace(/^(www|sprite|box|social|cloud|office)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
   document.querySelectorAll('a[data-sub]').forEach(function (a) { a.href = SUB(a.dataset.sub === 'main' ? '' : a.dataset.sub, a.dataset.path); });
   (function () {
@@ -21,7 +21,7 @@
     fetch('/api/me', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (r) {
       var a = document.createElement('a'); a.className = 'account';
       if (r.user) {
-        a.href = SUB('social', '/@' + r.user.name); a.title = 'Your Christian Systems account';
+        a.href = SUB('social', '/@' + r.user.name); a.title = 'Your Mundus Novus account';
         if (r.user.avatar) { var i = document.createElement('img'); i.src = r.user.avatar; i.alt = ''; a.appendChild(i); }
         else { var b = document.createElement('span'); b.className = 'initial'; b.textContent = (r.user.display || r.user.name)[0]; a.appendChild(b); }
         var n = document.createElement('span'); n.className = 'account-name'; n.textContent = r.user.display; a.appendChild(n);
@@ -111,12 +111,18 @@
   // ---------------------------------------------------------------- the mark draws itself
   (function () {
     var cv = $('heroMark'); if (!cv) return;
-    var g = cv.getContext('2d'), steps = [];
-    var pins = [20, 29, 38];
-    pins.forEach(function (p) { steps.push([p, 9, 6, 5, C.gold], [p, 50, 6, 5, C.gold], [9, p, 5, 6, C.gold], [50, p, 5, 6, C.gold]); });
-    for (var y = 14; y < 50; y += 2) steps.push([14, y, 36, 2, C.red]);
-    for (y = 18; y < 46; y += 2) steps.push([29, y, 6, 2, C.cream]);
-    for (var x = 21; x < 43; x += 2) steps.push([x, 25, 2, 6, C.cream]);
+    // the world fills in row by row, the new world rises on it, the gold band goes round, and the cross is raised last
+    var g = cv.getContext('2d'), steps = [], CX = 32, CY = 39, R = 21;
+    function span(y) { var dy = y + .5 - CY, hw = Math.sqrt(Math.max(0, R * R - dy * dy)); return [Math.round(CX - hw), Math.round(CX + hw)]; }
+    function onWorld(x, y, w, h, c) { for (var yy = y; yy < y + h; yy++) { var s = span(yy), a = Math.max(x, s[0]), b = Math.min(x + w, s[1]); if (b > a && Math.abs(yy + .5 - CY) < R) steps.push([a, yy, b - a, 1, c]); } }
+    for (var y = CY - R; y < CY + R; y++) { var sp = span(y); if (sp[1] > sp[0]) steps.push([sp[0], y, sp[1] - sp[0], 1, C.sea]); }
+    [[14, 44, 16, 3], [16, 47, 13, 2], [19, 49, 8, 2], [23, 51, 4, 2], [24, 53, 9, 2], [25, 55, 8, 2], [26, 57, 6, 1], [27, 58, 4, 1],
+     [41, 44, 9, 2], [42, 46, 7, 3], [44, 49, 3, 2]].forEach(function (l) { onWorld(l[0], l[1], l[2], l[3], C.cream); });
+    var band = steps.length;
+    for (var x = CX - R; x < CX + R; x += 3) onWorld(x, 37, 3, 4, C.gold);
+    for (y = CY - R; y < 37; y += 2) onWorld(30, y, 4, 2, C.gold);
+    for (y = 17; y >= 1; y -= 2) steps.push([29, y, 6, 2, C.gold]);
+    steps.push([22, 6, 20, 5, C.gold]);
     function draw(n) { g.clearRect(0, 0, 64, 64); for (var i = 0; i < n; i++) { var s = steps[i]; g.fillStyle = s[4]; g.fillRect(s[0], s[1], s[2], s[3]); } }
     if (reduce) return draw(steps.length);
     var n = 0, t0 = 0;
@@ -127,19 +133,20 @@
       if (n < steps.length) requestAnimationFrame(tick);
       else idle();
     })(performance.now());
-    function idle() { // one pin at a time catches the light
-      var k = 0;
+    function idle() { // light runs round the gold band
+      var k = 0, w = 2 * R;
       setInterval(function () {
         draw(steps.length);
-        var s = steps[k++ % 12]; g.fillStyle = C.light; g.fillRect(s[0], s[1], s[2], s[3]);
-      }, 900);
+        var x = CX - R + (k++ % (w / 2)) * 2, s = span(37);
+        if (x >= s[0] && x + 2 <= s[1]) { g.fillStyle = C.light; g.fillRect(x, 37, 2, 4); }
+      }, 120);
     }
   })();
 
   // ---------------------------------------------------------------- a lantern, drawn the way a person would
   (function () {
     var cv = $('spriteCanvas'), pal = $('spritePalette'); if (!cv) return;
-    var P = { k: '#3d1c1a', d: C.goldDeep, g: C.gold, l: C.light, c: C.night, a: C.deep, o: C.bright, r: C.red, w: C.cream };
+    var P = { k: '#3d1c1a', d: C.goldDeep, g: C.gold, l: C.light, c: C.night, a: C.goldDeep, o: C.gold, r: C.ember, w: C.cream };
     var ART = ['......kkkk......', '.....k....k.....', '......kkkk......', '.....kggggk.....', '....kggllggk....', '...kddddddddk...', '...kdccccccdk...', '...kdcaooacdk...',
       '...kdaolloadk...', '...kdcarracdk...', '...kdccwwccdk...', '...kdccwwccdk...', '...kdcrwwrcdk...', '...kddddddddk...', '....kggllggk....', '.....kkkkkk.....'];
     var FLAMES = [['caooac', 'aolloa', 'carrac'], ['ccaoac', 'caoloa', 'carrac'], ['caoacc', 'aoloac', 'carrac']];
@@ -226,7 +233,7 @@
 
   // ---------------------------------------------------------------- the note roll
   var roll = $('roll'), rg = roll && roll.getContext('2d'), rollData = null, rollVisible = false, rollRaf = 0;
-  var COLORS = [C.gold, C.red, C.bright, C.cream, C.deep, C.goldDeep];
+  var COLORS = [C.gold, C.sea, C.bright, C.cream, C.deep, C.goldDeep];
   function loadRoll(t) {
     if (!roll) return;
     if (rolls[t.slug]) { rollData = rolls[t.slug]; drawRoll(); return; }

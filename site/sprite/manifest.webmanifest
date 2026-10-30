@@ -1,13 +1,13 @@
 {
-  "name": "ChristianSprite",
+  "name": "MNSprite",
   "short_name": "Sprite",
   "description": "A free, open-source pixel-art editor and animator.",
   "id": "./",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#140708",
-  "theme_color": "#140708",
+  "background_color": "#0c1222",
+  "theme_color": "#0c1222",
   "categories": ["graphics", "design", "productivity"],
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },

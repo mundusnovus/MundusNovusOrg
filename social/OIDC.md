@@ -1,9 +1,9 @@
-# Christian Systems OpenID Connect
+# Mundus Novus OpenID Connect
 
-Enable on the existing web service with OIDC_ISSUER=https://social.christiansystems.org
+Enable on the existing web service with OIDC_ISSUER=https://social.mundusnovus.org
 and OIDC_CLIENTS, a JSON array of first-party confidential clients:
 
-    [{"id":"christian-cloud","secret":"<random secret of at least 32 characters>","redirectUris":["https://cloud.christiansystems.org/apps/user_oidc/code"],"requirePkce":true}]
+    [{"id":"mn-cloud","secret":"<random secret of at least 32 characters>","redirectUris":["https://cloud.mundusnovus.org/apps/user_oidc/code"],"requirePkce":true}]
 
 Generate the real secret in Railway; never put it in source control. Keep DATA_DIR
 on the existing persistent volume. The RSA private key is generated there once,

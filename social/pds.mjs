@@ -1,4 +1,4 @@
-// Social's link to the account server. With PDS_URL set it speaks XRPC to our PDS (ChristianSystemsPDS): accounts,
+// Social's link to the account server. With PDS_URL set it speaks XRPC to our PDS (MundusNovusPDS): accounts,
 // sessions and every record (posts, likes, reposts, follows, profiles, images) live there, in the person's own
 // repository, so they can take them elsewhere. Without PDS_URL it runs a small in-memory stand-in with the same
 // surface, for local previews and tests.

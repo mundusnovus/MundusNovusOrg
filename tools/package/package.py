@@ -1,4 +1,4 @@
-"""Packages ChristianSprite and ChristianBox for download, from the apps checked out beside this repository.
+"""Packages MNSprite and MNBox for download, from the apps checked out beside this repository.
 
     python3 tools/package/package.py          (on a Mac with Swift; writes dist/)
 
@@ -18,12 +18,12 @@ DIST = os.path.join(REPO, "dist")
 LICENSE = os.path.join(REPO, "LICENSE")
 
 APPS = [
-    {"key": "sprite", "name": "ChristianSprite", "pkg": "christian-sprite", "version": "2.0.0", "id": "org.christiansystems.sprite",
-     "repo": "ChristianSprite", "icons": "sprite", "summary": "Pixel-art editor and animator",
+    {"key": "sprite", "name": "MNSprite", "pkg": "mn-sprite", "version": "2.1.0", "id": "org.mundusnovus.sprite",
+     "repo": "MNSprite", "icons": "sprite", "summary": "Pixel-art editor and animator",
      "about": "A free pixel-art editor and animator with an assistant that draws with you.",
-     "category": "Graphics;2DGraphics;RasterGraphics;", "types": [("ChristianSprite project", ["json"]), ("Aseprite file", ["aseprite", "ase"])]},
-    {"key": "box", "name": "ChristianBox", "pkg": "christian-box", "version": "4.0.0", "id": "org.christiansystems.box",
-     "repo": "ChristianBox", "icons": "box", "summary": "Music maker built on BeepBox",
+     "category": "Graphics;2DGraphics;RasterGraphics;", "types": [("MNSprite project", ["json"]), ("Aseprite file", ["aseprite", "ase"])]},
+    {"key": "box", "name": "MNBox", "pkg": "mn-box", "version": "4.1.0", "id": "org.mundusnovus.box",
+     "repo": "MNBox", "icons": "box", "summary": "Music maker built on BeepBox",
      "about": "A free music maker built on BeepBox, with a Composer that writes music with you.",
      "category": "AudioVideo;Audio;Music;", "types": [("Song", ["beepbox", "json"])]},
 ]
@@ -43,9 +43,9 @@ def copy_app(a, dst):
 
 def readme(a, how):
     return (a["name"] + " " + a["version"] + "\n" + "=" * (len(a["name"]) + len(a["version"]) + 1) + "\n\n" + a["about"] + "\n\n" + how +
-            "\n\nIt also runs in your browser at https://christiansystems.org/" + a["key"] + "/\n\n"
-            "Free and open source under the Christian Systems License 1.0 (GPL-3.0-only). See LICENSE.\n"
-            "Source: https://github.com/christiansystems/" + a["repo"] + "\n")
+            "\n\nIt also runs in your browser at https://mundusnovus.org/" + a["key"] + "/\n\n"
+            "Free and open source under the Mundus Novus License 1.0 (GPL-3.0-only). See LICENSE.\n"
+            "Source: https://github.com/mundusnovus/" + a["repo"] + "\n")
 
 
 # ---------------------------------------------------------------- macOS
@@ -73,7 +73,7 @@ def mac(a, shell, tmp):
         "CFBundleName": a["name"], "CFBundleDisplayName": a["name"], "CFBundleIdentifier": a["id"], "CFBundleExecutable": a["name"],
         "CFBundleVersion": a["version"], "CFBundleShortVersionString": a["version"], "CFBundlePackageType": "APPL", "CFBundleIconFile": "AppIcon",
         "LSMinimumSystemVersion": "13.0", "NSHighResolutionCapable": True, "LSApplicationCategoryType": "public.app-category.graphics-design" if a["key"] == "sprite" else "public.app-category.music",
-        "NSHumanReadableCopyright": "Christian Systems. Christian Systems License 1.0 (GPL-3.0-only).",
+        "NSHumanReadableCopyright": "Mundus Novus. Mundus Novus License 1.0 (GPL-3.0-only).",
         "CFBundleDocumentTypes": [{"CFBundleTypeName": n, "CFBundleTypeRole": "Editor", "CFBundleTypeExtensions": ext, "LSHandlerRank": "Alternate"} for n, ext in a["types"]],
     }
     with open(os.path.join(app, "Info.plist"), "wb") as f:
@@ -92,11 +92,11 @@ def mac(a, shell, tmp):
 
 # ---------------------------------------------------------------- Windows
 WIN_LAUNCHER = r"""@echo off
-rem Opens {name} in Microsoft Edge as its own window. Settings stay in %LOCALAPPDATA%\Christian Systems\{name}.
+rem Opens {name} in Microsoft Edge as its own window. Settings stay in %LOCALAPPDATA%\Mundus Novus\{name}.
 setlocal
 set "APP=%~dp0app\index.html"
 set "URL=file:///%APP:\=/%"
-set "DATA=%LOCALAPPDATA%\Christian Systems\{name}"
+set "DATA=%LOCALAPPDATA%\Mundus Novus\{name}"
 start "" msedge --app="%URL%" --user-data-dir="%DATA%" --no-first-run 2>nul || start "" "%APP%"
 """
 
@@ -189,8 +189,8 @@ def deb(a):
     size_kb = 0
     with tarfile.open(fileobj=io.BytesIO(data.getvalue()), mode="r:gz") as t:
         size_kb = sum(m.size for m in t.getmembers()) // 1024 + 1
-    control = ("Package: %s\nVersion: %s\nArchitecture: all\nMaintainer: Christian Systems\nInstalled-Size: %d\nSection: %s\nPriority: optional\n"
-               "Recommends: chromium | google-chrome-stable | microsoft-edge-stable | brave-browser\nHomepage: https://christiansystems.org/%s/\n"
+    control = ("Package: %s\nVersion: %s\nArchitecture: all\nMaintainer: Mundus Novus\nInstalled-Size: %d\nSection: %s\nPriority: optional\n"
+               "Recommends: chromium | google-chrome-stable | microsoft-edge-stable | brave-browser\nHomepage: https://mundusnovus.org/%s/\n"
                "Description: %s\n %s\n") % (a["pkg"], a["version"], size_kb, "graphics" if a["key"] == "sprite" else "sound", a["key"], a["summary"], a["about"])
     ctl = io.BytesIO()
     with tarfile.open(fileobj=ctl, mode="w:gz") as t:

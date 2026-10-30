@@ -1,6 +1,6 @@
-/* ChristianBox: band instruments. BeepBox's own presets (BeepBox by John Nesky, MIT), read from its editor bundle and
-   converted to the settings ChristianBox accepts, plus three industrial sounds built on them. 'rock kit' is BeepBox's
-   standard drumset reordered to ChristianBox's drum rows: 0 kick, 1-3 toms, 4 clap, 5 snare, 6 rim, 7 shaker, 8 hat,
+/* MNBox: band instruments. BeepBox's own presets (BeepBox by John Nesky, MIT), read from its editor bundle and
+   converted to the settings MNBox accepts, plus three industrial sounds built on them. 'rock kit' is BeepBox's
+   standard drumset reordered to MNBox's drum rows: 0 kick, 1-3 toms, 4 clap, 5 snare, 6 rim, 7 shaker, 8 hat,
    9 open hat, 10 crash, 11 bell. Loaded after theory.js; adds itself to its preset list. */
 (function (root) {
 	"use strict";

@@ -1,4 +1,4 @@
-/* ChristianBox: thin adapter over window.csHost (brand/cs-host.js), the layer every Christian Systems app stands on.
+/* MNBox: thin adapter over window.csHost (brand/mn-host.js), the layer every Mundus Novus app stands on.
  * Files go through the browser's file pickers (or our desktop shells); autosave lives on this device. */
 (function (root) {
 	"use strict";
@@ -47,10 +47,10 @@
 		},
 		chooseFolder: function () { return S.fs.chooseProject(); },
 		recent: async function () { return (await S.recent.list()).map(function (r) { return r.path; }); },
-		recentAdd: function () { return Promise.resolve(); }, // csHost records opens and saves itself, with their file handles
+		recentAdd: function () { return Promise.resolve(); }, // mnHost records opens and saves itself, with their file handles
 		recentClear: function () { return S.recent.clear(); },
 		readFile: function (path, binary) { return S.fs.readFile(path, { binary: !!binary }); },
-		setTitle: function (t) { S.window.setTitle(t + " · ChristianBox"); },
+		setTitle: function (t) { S.window.setTitle(t + " · MNBox"); },
 		setDirty: function (d) { S.window.setDirty(!!d); },
 	};
 })(typeof window !== "undefined" ? window : globalThis);

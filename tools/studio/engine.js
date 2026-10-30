@@ -1,10 +1,10 @@
-/* Freely Given, the Christian Systems soundtrack: the engine. Every track is written with ChristianBox's own song
+/* Freely Given, the Mundus Novus soundtrack: the engine. Every track is written with MNBox's own song
    tools (power-chord riffs, pulse bass, band presets, auto mix) and rendered with its BeepBox synth, so the album is
    also a test of the app. Tracks are in album.js. In soundtrack.html: await FG.make(1), or await FG.make('all'). */
 (function (root) {
   'use strict';
   var NS = root.CBox, B = root.beepbox;
-  var ALBUM = 'Freely Given', ARTIST = 'Christian Systems', YEAR = '2026', RATE = 44100, LOUDNESS = -14;
+  var ALBUM = 'Freely Given', ARTIST = 'Mundus Novus', YEAR = '2026', RATE = 44100, LOUDNESS = -14;
 
   function makeHost() {
     return { song: new B.Song(), silent: true, getSong: function () { return this.song; }, commit: function (s) { this.song = s; }, play: function () {}, stop: function () {}, undo: function () {} };
@@ -17,7 +17,7 @@
   }
   function log(s) { var el = document.getElementById('log'); if (el) el.textContent += s + '\n'; }
 
-  // "E5:1 G5:1.5 r:0.5 | ..." (pitch:beats, r = rest, '|' = barline, checked) -> ChristianBox note text "E5@0+1 ..."
+  // "E5:1 G5:1.5 r:0.5 | ..." (pitch:beats, r = rest, '|' = barline, checked) -> MNBox note text "E5@0+1 ..."
   var NAMES = ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'];
   var PC = { C: 0, 'C#': 1, Db: 1, D: 2, 'D#': 3, Eb: 3, E: 4, F: 5, 'F#': 6, Gb: 6, G: 7, 'G#': 8, Ab: 8, A: 9, 'A#': 10, Bb: 10, B: 11 };
   function shift(name, semis) { var m = /^([A-G][#b]?)(-?\d)$/.exec(name), midi = PC[m[1]] + 12 * (+m[2] + 1) + semis; return NAMES[midi % 12] + (Math.floor(midi / 12) - 1); }
@@ -88,7 +88,7 @@
     function frame(id, body) { var h = new Uint8Array(10); for (var i = 0; i < 4; i++) h[i] = id.charCodeAt(i); var n = body.length; h[4] = n >>> 24; h[5] = n >>> 16 & 255; h[6] = n >>> 8 & 255; h[7] = n & 255; return [h, body]; }
     function text(id, s) { var u = new Uint8Array(3 + s.length * 2); u[0] = 1; u[1] = 0xFF; u[2] = 0xFE; for (var i = 0; i < s.length; i++) { u[3 + 2 * i] = s.charCodeAt(i) & 255; u[4 + 2 * i] = s.charCodeAt(i) >>> 8; } return frame(id, u); }
     var parts = [].concat(text('TIT2', meta.title), text('TPE1', ARTIST), text('TALB', ALBUM), text('TRCK', meta.n + '/' + root.FG.TRACKS.length), text('TYER', YEAR), text('TCON', 'Rock'),
-      text('TCOP', '2026 Christian Systems, Christian Systems License 1.0 (GPL-3.0-only)'));
+      text('TCOP', '2026 Mundus Novus, Mundus Novus License 1.0 (GPL-3.0-only)'));
     if (cover) { var head = new TextEncoder().encode('\0image/png\0\x03Cover\0'), body = new Uint8Array(head.length + cover.length); body.set(head); body.set(cover, head.length); parts = parts.concat(frame('APIC', body)); }
     var size = parts.reduce(function (n, p) { return n + p.length; }, 0), h = new Uint8Array(10);
     h.set([73, 68, 51, 3, 0, 0, size >>> 21 & 127, size >>> 14 & 127, size >>> 7 & 127, size & 127]);
@@ -107,12 +107,12 @@
       var c = await compose(t), song = c.host.getSong();
       var r = await NS.audio.renderSong(B, song, { sampleRate: RATE, loops: 1, yieldEvery: 50 });
       var m = master(r.L, r.R);
-      await save('cs-music/src/' + name + '.song.json', JSON.stringify(song.toJsonObject(), null, 1));
-      await save('cs-music/mp3/' + name + '.mp3', new Blob(id3(t, cover).concat(await mp3(r.L, r.R))));
+      await save('mn-music/src/' + name + '.song.json', JSON.stringify(song.toJsonObject(), null, 1));
+      await save('mn-music/mp3/' + name + '.mp3', new Blob(id3(t, cover).concat(await mp3(r.L, r.R))));
       var info = { n: t.n, slug: t.slug, title: t.title, about: t.about, key: t.key + ' ' + t.mode, tempo: t.tempo, seconds: +r.seconds.toFixed(1), gainDb: m.gainDb, peakDbfs: m.peakDbfs };
       out.push(info); log(name + ' ' + info.seconds + 's ' + Math.round((Date.now() - t0) / 1000) + 's work | ' + c.mix.slice(0, 120));
     }
-    if (which === 'all') await save('cs-music/album.json', JSON.stringify({ album: ALBUM, artist: ARTIST, year: YEAR, tracks: out }, null, 1));
+    if (which === 'all') await save('mn-music/album.json', JSON.stringify({ album: ALBUM, artist: ARTIST, year: YEAR, tracks: out }, null, 1));
     return out;
   }
   root.FG = { make: make, check: check, compose: compose, seq: seq, ALBUM: ALBUM, ARTIST: ARTIST };

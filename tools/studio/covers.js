@@ -1,8 +1,8 @@
-/* Freely Given: cover art. Each cover is drawn on the 64-pixel grid the Christian Systems mark uses, scaled up
+/* Freely Given: cover art. Each cover is drawn on the 64-pixel grid the Mundus Novus mark uses, scaled up
    with hard edges, with the title set in Chancel. In soundtrack.html: await FG.covers(). */
 (function (root) {
   'use strict';
-  var C = { ink: '#140708', night: '#1f0b0d', coal: '#2a1416', wine: '#4a0a0f', red: '#e3261c', deep: '#a8151b', gold: '#f2b33d', light: '#ffd36b', cream: '#f6ebdd' };
+  var C = { ink: '#0c1222', night: '#131c31', coal: '#1c2742', wine: '#0c2558', red: '#2a62c9', deep: '#17449a', gold: '#e9b04b', light: '#ffd47e', cream: '#f4ecdb', ember: '#c4432d' };
   function grid() {
     var cv = document.createElement('canvas'); cv.width = cv.height = 64;
     var g = cv.getContext('2d'); g.imageSmoothingEnabled = false;
@@ -18,7 +18,7 @@
   var ART = {
     'first-light': function (d) { // the sun coming up over the ground
       for (var y = 0; y < 40; y++) d.rect(0, y, 64, 1, y < 20 ? C.ink : y < 30 ? C.night : C.wine);
-      d.disc(32, 40, 13, C.deep); d.disc(32, 40, 10, C.red); d.disc(32, 40, 6, C.gold);
+      d.disc(32, 40, 13, C.ember); d.disc(32, 40, 10, C.gold); d.disc(32, 40, 6, C.light);
       for (var a = 0; a < 7; a++) { var t = Math.PI * (0.12 + a * 0.127); for (var r = 16; r < 24; r++) d.px(32 - Math.cos(t) * r, 40 - Math.sin(t) * r, a % 2 ? C.deep : C.gold); }
       d.rect(0, 40, 64, 24, C.ink); for (var k = 0; k < 6; k++) d.rect(0, 42 + k * k, 64, 1, k % 2 ? C.coal : C.wine);
     },
@@ -48,9 +48,15 @@
       d.ring(32, 30, 22, C.wine, 2); d.disc(32, 30, 14, C.night); d.cross(32, 30, 12, C.gold);
       for (var a = 0; a < 16; a++) { var t = a * Math.PI / 8; d.px(32 + Math.cos(t) * 18, 30 + Math.sin(t) * 18, a % 2 ? C.deep : C.light); }
     },
-    album: function (d) { // the Christian Systems chip
-      var o = -6; d.rect(14, 14 + o, 36, 36, C.red); [20, 29, 38].forEach(function (p) { d.rect(p, 9 + o, 6, 5, C.gold); d.rect(p, 50 + o, 6, 5, C.gold); d.rect(9, p + o, 5, 6, C.gold); d.rect(50, p + o, 5, 6, C.gold); });
-      d.rect(29, 18 + o, 6, 28, C.cream); d.rect(21, 25 + o, 22, 6, C.cream);
+    album: function (d) { // the Mundus Novus mark: the world, the new world on it, the gold band, and the cross
+      var o = -8, CX = 32, CY = 39 + o, R = 21;  // raised, so the title bar does not cover the world
+      var span = function (y) { var dy = y + .5 - CY, hw = Math.sqrt(Math.max(0, R * R - dy * dy)); return [Math.round(CX - hw), Math.round(CX + hw)]; };
+      var on = function (x, y, w, h, c) { for (var yy = y; yy < y + h; yy++) { var s = span(yy); var a = Math.max(x, s[0]), b = Math.min(x + w, s[1]); if (b > a && Math.abs(yy + .5 - CY) < R) d.rect(a, yy, b - a, 1, c); } };
+      on(0, CY - R, 64, 2 * R, C.red);
+      [[14, 44, 16, 3], [16, 47, 13, 2], [19, 49, 8, 2], [23, 51, 4, 2], [24, 53, 9, 2], [25, 55, 8, 2], [26, 57, 6, 1], [27, 58, 4, 1],
+       [41, 44, 9, 2], [42, 46, 7, 3], [44, 49, 3, 2]].forEach(function (l) { on(l[0], l[1] + o, l[2], l[3], C.cream); });
+      on(0, 37 + o, 64, 4, C.gold); on(30, CY - R, 4, 20, C.gold);
+      d.rect(29, 0, 6, CY - R, C.gold); d.rect(23, 3, 18, 4, C.gold);
     }
   };
   async function font() { var f = new FontFace('Chancel', 'url(../../brand/font/Chancel-Regular.woff)'); await f.load(); document.fonts.add(f); }
@@ -59,7 +65,7 @@
     var cv = document.createElement('canvas'); cv.width = cv.height = size; var g = cv.getContext('2d');
     g.imageSmoothingEnabled = false; g.drawImage(d.cv, 0, 0, size, size);
     var u = size / 64;
-    g.fillStyle = 'rgba(20,7,8,.86)'; g.fillRect(0, size - 13 * u, size, 13 * u);
+    g.fillStyle = 'rgba(12,18,34,.86)'; g.fillRect(0, size - 13 * u, size, 13 * u);
     g.fillStyle = C.gold; g.fillRect(0, size - 13 * u, size, Math.max(1, u / 2));
     g.textBaseline = 'alphabetic'; g.fillStyle = C.cream;
     var fs = 5 * u; g.font = fs + 'px Chancel'; while (g.measureText(title.toUpperCase()).width > size - 8 * u) { fs *= .92; g.font = fs + 'px Chancel'; }
@@ -72,8 +78,8 @@
   root.FG.covers = async function () {
     await font();
     var list = root.FG.TRACKS.map(function (t) { return [String(t.n).padStart(2, '0') + '-' + t.slug, t.slug, t.title, String(t.n).padStart(2, '0') + ' · Freely Given']; });
-    list.push(['album', 'album', 'Freely Given', 'Christian Systems']);
-    for (var k = 0; k < list.length; k++) for (var s of [1200, 600]) await save('cs-music/covers/' + list[k][0] + '-' + s + '.png', await png(render(list[k][1], list[k][2], list[k][3], s)));
+    list.push(['album', 'album', 'Freely Given', 'Mundus Novus']);
+    for (var k = 0; k < list.length; k++) for (var s of [1200, 600]) await save('mn-music/covers/' + list[k][0] + '-' + s + '.png', await png(render(list[k][1], list[k][2], list[k][3], s)));
     return list.length;
   };
   root.FG.coverCanvas = render;
