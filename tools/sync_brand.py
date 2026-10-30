@@ -69,7 +69,15 @@ def main():
     copy(os.path.join(LOGO, "office", "office-icon.svg"), os.path.join(office, "desktop", "brand", "svg", "app-icon.svg"))
     for theme in ("light", "dark"):
         copy(os.path.join(LOGO, "office", "office-mark.svg"), os.path.join(office, "desktop", "brand", "svg", "logo-%s.svg" % theme))
-    print("brand copied into MNSprite, MNBox, MNCloud and MNOffice")
+    # Learn: icons, the tokens with the font beside them, and the link preview
+    learn = os.path.join(ROOT, "MNLearn") if os.path.isdir(os.path.join(ROOT, "MNLearn")) else need("MundusNovusLearn")
+    dst = os.path.join(learn, "public", "brand")
+    for f in ("learn-180.png", "learn-192.png", "learn-512.png", "learn-maskable-512.png", "learn-icon.svg", "learn-mark.svg", "learn.ico"):
+        copy(os.path.join(LOGO, "learn", f), os.path.join(dst, f))
+    copy(os.path.join(REPO, "brand", "font", "Chancel-Regular.woff"), os.path.join(dst, "Chancel-Regular.woff"))
+    copy(os.path.join(REPO, "brand", "logo", "og-1200x630.png"), os.path.join(dst, "og-1200x630.png"))
+    tokens(os.path.join(dst, "tokens.css"), "Chancel-Regular.woff")
+    print("brand copied into MNSprite, MNBox, MNCloud, MNOffice and Learn")
 
 
 if __name__ == "__main__":
