@@ -1,7 +1,7 @@
 # MundusNovusOrg
 
-The home of **Asteria Technology**: the website, Asteria Social, the brand, the Asteria Pixel typeface, the
-soundtrack *Freely Given*, and the tools that package Asteria Sprite and Asteria Box for download.
+The home of **Asteria Technology**, now focused on Swift apps for iOS and macOS: the website, Asteria Social, the brand, the Asteria Pixel typeface, the
+soundtrack *Made to Last*, and the tools that package Asteria Sprite and Asteria Box for download.
 
 One server answers every address, by host name:
 
@@ -56,7 +56,8 @@ python3 tools/studio/server.py 8790
 ```
 
 Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `await FG.covers()` then
-`await FG.make('all')` in the console. Files go to `site/media/music/`.
+`await FG.make('all')` in the console. Files go to `site/media/music/`. After regenerating covers without rendering the music again, run
+`python3 tools/studio/retag.py` to refresh MP3 titles and embedded artwork without changing audio.
 
 ## Deploy (Railway)
 
@@ -81,4 +82,15 @@ node --test test/*.test.mjs
 
 ## License
 
-Free and open source under the **Asteria License 1.0** (GPL-3.0-only). See [LICENSING.md](LICENSING.md).
+This repository is open source under the **Asteria License 1.0** (GPL-3.0-only). See [LICENSING.md](LICENSING.md).
+
+## Product positioning
+
+Native iOS and macOS apps written in Swift. Most apps use upfront pricing,
+with as few in-app purchases as possible, limited to upgrades. No ads in any
+Asteria app, ever. Browse and Food and Mood are proprietary; this does not
+change the licenses of existing open-source projects.
+
+The homepage is the shared header/footer template for `tools/pages.py`. The
+soundtrack is **Made to Last**; album metadata, studio exports and cover art
+must retain that title.

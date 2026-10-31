@@ -181,6 +181,7 @@
   }
   if ($('tracks')) fetch('/media/music/album.json').then(function (r) { return r.json(); }).then(function (a) {
     album = a;
+    if ($('music-title')) $('music-title').textContent = a.album;
     var ol = $('tracks');
     a.tracks.forEach(function (t, k) {
       var li = document.createElement('li'), b = document.createElement('button');

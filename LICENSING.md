@@ -1,7 +1,9 @@
 # The Asteria License
 
-Everything Asteria Technology makes is free and open source, under the
-**Asteria License 1.0**. You can read the full text in [LICENSE](LICENSE).
+This website repository is published under the **Asteria License 1.0**.
+Asteria Technology also makes proprietary products, including Asteria Browse
+and Food and Mood. Their code is not covered by this repository’s license.
+Existing open-source projects retain their own published licenses. You can read the full text in [LICENSE](LICENSE).
 
 ## What it means
 

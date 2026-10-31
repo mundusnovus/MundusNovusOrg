@@ -4,27 +4,32 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Asteria Food and Mood</title>
-<meta name="description" content="A food and mood journal for iPhone that makes the spreadsheet your nutritionist asks for.">
+<meta name="description" content="A native Swift food and mood journal for iPhone. Proprietary Asteria software, with no ads. Ever.">
 <meta name="theme-color" content="#0a1518">
-<link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
-<link rel="apple-touch-icon" href="/brand/logo/products/foodandmood/foodandmood-180.png">
+<meta property="og:title" content="Asteria Food and Mood">
+<meta property="og:description" content="A native Swift food and mood journal for iPhone. Proprietary Asteria software, with no ads. Ever.">
+<meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://asteria.technology/foodandmood/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png?v=asteria">
+<link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
-<style>
- body{margin:0;background:#f8f4ea;color:#0a1518;font:17px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
- main{max-width:720px;margin:0 auto;padding:40px 20px 64px}
- header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
- header img{border-radius:22%}
- h1{font-size:30px;line-height:1.2;margin:0;color:#116674}
- h2{font-size:20px;margin:32px 0 8px;color:#116674}
- a{color:#116674}
- .muted{color:#5b6b70;font-size:15px}
- footer{margin-top:48px;font-size:14px;color:#5b6b70}
- @media (prefers-color-scheme:dark){body{background:#0a1518;color:#e9eef0}h1,h2,a{color:#3bb3c3}.muted,footer{color:#9fb0b5}}
-</style>
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
 </head>
 <body>
-<main>
-<header><img src="/brand/logo/products/foodandmood/foodandmood-128.png" width="64" height="64" alt=""><div><h1>Food and Mood</h1><div class="muted">Asteria Food and Mood, for iPhone</div></div></header>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
+  <nav aria-label="Main">
+    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#principles" data-sub="main" data-path="/#principles">Our approach</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a>
+  </nav>
+  <span id="account"></span>
+</header>
+
+<main id="main" class="page">
+<p class="eyebrow">iPhone · Written in Swift</p><h1 class="display">Food and Mood</h1>
 <p>Food and Mood is a journal for what you eat and drink, how you feel, how you move and how your digestion goes. It turns your days into a tidy spreadsheet to send to your nutritionist.</p>
 <h2>Sending your journal</h2>
 <p>Open the Share tab, choose the days, and pick Excel, PDF or CSV. The Excel workbook has an overview, every moment in one table, a summary of each day, and a page for each day laid out like the paper journal.</p>
@@ -34,11 +39,17 @@
 <p>On iPhones with Apple Intelligence, type something like “oatmeal and coffee at 8, feeling rested” in the box at the bottom of Today. Food and Mood fills in the columns and shows them to you before saving. It works on your iPhone, and nothing is sent anywhere.</p>
 <h2>iCloud</h2>
 <p>Your journal is kept in your own iCloud, so it's there on a new iPhone. If Settings in the app says it's on this iPhone only, sign in to iCloud in the Settings app.</p>
+<h2 class="display">Our promise</h2><p>A proprietary Asteria Technology app. No ads, ever. We price most apps upfront and keep in-app purchases to a minimum, for upgrades only.</p><p>Submitted for App Store review. A store link will appear here when available.</p>
 <h2>Help</h2>
 <p>Questions or problems: open an issue at <a href="https://github.com/mundusnovus">github.com/mundusnovus</a>, or see <a href="/">asteria.technology</a>.</p>
 <p><a href="privacy/">Privacy policy</a></p>
 <p class="muted">Food and Mood is a personal journal. It doesn't diagnose, treat, or give medical or diet advice.</p>
-<footer>Asteria Food and Mood, by <a href="/">Asteria Technology</a>.</footer>
 </main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
+  <p class="verse">Thoughtful software. No ads. Ever.</p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/source/#license" data-sub="main" data-path="/source/#license">Licensing</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+</footer>
 </body>
 </html>

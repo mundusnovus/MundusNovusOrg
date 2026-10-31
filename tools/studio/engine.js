@@ -1,10 +1,10 @@
-/* Freely Given, the Asteria Technology soundtrack: the engine. Every track is written with Asteria Box's own song
+/* Made to Last, the Asteria Technology soundtrack: the engine. Every track is written with Asteria Box's own song
    tools (power-chord riffs, pulse bass, band presets, auto mix) and rendered with its BeepBox synth, so the album is
    also a test of the app. Tracks are in album.js. In soundtrack.html: await FG.make(1), or await FG.make('all'). */
 (function (root) {
   'use strict';
   var NS = root.CBox, B = root.beepbox;
-  var ALBUM = 'Freely Given', ARTIST = 'Asteria Technology', YEAR = '2026', RATE = 44100, LOUDNESS = -14;
+  var ALBUM = 'Made to Last', ARTIST = 'Asteria Technology', YEAR = '2026', RATE = 44100, LOUDNESS = -14;
 
   function makeHost() {
     return { song: new B.Song(), silent: true, getSong: function () { return this.song; }, commit: function (s) { this.song = s; }, play: function () {}, stop: function () {}, undo: function () {} };

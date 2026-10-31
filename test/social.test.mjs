@@ -24,7 +24,7 @@ test('every address serves its part of the site', async () => {
   const get = (host, p, h = {}) => fetch(base + p, { headers: { 'x-forwarded-host': host, ...h }, redirect: 'manual' });
   try {
     const main = 'asteria.test', ok = async (host, p, has) => { const r = await get(host, p); assert.equal(r.status, 200, host + p); if (has) assert.match(await r.text(), has, host + p); };
-    await ok(main, '/', /Good tools, freely given/); await ok(main, '/downloads/', /data-downloads/); await ok(main, '/source/'); await ok(main, '/healthz');
+    await ok(main, '/', /Made for<br>your day/); await ok(main, '/downloads/', /data-downloads/); await ok(main, '/source/', /proprietary products/); await ok(main, '/browse/', /No ads, ever/); await ok(main, '/foodandmood/', /No ads, ever/); await ok(main, '/swift/', /Swift: Zero to Hero/); await ok(main, '/healthz');
     await ok('sprite.' + main, '/', /What it does/); await ok('sprite.' + main, '/app/', /Asteria Sprite/); await ok('sprite.' + main, '/app/js/tools.js');
     await ok('box.' + main, '/', /Made in Asteria Box/); await ok('box.' + main, '/app/', /Asteria Box/); await ok('box.' + main, '/app/box/songtools.js');
     await ok('social.' + main, '/', /social\.js/); await ok('social.' + main, '/@someone', /social\.js/); await ok('social.' + main, '/social.css');

@@ -191,3 +191,30 @@ section { padding: clamp(72px, 12vw, 160px) max(var(--as-space), env(safe-area-i
 .prompt { margin: 0; padding: 22px; border-radius: var(--as-radius-l); background: var(--as-ink); color: var(--as-cream); box-shadow: var(--as-shadow); display: grid; gap: 16px; justify-items: start; }
 .prompt pre { margin: 0; white-space: pre-wrap; font: 15px/1.6 var(--as-mono); }
 @media (max-width: 900px) { .agent { grid-template-columns: 1fr; } }
+
+/* Apple-first product collection and the studio's pricing promise. */
+.apple-apps, .principles { max-width: 1240px; margin: 0 auto; }
+.section-intro { max-width: 58ch; margin: 0 auto 40px; color: var(--as-fg-2); font-size: var(--as-step-1); text-align: center; }
+.apple-apps > .eyebrow, .principles > .eyebrow { text-align: center; }
+.apple-apps .cards, .principles .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.apple-apps .card { display: flex; flex-direction: column; align-items: flex-start; padding: 30px; }
+.apple-apps .card > .eyebrow { font-size: .72rem; margin: 22px 0 10px; }
+.apple-apps .card h3 { font-size: 1.55rem; line-height: 1.2; }
+.apple-apps .card .product-note { font-size: .82rem; margin-top: auto; padding-top: 20px; }
+.apple-apps .card a { margin-top: 12px; }
+.principles { border-top: 1px solid var(--as-line); }
+.principle-number { display: block; font: 32px var(--as-display); color: var(--as-highlight); margin-bottom: 22px; }
+.collection-heading { max-width: 1140px; margin: 0 auto; padding: 72px var(--as-space) 0; border-top: 1px solid var(--as-line); }
+.collection-heading h2 { font-size: var(--as-step-3); margin: 12px 0; }
+.collection-heading p { color: var(--as-fg-2); max-width: 55ch; }
+.foot nav { flex-wrap: wrap; }
+@media (max-width: 900px) { .apple-apps .cards, .principles .cards { grid-template-columns: 1fr; } }
+@media (max-width: 760px) {
+  .bar { height: auto; min-height: 60px; flex-wrap: wrap; gap: 8px; padding-top: 12px; padding-bottom: 10px; }
+  .bar nav { display: flex; order: 3; width: 100%; overflow-x: auto; margin-left: 0; padding-bottom: 2px; }
+  .bar nav a { white-space: nowrap; font-size: 13px; padding: 7px 10px; }
+  #account { margin-left: auto; }
+  html { scroll-padding-top: 116px; }
+}
+.apple-apps > h2, .principles > h2 { text-align: center; }
+.apple-apps .card > .eyebrow, .apple-apps .card > .product-note { flex: none; }
