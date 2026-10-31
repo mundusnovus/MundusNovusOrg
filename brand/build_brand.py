@@ -91,6 +91,14 @@ SIGNS = {
     # a speech bubble
     "social": (rect(140, 150, 232, 168, PAGE, 44) + path("M196 306 L184 374 L252 316 Z", PAGE)
                + circle(204, 234, 16, DEEP) + circle(256, 234, 16, DEEP) + circle(308, 234, 16, DEEP)),
+    # Swift: Zero to Hero, the course app: three steps rising towards the star, a code chevron on the first
+    "zerotohero": (rect(118, 318, 88, 74, SEA, 12) + rect(212, 246, 88, 146, COL["bright"], 12)
+                   + rect(306, 174, 88, 218, PAGE, 12)
+                   + path("M142 336 L178 355 L142 374 L142 362 L158 355 L142 348 Z", PAGE)),
+    # Food and Mood, the journal app: a bowl, with a leaf and a heart rising from it
+    "foodandmood": (path("M222 258 C166 236 156 192 172 158 C222 166 252 212 222 258 Z", SEA)
+                    + path("M304 250 C262 222 250 200 258 182 C266 164 294 164 304 184 C314 164 342 164 350 182 C358 200 346 222 304 250 Z", GOLD)
+                    + path("M140 282 H372 A116 116 0 0 1 140 282 Z", PAGE) + rect(122, 262, 268, 26, COL["bright"], 13)),
     # an open book with a gold ribbon
     "learn": (path("M256 196 C216 168 172 162 128 170 V352 C172 344 216 348 256 376 Z", PAGE)
               + path("M256 196 C296 168 340 162 384 170 V352 C340 344 296 348 256 376 Z", COL["paper"])
