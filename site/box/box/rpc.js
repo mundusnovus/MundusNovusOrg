@@ -1,5 +1,5 @@
-/* MNBox: control endpoint for automation by our desktop shells.
- * Installs mnHost.onRpc with handlers for the box.* tools in src/os/studio/tools.json:
+/* Asteria Box: control endpoint for automation by our desktop shells.
+ * Installs asHost.onRpc with handlers for the box.* tools in src/os/studio/tools.json:
  *   song.get, song.set, song.compose_from_description, song.apply_change, play, stop, export.wav, app.prompt
  * Methods arrive WITHOUT the "box." prefix. Results are plain JSON; errors carry a JSON-RPC code in .code. */
 (function (root) {

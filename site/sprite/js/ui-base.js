@@ -193,7 +193,7 @@
   }
 
   // ---------------------------------------------------------------- keymap
-  var KEYMAP_STORE = 'mn-sprite.keymap.v1';
+  var KEYMAP_STORE = 'asteria-sprite.keymap.v1';
   function normKey(e) {
     var k = e.key; if (k === ' ') k = 'space'; if (k.length === 1) k = k.toLowerCase();
     if (['Control', 'Shift', 'Alt', 'Meta'].indexOf(k) >= 0) return null;

@@ -5,13 +5,13 @@ import { makeServer } from '../server.mjs';
 import { remotePds } from '../social/pds.mjs';
 
 async function start(env = {}) {
-  const server = makeServer({ DATA_DIR: '/tmp/mn-social-test', ADMIN_NAMES: 'mod-anna', ...env });
+  const server = makeServer({ DATA_DIR: '/tmp/as-social-test', ADMIN_NAMES: 'mod-anna', ...env });
   await new Promise((r) => server.listen(0, '127.0.0.1', r));
   const base = 'http://127.0.0.1:' + server.address().port;
   function client() {
     let cookie = '';
     return async (method, path, body, headers = {}) => {
-      const r = await fetch(base + '/api/' + path, { method, headers: { 'x-forwarded-host': 'social.mundusnovus.test', 'x-cs-social': '1', cookie, ...(body ? { 'content-type': 'application/json' } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
+      const r = await fetch(base + '/api/' + path, { method, headers: { 'x-forwarded-host': 'social.asteria.test', 'x-cs-social': '1', cookie, ...(body ? { 'content-type': 'application/json' } : {}), ...headers }, body: body ? JSON.stringify(body) : undefined });
       const set = r.headers.get('set-cookie'); if (set) cookie = set.split(';')[0];
       return { status: r.status, ...(await r.json().catch(() => ({}))) };
     };
@@ -23,16 +23,16 @@ test('every address serves its part of the site', async () => {
   const { server, base } = await start();
   const get = (host, p, h = {}) => fetch(base + p, { headers: { 'x-forwarded-host': host, ...h }, redirect: 'manual' });
   try {
-    const main = 'mundusnovus.test', ok = async (host, p, has) => { const r = await get(host, p); assert.equal(r.status, 200, host + p); if (has) assert.match(await r.text(), has, host + p); };
-    await ok(main, '/', /Tech from the New World/); await ok(main, '/downloads/', /data-downloads/); await ok(main, '/source/'); await ok(main, '/healthz');
-    await ok('sprite.' + main, '/', /What it does/); await ok('sprite.' + main, '/app/', /MNSprite/); await ok('sprite.' + main, '/app/js/tools.js');
-    await ok('box.' + main, '/', /Made in MNBox/); await ok('box.' + main, '/app/', /MNBox/); await ok('box.' + main, '/app/box/songtools.js');
+    const main = 'asteria.test', ok = async (host, p, has) => { const r = await get(host, p); assert.equal(r.status, 200, host + p); if (has) assert.match(await r.text(), has, host + p); };
+    await ok(main, '/', /Good tools, freely given/); await ok(main, '/downloads/', /data-downloads/); await ok(main, '/source/'); await ok(main, '/healthz');
+    await ok('sprite.' + main, '/', /What it does/); await ok('sprite.' + main, '/app/', /Asteria Sprite/); await ok('sprite.' + main, '/app/js/tools.js');
+    await ok('box.' + main, '/', /Made in Asteria Box/); await ok('box.' + main, '/app/', /Asteria Box/); await ok('box.' + main, '/app/box/songtools.js');
     await ok('social.' + main, '/', /social\.js/); await ok('social.' + main, '/@someone', /social\.js/); await ok('social.' + main, '/social.css');
     for (const host of [main, 'sprite.' + main, 'box.' + main, 'social.' + main]) { await ok(host, '/brand/tokens.css'); await ok(host, '/downloads/files/downloads.json'); }
     assert.equal((await get(main, '/api/me')).status, 200); // one account everywhere: every address answers /api/
     assert.equal((await get('box.' + main, '/api/me')).status, 200);
-    const redirects = [['christiansystems.org', '/downloads/', 'https://mundusnovus.org/downloads/'], ['www.christiansystems.org', '/', 'https://mundusnovus.org/'],
-      ['social.christiansystems.org', '/@ann', 'https://social.mundusnovus.org/@ann'], ['sprite.christiansystems.org', '/app/?x=1', 'https://sprite.mundusnovus.org/app/?x=1'],
+    const redirects = [['christiansystems.org', '/downloads/', 'https://asteria.technology/downloads/'], ['mundusnovus.org', '/', 'https://asteria.technology/'], ['www.christiansystems.org', '/', 'https://asteria.technology/'],
+      ['social.christiansystems.org', '/@ann', 'https://social.asteria.technology/@ann'], ['sprite.christiansystems.org', '/app/?x=1', 'https://sprite.asteria.technology/app/?x=1'],
       ['www.' + main, '/source/', 'http://' + main + '/source/'], [main, '/sprite/', 'http://sprite.' + main + '/app/'], [main, '/box/x.js', 'http://box.' + main + '/app/x.js'],
       [main, '/social/@ann', 'http://social.' + main + '/@ann'], ['sprite.' + main, '/app', '/app/']];
     for (const [host, p, to] of redirects) { const r = await get(host, p); assert.equal(r.status, 301, host + p); assert.equal(r.headers.get('location'), to); }
@@ -45,11 +45,11 @@ test('every address serves its part of the site', async () => {
 });
 
 test('one sign-in counts on every address', async () => {
-  const { server, base } = await start({ COOKIE_DOMAIN: 'mundusnovus.test' });
+  const { server, base } = await start({ COOKIE_DOMAIN: 'asteria.test' });
   try {
-    const r = await fetch(base + '/api/signup', { method: 'POST', headers: { 'x-forwarded-host': 'social.mundusnovus.test', 'content-type': 'application/json', 'x-cs-social': '1' }, body: JSON.stringify({ name: 'una', password: 'one account for all' }) });
-    const set = r.headers.get('set-cookie'); assert.match(set, /Domain=mundusnovus\.test/); assert.match(set, /Path=\//);
-    const me = await (await fetch(base + '/api/me', { headers: { 'x-forwarded-host': 'box.mundusnovus.test', cookie: set.split(';')[0] } })).json();
+    const r = await fetch(base + '/api/signup', { method: 'POST', headers: { 'x-forwarded-host': 'social.asteria.test', 'content-type': 'application/json', 'x-cs-social': '1' }, body: JSON.stringify({ name: 'una', password: 'one account for all' }) });
+    const set = r.headers.get('set-cookie'); assert.match(set, /Domain=asteria\.test/); assert.match(set, /Path=\//);
+    const me = await (await fetch(base + '/api/me', { headers: { 'x-forwarded-host': 'box.asteria.test', cookie: set.split(';')[0] } })).json();
     assert.equal(me.user.name, 'una');
   } finally { server.close(); }
 });
@@ -61,7 +61,7 @@ test('accounts, posts, replies, likes, follows, feeds, messages, communities and
     assert.equal((await ann('POST', 'signup', { name: 'Ab', password: 'long enough pw' })).status, 400);
     assert.equal((await ann('POST', 'signup', { name: 'admin', password: 'long enough pw' })).status, 400);
     const a = await ann('POST', 'signup', { name: 'ann', display: 'Ann', password: 'a good long password' });
-    assert.equal(a.status, 200); assert.equal(a.recoveryCodes.length, 10); assert.equal(a.user.handle, 'ann.pds.mundusnovus.org');
+    assert.equal(a.status, 200); assert.equal(a.recoveryCodes.length, 10); assert.equal(a.user.handle, 'ann.pds.asteria.technology');
     assert.equal((await ben('POST', 'signup', { name: 'ann', password: 'a good long password' })).status, 409);
     await ben('POST', 'signup', { name: 'ben', password: 'another long password' });
     await mod('POST', 'signup', { name: 'mod-anna', password: 'moderator password' });
@@ -69,15 +69,15 @@ test('accounts, posts, replies, likes, follows, feeds, messages, communities and
     assert.equal((await bot('POST', 'signup', { name: 'helper', password: 'assistant password', agent: true, operator: '@ann' })).status, 200);
 
     // without the header a cross-site form could post; with it, it works
-    assert.equal((await fetch('http://127.0.0.1:' + server.address().port + '/api/posts', { method: 'POST', headers: { 'x-forwarded-host': 'social.mundusnovus.test' } })).status, 401);
-    const p1 = await ann('POST', 'posts', { text: 'First light in the #studio, with @ben. https://mundusnovus.org' });
+    assert.equal((await fetch('http://127.0.0.1:' + server.address().port + '/api/posts', { method: 'POST', headers: { 'x-forwarded-host': 'social.asteria.test' } })).status, 401);
+    const p1 = await ann('POST', 'posts', { text: 'First light in the #studio, with @ben. https://asteria.technology' });
     assert.equal(p1.status, 200); assert.equal(p1.post.author.name, 'ann');
     assert.equal((await ann('POST', 'posts', { text: 'x'.repeat(301) })).status, 400);
     assert.equal((await anon('POST', 'posts', { text: 'hi' })).status, 401);
     const png = Buffer.from('89504e470d0a1a0a0000000d4948445200000001000000010806000000', 'hex').toString('base64');
     const pic = await ann('POST', 'posts', { text: 'A lantern', images: [{ type: 'image/png', data: png, alt: 'a lantern' }] });
     assert.equal(pic.post.images.length, 1); assert.equal(pic.post.images[0].alt, 'a lantern');
-    const blob = await fetch('http://127.0.0.1:' + server.address().port + new URL(pic.post.images[0].url, 'http://x').pathname, { headers: { 'x-forwarded-host': 'social.mundusnovus.test' } }); assert.equal(blob.headers.get('content-type'), 'image/png');
+    const blob = await fetch('http://127.0.0.1:' + server.address().port + new URL(pic.post.images[0].url, 'http://x').pathname, { headers: { 'x-forwarded-host': 'social.asteria.test' } }); assert.equal(blob.headers.get('content-type'), 'image/png');
 
     const reply = await ben('POST', 'posts', { text: 'Lovely', replyTo: p1.post.id });
     const th = await anon('GET', 'posts/' + reply.post.id); assert.equal(th.ancestors[0].id, p1.post.id);
@@ -103,10 +103,10 @@ test('accounts, posts, replies, likes, follows, feeds, messages, communities and
     assert.equal((await ben('POST', 'messages/ann', { text: 'Of course' })).messages.length, 2);
     assert.equal((await ann('GET', 'messages')).conversations[0].unread, 1);
 
-    const c = await ann('POST', 'communities', { name: 'Parish Choir', about: 'Sundays at ten' }); assert.equal(c.community.slug, 'parish-choir');
-    assert.equal((await ben('POST', 'communities/parish-choir/join')).community.members, 2);
-    await ben('POST', 'posts', { text: 'Practice is moved to Thursday', community: 'parish-choir' });
-    assert.equal((await anon('GET', 'communities/parish-choir')).posts.length, 1);
+    const c = await ann('POST', 'communities', { name: 'Book Club', about: 'Sundays at ten' }); assert.equal(c.community.slug, 'book-club');
+    assert.equal((await ben('POST', 'communities/book-club/join')).community.members, 2);
+    await ben('POST', 'posts', { text: 'Practice is moved to Thursday', community: 'book-club' });
+    assert.equal((await anon('GET', 'communities/book-club')).posts.length, 1);
 
     // assistants are labelled and limited
     for (let i = 0; i < 6; i++) assert.equal((await bot('POST', 'posts', { text: 'Daily verse ' + i })).status, 200);
@@ -175,8 +175,8 @@ test('the owner, moderators and titles', async () => {
     assert.equal((await mod('GET', 'admin/people')).status, 403);
     assert.ok((await dac('GET', 'admin/people?q=')).people.length >= 4);
     assert.equal((await dac('POST', 'admin/people/mod-anna', { role: 'member' })).status, 403);
-    const joeNow = await dac('POST', 'admin/people/joe', { role: 'moderator', title: 'Parish Liaison' });
-    assert.equal(joeNow.person.role, 'moderator'); assert.equal(joeNow.person.title, 'Parish Liaison');
+    const joeNow = await dac('POST', 'admin/people/joe', { role: 'moderator', title: 'Community Liaison' });
+    assert.equal(joeNow.person.role, 'moderator'); assert.equal(joeNow.person.title, 'Community Liaison');
     // a moderator cannot suspend another moderator or the owner; the owner can suspend and restore anyone
     await sam('POST', 'reports', { user: 'dac', reason: 'test' });
     const r = (await mod('GET', 'admin/reports')).reports[0];
@@ -196,7 +196,7 @@ test('the owner, moderators and titles', async () => {
   } finally { server.close(); }
 });
 
-test('MNCloud service: contacts from Social, shares recorded on the PDS', async () => {
+test('Asteria Cloud service: contacts from Social, shares recorded on the PDS', async () => {
   const { server, client, base } = await start({ SERVICE_SECRET: 's'.repeat(40) });
   try {
     const ann = client(), ben = client(), cy = client();
@@ -210,10 +210,10 @@ test('MNCloud service: contacts from Social, shares recorded on the PDS', async 
     assert.deepEqual(c.contacts.map((x) => [x.name, x.mutual]), [['ben', true], ['cyril', false]]); // friends first
     assert.equal((await (await svc('GET', 'person?name=ben')).json()).person.display, 'Ben');
     assert.equal((await svc('GET', 'person?name=nobody')).status, 404);
-    const rec = await (await svc('POST', 'cloud-share', { from: 'ann', to: 'ben', perm: 'edit', file: { id: 7, name: 'Choir', dir: true }, url: 'https://cloud.mundusnovus.org/shared/7' })).json();
-    assert.match(rec.uri, /^at:\/\/did:plc:[a-f0-9]+\/org\.mundusnovus\.cloud\.share\//);
+    const rec = await (await svc('POST', 'cloud-share', { from: 'ann', to: 'ben', perm: 'edit', file: { id: 7, name: 'Choir', dir: true }, url: 'https://cloud.asteria.technology/shared/7' })).json();
+    assert.match(rec.uri, /^at:\/\/did:plc:[a-f0-9]+\/technology\.asteria\.cloud\.share\//);
     const notes = await ben('GET', 'notifications');
-    assert.equal(notes.notifications[0].kind, 'share'); assert.equal(notes.notifications[0].detail, 'Choir'); assert.equal(notes.notifications[0].url, 'https://cloud.mundusnovus.org/shared/7');
+    assert.equal(notes.notifications[0].kind, 'share'); assert.equal(notes.notifications[0].detail, 'Choir'); assert.equal(notes.notifications[0].url, 'https://cloud.asteria.technology/shared/7');
     assert.equal((await svc('POST', 'cloud-unshare', { from: 'ben', uri: rec.uri })).status, 400); // not Ben's record
     assert.equal((await (await svc('POST', 'cloud-unshare', { from: 'ann', uri: rec.uri })).json()).ok, true);
   } finally { server.close(); }

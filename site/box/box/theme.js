@@ -1,22 +1,22 @@
-/* MNBox: the "mundus" colour theme for BeepBox (Mundus Novus ink, cream, red and gold). Derived from BeepBox's own "dark classic"
+/* Asteria Box: the "asteria" colour theme for BeepBox (Asteria Technology ink, cream, red and gold). Derived from BeepBox's own "dark classic"
  * variables at start-up, so upstream themes stay untouched and new upstream variables are inherited. */
 (function (root) {
 	"use strict";
 	const NS = (root.CBox = root.CBox || {});
 	// Light is stone and cream with a deep red; dark is ink with red and gold. Song colours (the pitch channels and notes) stay upstream.
 	const LIGHT = {
-		"--page-margin": "#faf7f0", "--editor-background": "#fffdf9", "--hover-preview": "#0c1222", "--playhead": "#17449a",
-		"--primary-text": "#0c1222", "--secondary-text": "#4a5468", "--inverted-text": "#fffdf9", "--text-selection": "rgba(242,179,61,0.4)",
-		"--box-selection-fill": "rgba(168,21,27,0.14)", "--loop-accent": "#17449a", "--link-accent": "#17449a",
+		"--page-margin": "#faf7f0", "--editor-background": "#fffdf9", "--hover-preview": "#0a1518", "--playhead": "#116674",
+		"--primary-text": "#0a1518", "--secondary-text": "#475a60", "--inverted-text": "#fffdf9", "--text-selection": "rgba(242,179,61,0.4)",
+		"--box-selection-fill": "rgba(168,21,27,0.14)", "--loop-accent": "#116674", "--link-accent": "#116674",
 		"--ui-widget-background": "#efe9dc", "--ui-widget-focus": "#e5d8bd", "--pitch-background": "#efe9dc", "--tonic": "#f6d6c4", "--fifth-note": "#f3e2b8",
-		"--white-piano-key": "#fffdf9", "--black-piano-key": "#4a5468",
+		"--white-piano-key": "#fffdf9", "--black-piano-key": "#475a60",
 	};
 	const DARK = {
-		"--page-margin": "#0c1222", "--editor-background": "#1a0a0c", "--hover-preview": "#f4ecdb", "--playhead": "#e9b04b",
-		"--primary-text": "#f4ecdb", "--secondary-text": "#b4bdd0", "--inverted-text": "#0c1222", "--text-selection": "rgba(242,179,61,0.4)",
-		"--box-selection-fill": "rgba(242,179,61,0.16)", "--loop-accent": "#2a62c9", "--link-accent": "#ffd47e",
-		"--ui-widget-background": "#1c2742", "--ui-widget-focus": "#41201f", "--pitch-background": "#231012", "--tonic": "#0c2558", "--fifth-note": "#3a2a12",
-		"--white-piano-key": "#e5d8bd", "--black-piano-key": "#1c2742",
+		"--page-margin": "#0a1518", "--editor-background": "#1a0a0c", "--hover-preview": "#f4ecdb", "--playhead": "#e9b04b",
+		"--primary-text": "#f4ecdb", "--secondary-text": "#a9c2c6", "--inverted-text": "#0a1518", "--text-selection": "rgba(242,179,61,0.4)",
+		"--box-selection-fill": "rgba(242,179,61,0.16)", "--loop-accent": "#1c8c9e", "--link-accent": "#ffd47e",
+		"--ui-widget-background": "#1a3038", "--ui-widget-focus": "#41201f", "--pitch-background": "#231012", "--tonic": "#0a3a45", "--fifth-note": "#3a2a12",
+		"--white-piano-key": "#e5d8bd", "--black-piano-key": "#1a3038",
 	};
 	const mq = root.matchMedia ? root.matchMedia("(prefers-color-scheme: dark)") : null;
 	function dark() { return !!(mq && mq.matches); }
@@ -30,17 +30,17 @@
 		return base;
 	}
 	NS.theme = {
-		name: "mundus",
+		name: "asteria",
 		install: function () {
-			root.beepbox.ColorConfig.themes["mundus"] = css();
+			root.beepbox.ColorConfig.themes["asteria"] = css();
 			if (mq && mq.addEventListener && !NS.theme._watching) {
 				NS.theme._watching = true;
 				mq.addEventListener("change", function () {
-					root.beepbox.ColorConfig.themes["mundus"] = css();
-					if (root.localStorage && root.localStorage.getItem("colorTheme") === "mundus") root.beepbox.ColorConfig.setTheme("mundus");
+					root.beepbox.ColorConfig.themes["asteria"] = css();
+					if (root.localStorage && root.localStorage.getItem("colorTheme") === "asteria") root.beepbox.ColorConfig.setTheme("asteria");
 				});
 			}
 		},
-		names: ["mundus", "dark classic", "light classic"],
+		names: ["asteria", "dark classic", "light classic"],
 	};
 })(typeof window !== "undefined" ? window : globalThis);

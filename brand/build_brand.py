@@ -1,179 +1,111 @@
 #!/usr/bin/env python3
-"""Build the Mundus Novus brand: the mark, the app icons and the lockups, as SVG and PNG.
+"""Build the Asteria Technology brand: the mark, the app icons and the lockups, as SVG and PNG.
 
-The mark is a globus cruciger: a sea-blue world with a gold band round its middle and up over its top, parchment
-land in the new hemisphere below, and a small gold cross standing on it. It is drawn on a 64-unit grid, so it can be
-reproduced by hand, in pixels or in vector. Text in the lockups is set in Chancel,
-rasterised from font/chancel-glyphs.json, so the PNGs and SVGs never depend on an installed font.
+The mark is a folded A: one ribbon goes up the left leg, folds over the top and comes down the right, with a gold
+four-pointed star in its heart (Asteria is the goddess of the stars). It is drawn as vector shapes on a 512 grid,
+so it stays sharp at any size. Each product icon is a dark tile with the product's own sign and a small gold star.
 
-Pure standard library.  python3 brand/build_brand.py
+The SVGs are the source; the PNGs, .ico and .icns are rendered from them by render_svg.swift (macOS's own SVG
+renderer), so this needs a Mac with swiftc. Text in the lockups is set in Asteria Pixel, as rectangles traced from
+font/asteria-pixel-glyphs.json, so nothing depends on an installed font.
+
+    python3 brand/build_brand.py
 """
 import json
 import os
+import shutil
 import struct
 import subprocess
-import zlib
+import tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "logo")
-GLYPHS = json.load(open(os.path.join(HERE, "font", "chancel-glyphs.json"), encoding="utf-8"))
-COL = {"sea": "#2a62c9", "deep": "#17449a", "abyss": "#0c2558", "gold": "#e9b04b", "goldLight": "#ffd47e",
-       "ink": "#0c1222", "night": "#131c31", "cream": "#f4ecdb", "paper": "#e5d8bd", "white": "#ffffff"}
+GLYPHS = json.load(open(os.path.join(HERE, "font", "asteria-pixel-glyphs.json"), encoding="utf-8"))
+COL = {"sea": "#1c8c9e", "bright": "#3bb3c3", "deep": "#116674", "abyss": "#0a3a45", "gold": "#e9b04b",
+       "goldLight": "#ffd47e", "ink": "#0a1518", "night": "#12232a", "cream": "#f4ecdb", "paper": "#e5d8bd"}
+SIZES = (16, 32, 48, 64, 128, 180, 192, 256, 512, 1024)
+
+DEFS = ('<defs>'
+        '<linearGradient id="front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(bright)s"/><stop offset="1" stop-color="%(sea)s"/></linearGradient>'
+        '<linearGradient id="fold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(sea)s"/><stop offset="1" stop-color="%(deep)s"/></linearGradient>'
+        '<linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(goldLight)s"/><stop offset="1" stop-color="%(gold)s"/></linearGradient>'
+        '<linearGradient id="page" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="%(cream)s"/><stop offset="1" stop-color="%(paper)s"/></linearGradient>'
+        '</defs>') % COL
 
 
-def rgb(h):
-    h = h.lstrip("#")
-    return tuple(int(h[i:i + 2], 16) for i in (0, 2, 4))
+def poly(points, fill):
+    return '<polygon points="%s" fill="%s"/>' % (" ".join("%g,%g" % p for p in points), fill)
 
 
-# ---------------------------------------------------------------- the mark, as rectangles on a 64 grid
-CX, CY, R = 32, 39, 21          # the world: a disc drawn row by row
+def star(cx, cy, r, fill, k=0.2):
+    """a four-pointed star whose sides curve inward"""
+    q = k * r
+    return ('<path d="M%g %g Q%g %g %g %gQ%g %g %g %gQ%g %g %g %gQ%g %g %g %gZ" fill="%s"/>'
+            % (cx, cy - r, cx + q, cy - q, cx + r, cy, cx + q, cy + q, cx, cy + r, cx - q, cy + q, cx - r, cy, cx - q, cy - q, cx, cy - r, fill))
 
 
-def orb_rows(colour):
-    out = []
-    for y in range(CY - R, CY + R):
-        dy = y + .5 - CY
-        hw = (R * R - dy * dy) ** .5
-        x0, x1 = round(CX - hw), round(CX + hw)
-        if x1 > x0:
-            out.append((x0, y, x1 - x0, 1, colour))
-    return out
+# ---------------------------------------------------------------- the mark, on a 512 grid
+def mark_body(front="url(#front)", fold="url(#fold)", gold="url(#gold)"):
+    """the folded A: the right leg sits behind (the fold), the left leg in front, and the star in the A's heart"""
+    return (poly([(224, 96), (288, 96), (416, 416), (352, 416)], fold)
+            + poly([(96, 416), (160, 416), (288, 96), (224, 96)], front)
+            + star(256, 330, 52, gold))
 
 
-def clip(rects):
-    """keep each rectangle's rows only where they fall on the world"""
-    out = []
-    for x, y, w, h, f in rects:
-        for yy in range(y, y + h):
-            dy = yy + .5 - CY
-            if abs(dy) >= R:
-                continue
-            hw = (R * R - dy * dy) ** .5
-            a, b = max(x, round(CX - hw)), min(x + w, round(CX + hw))
-            if b > a:
-                out.append((a, yy, b - a, 1, f))
-    return out
-
-
-def merge(rects):
-    """join rows of the same colour and span back into taller rectangles, so the SVGs stay small"""
-    out = []
-    for r in sorted(rects, key=lambda r: (r[0], r[2], r[4], r[1])):
-        if out and out[-1][0] == r[0] and out[-1][2] == r[2] and out[-1][4] == r[4] and out[-1][1] + out[-1][3] == r[1]:
-            out[-1] = (r[0], out[-1][1], r[2], out[-1][3] + r[3], r[4])
-        else:
-            out.append(r)
-    return sorted(out, key=lambda r: (r[1], r[0]))
-
-
-def cross_rects(colour):
-    return [(29, 1, 6, 18, colour), (22, 6, 20, 5, colour)]   # stands on the world; its bar a little high
-
-
-LAND = [(14, 44, 16, 3), (16, 47, 13, 2), (19, 49, 8, 2), (23, 51, 4, 2),            # north, then the narrow middle,
-        (24, 53, 9, 2), (25, 55, 8, 2), (26, 57, 6, 1), (27, 58, 4, 1),                # then south: the new world
-        (41, 44, 9, 2), (42, 46, 7, 3), (44, 49, 3, 2)]                                # and the old world's edge
-
-
-def mark_rects(c=None):
-    """(x, y, w, h, colour) on a 64x64 grid. c overrides colours for one-colour versions: orb, gold, land."""
-    orb, gold, land = (c or {}).get("orb", COL["sea"]), (c or {}).get("gold", COL["gold"]), (c or {}).get("land", COL["cream"])
-    layers = [orb_rows(orb), clip([(x, y, w, h, land) for x, y, w, h in LAND]),
-              clip([(CX - R, 37, 2 * R, 4, gold), (30, CY - R, 4, 20, gold)])]   # the band, and its arc over the top
-    return [r for layer in layers for r in merge(layer)] + cross_rects(gold)
-
-
-FACES = {
-    # each product keeps the world and puts its own sign on it (a 64 grid, inside 18..46, then lowered onto the
-    # world). Only the Mundus Novus mark carries the cross, so it stays quiet.
-    "cloud": [(19, 29, 26, 12, "cream"), (23, 24, 18, 6, "cream"), (28, 20, 8, 5, "cream"), (30, 33, 4, 9, "gold"), (24, 31, 16, 2, "gold"), (26, 29, 12, 2, "gold"), (28, 27, 8, 2, "gold"), (30, 25, 4, 2, "gold")],
-    "office": [(23, 19, 18, 26, "cream"), (27, 24, 10, 3, "deep"), (27, 30, 10, 3, "deep"), (27, 36, 6, 3, "deep"), (19, 23, 3, 22, "gold")],
-    "sprite": [(21, 21, 7, 7, "cream"), (37, 21, 7, 7, "cream"), (29, 29, 7, 7, "gold"), (21, 37, 7, 7, "cream"), (37, 37, 7, 7, "cream"),
-               (29, 21, 7, 7, "deep"), (21, 29, 7, 7, "deep"), (37, 29, 7, 7, "deep"), (29, 37, 7, 7, "deep")],
-    "box": [(20, 34, 5, 10, "cream"), (27, 26, 5, 18, "cream"), (34, 30, 5, 14, "gold"), (41, 22, 4, 22, "cream")],
-    "learn": [(16, 22, 15, 21, "cream"), (33, 22, 15, 21, "cream"), (30, 20, 4, 25, "gold"), (19, 26, 9, 2, "deep"), (19, 30, 9, 2, "deep"),
-              (19, 34, 6, 2, "deep"), (36, 26, 9, 2, "deep"), (36, 30, 9, 2, "deep"), (36, 34, 6, 2, "deep"), (42, 22, 3, 9, "gold")],
-    "social": [(19, 21, 26, 16, "cream"), (23, 37, 6, 5, "cream"), (23, 27, 4, 4, "deep"), (30, 27, 4, 4, "deep"), (37, 27, 4, 4, "deep")],
-}
-FACE_DROP = 7
-
-
-PRODUCT_LIFT = 7               # without the cross the world sits in the middle
-
-
-def product_rects(kind, orb=None):
-    face = [(x, y + FACE_DROP, w, h, COL[c]) for x, y, w, h, c in FACES[kind]]
-    return [(x, y - PRODUCT_LIFT, w, h, f) for x, y, w, h, f in merge(orb_rows(orb or COL["sea"])) + face]
-
-
-def mark_svg(size=64, c=None, bg=None, radius=0, rects=None):
-    rects = rects or mark_rects(c)
-    out = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="%d" height="%d" shape-rendering="crispEdges">' % (size, size)]
+def svg(body, w=512, h=512, bg=None, radius=0):
+    out = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d %d" width="%d" height="%d">%s' % (w, h, w, h, DEFS)
     if bg:
-        out.append('<rect width="64" height="64" rx="%g" fill="%s"/>' % (radius, bg))
-    for x, y, w, h, f in rects:
-        out.append('<rect x="%d" y="%d" width="%d" height="%d" fill="%s"/>' % (x, y, w, h, f))
-    out.append("</svg>")
-    return "".join(out)
+        out += '<rect width="%d" height="%d" rx="%g" fill="%s"/>' % (w, h, radius, bg)
+    return out + body + "</svg>"
 
 
-# ---------------------------------------------------------------- a tiny canvas and PNG writer
-class Canvas:
-    def __init__(self, w, h, bg=None):
-        self.w, self.h = w, h
-        self.px = bytearray((list(rgb(bg)) + [255] if bg else [0, 0, 0, 0]) * (w * h))
-
-    def rect(self, x, y, w, h, colour, alpha=255):
-        r, g, b = rgb(colour)
-        for yy in range(max(0, int(y)), min(self.h, int(y + h))):
-            for xx in range(max(0, int(x)), min(self.w, int(x + w))):
-                i = (yy * self.w + xx) * 4
-                if alpha == 255:
-                    self.px[i:i + 4] = bytes((r, g, b, 255))
-                else:
-                    a = alpha / 255
-                    for k, v in enumerate((r, g, b)):
-                        self.px[i + k] = int(self.px[i + k] * (1 - a) + v * a)
-                    self.px[i + 3] = max(self.px[i + 3], alpha)
-
-    def round_mask(self, radius):
-        """clear the corners outside a rounded rectangle (for app icons)"""
-        for y in range(self.h):
-            for x in range(self.w):
-                cx = radius if x < radius else self.w - radius - 1 if x >= self.w - radius else x
-                cy = radius if y < radius else self.h - radius - 1 if y >= self.h - radius else y
-                if (x - cx) ** 2 + (y - cy) ** 2 > radius * radius:
-                    self.px[(y * self.w + x) * 4 + 3] = 0
-
-    def png(self, path):
-        raw = b"".join(b"\x00" + bytes(self.px[y * self.w * 4:(y + 1) * self.w * 4]) for y in range(self.h))
-        def chunk(t, d):
-            return struct.pack(">I", len(d)) + t + d + struct.pack(">I", zlib.crc32(t + d) & 0xffffffff)
-        data = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", self.w, self.h, 8, 6, 0, 0, 0)) + \
-            chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b"")
-        open(path, "wb").write(data)
-        return data
+def tile(body, bg=COL["ink"]):
+    return svg(body, bg=bg, radius=114)
 
 
-def draw_mark(cv, x0, y0, unit, c=None, rects=None):
-    for x, y, w, h, f in rects or mark_rects(c):
-        cv.rect(x0 + x * unit, y0 + y * unit, w * unit, h * unit, f)
+# ---------------------------------------------------------------- the products, each a sign on the dark tile
+def rect(x, y, w, h, fill, r=0):
+    return '<rect x="%g" y="%g" width="%g" height="%g" rx="%g" fill="%s"/>' % (x, y, w, h, r, fill)
 
 
+def circle(cx, cy, r, fill):
+    return '<circle cx="%g" cy="%g" r="%g" fill="%s"/>' % (cx, cy, r, fill)
+
+
+def path(d, fill):
+    return '<path d="%s" fill="%s"/>' % (d, fill)
+
+
+SEA, GOLD, PAGE, DEEP = "url(#front)", "url(#gold)", "url(#page)", COL["deep"]
+SIGNS = {
+    # a pixel grid, the colours of a little sprite
+    "sprite": "".join(rect(154 + 72 * c, 154 + 72 * r, 60, 60, f, 8) for r, row in enumerate(((PAGE, SEA, PAGE), (SEA, GOLD, SEA), (PAGE, SEA, PAGE))) for c, f in enumerate(row)),
+    # levels on a mixing desk
+    "box": "".join(rect(138 + 64 * i, 370 - h, 44, h, f, 10) for i, (h, f) in enumerate(((100, SEA), (180, SEA), (140, GOLD), (220, PAGE)))),
+    # a cloud with an arrow going up into it
+    "cloud": (circle(206, 270, 62, PAGE) + circle(288, 238, 84, PAGE) + circle(352, 292, 50, PAGE) + rect(144, 270, 258, 84, PAGE, 42)
+              + path("M256 206 L310 262 L276 262 L276 330 L236 330 L236 262 L202 262 Z", GOLD)),
+    # a page with lines of writing, and a gold margin
+    "office": (path("M178 120 H300 L352 172 V392 H178 Z", PAGE) + path("M300 120 V172 H352 Z", COL["paper"]) + rect(150, 146, 14, 220, GOLD, 7)
+               + rect(210, 214, 112, 16, DEEP, 8) + rect(210, 254, 112, 16, DEEP, 8) + rect(210, 294, 72, 16, DEEP, 8)),
+    # a speech bubble
+    "social": (rect(140, 150, 232, 168, PAGE, 44) + path("M196 306 L184 374 L252 316 Z", PAGE)
+               + circle(204, 234, 16, DEEP) + circle(256, 234, 16, DEEP) + circle(308, 234, 16, DEEP)),
+    # an open book with a gold ribbon
+    "learn": (path("M256 196 C216 168 172 162 128 170 V352 C172 344 216 348 256 376 Z", PAGE)
+              + path("M256 196 C296 168 340 162 384 170 V352 C340 344 296 348 256 376 Z", COL["paper"])
+              + rect(250, 192, 12, 186, DEEP, 6) + path("M300 168 H326 V236 L313 224 L300 236 Z", GOLD)),
+}
+
+
+def product_body(kind):
+    return SIGNS[kind] + star(392, 120, 30, GOLD)
+
+
+# ---------------------------------------------------------------- Asteria Pixel text, as rectangles
 def text_width(s, u):
     t = GLYPHS["tracking"]
     return sum((len(GLYPHS["glyphs"].get(ch, GLYPHS["glyphs"]["?"])[0]) + t) * u for ch in s) - t * u
-
-
-def draw_text(cv, s, x, y, u, colour):
-    for ch in s:
-        g = GLYPHS["glyphs"].get(ch, GLYPHS["glyphs"]["?"])
-        for r, row in enumerate(g):
-            for c, p in enumerate(row):
-                if p == "#":
-                    cv.rect(x + c * u, y + r * u, u, u, colour)
-        x += (len(g[0]) + GLYPHS["tracking"]) * u
 
 
 def text_svg_rects(s, x, y, u, colour):
@@ -189,76 +121,92 @@ def text_svg_rects(s, x, y, u, colour):
                 c0 = c
                 while c < len(row) and row[c] == "#":
                     c += 1
-                out.append('<rect x="%d" y="%d" width="%d" height="%d" fill="%s"/>' % (x + c0 * u, y + r * u, (c - c0) * u, u, colour))
+                out.append('<rect x="%g" y="%g" width="%g" height="%g" fill="%s"/>' % (x + c0 * u, y + r * u, (c - c0) * u, u, colour))
         x += (len(g[0]) + GLYPHS["tracking"]) * u
     return "".join(out)
+
+
+def nested(body, x, y, size):
+    """the 512-grid mark placed at (x, y), size pixels square, inside a larger picture"""
+    return '<g transform="translate(%g %g) scale(%g)">%s</g>' % (x, y, size / 512, body)
+
+
+# ---------------------------------------------------------------- rendering
+class Renderer:
+    def __init__(self):
+        self.dir = tempfile.mkdtemp(prefix="asteria-brand-")
+        self.bin = os.path.join(self.dir, "render_svg")
+        subprocess.run(["swiftc", "-O", os.path.join(HERE, "render_svg.swift"), "-o", self.bin], check=True, capture_output=True)
+
+    def png(self, svg_text, out, w, h=None):
+        src = os.path.join(self.dir, "in.svg")
+        open(src, "w").write(svg_text)
+        subprocess.run([self.bin, src, out, str(w), str(h or w)], check=True)
+
+    def close(self):
+        shutil.rmtree(self.dir, ignore_errors=True)
+
+
+def ico(pngs, out):
+    data = [open(p, "rb").read() for p in pngs]
+    head = struct.pack("<HHH", 0, 1, len(data))
+    off = 6 + 16 * len(data)
+    for n, d in zip((16, 32, 48, 256), data):
+        head += struct.pack("<BBBBHHII", n % 256, n % 256, 0, 0, 1, 32, len(d), off)
+        off += len(d)
+    open(out, "wb").write(head + b"".join(data))
+
+
+def icns(png_for_size, iconset, out):
+    os.makedirs(iconset, exist_ok=True)
+    for n, name in ((16, "16x16"), (32, "16x16@2x"), (32, "32x32"), (64, "32x32@2x"), (128, "128x128"), (256, "128x128@2x"),
+                    (256, "256x256"), (512, "256x256@2x"), (512, "512x512"), (1024, "512x512@2x")):
+        shutil.copyfile(png_for_size(n), os.path.join(iconset, "icon_%s.png" % name))
+    subprocess.run(["iconutil", "-c", "icns", iconset, "-o", out], check=True)
 
 
 def main():
     os.makedirs(OUT, exist_ok=True)
     w = lambda name, s: open(os.path.join(OUT, name), "w").write(s)
-    # SVGs
-    w("mark.svg", mark_svg(64))
-    w("mark-mono-ink.svg", mark_svg(64, {"orb": COL["ink"], "gold": COL["ink"], "land": COL["cream"]}))
-    w("mark-mono-cream.svg", mark_svg(64, {"orb": COL["cream"], "gold": COL["cream"], "land": COL["ink"]}))
-    w("app-icon.svg", mark_svg(64, bg=COL["ink"], radius=14))
-    for theme, fg, sub in (("dark", COL["cream"], COL["gold"]), ("light", COL["ink"], COL["deep"])):
-        u, x0 = 4, 300
-        lw = x0 + max(text_width("MUNDUS", u), text_width("NOVUS", u)) + 24
-        s = ['<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 %d 256" shape-rendering="crispEdges">' % lw]
-        s.append(mark_svg(256).replace('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="256" height="256" shape-rendering="crispEdges">', '<svg x="0" y="0" width="256" height="256" viewBox="0 0 64 64">'))
-        s.append(text_svg_rects("MUNDUS", x0, 70, u, fg) + text_svg_rects("NOVUS", x0, 70 + 12 * u, u, sub))
-        s.append("</svg>")
-        w("lockup-%s.svg" % theme, "".join(s))
-    # PNGs: the mark and app icons at every size the apps and site need
-    for n in (16, 32, 48, 64, 128, 180, 192, 256, 512, 1024):
-        cv = Canvas(n, n); draw_mark(cv, 0, 0, n / 64); cv.png(os.path.join(OUT, "mark-%d.png" % n))
-        cv = Canvas(n, n, COL["ink"]); draw_mark(cv, n * 0.1, n * 0.1, n * 0.8 / 64)
-        if n >= 64:
-            cv.round_mask(int(n * 0.2237))  # the platform squircle's corner, approximately
-        cv.png(os.path.join(OUT, "app-icon-%d.png" % n))
-    cv = Canvas(512, 512, COL["sea"]); draw_mark(cv, 512 * .2, 512 * .2, 512 * .6 / 64, {"orb": COL["ink"], "gold": COL["gold"], "land": COL["cream"]}); cv.png(os.path.join(OUT, "maskable-512.png"))
-    # link preview, 1200x630
-    cv = Canvas(1200, 630, COL["ink"])
-    for y in range(0, 630, 6):
-        cv.rect(0, y, 1200, 1, COL["night"])
-    draw_mark(cv, 120, 155, 5)
-    draw_text(cv, "MUNDUS", 520, 220, 10, COL["cream"])
-    draw_text(cv, "NOVUS", 520, 340, 10, COL["gold"])
-    cv.png(os.path.join(OUT, "og-1200x630.png"))
-    # macOS .icns and Windows .ico
-    iconset = os.path.join(OUT, "MundusNovus.iconset")
-    os.makedirs(iconset, exist_ok=True)
-    for n, name in ((16, "16x16"), (32, "16x16@2x"), (32, "32x32"), (64, "32x32@2x"), (128, "128x128"), (256, "128x128@2x"), (256, "256x256"), (512, "256x256@2x"), (512, "512x512"), (1024, "512x512@2x")):
-        open(os.path.join(iconset, "icon_%s.png" % name), "wb").write(open(os.path.join(OUT, "app-icon-%d.png" % n), "rb").read())
-    if subprocess.run(["which", "iconutil"], capture_output=True).returncode == 0:
-        subprocess.run(["iconutil", "-c", "icns", iconset, "-o", os.path.join(OUT, "MundusNovus.icns")], check=True)
-    pngs = [open(os.path.join(OUT, "app-icon-%d.png" % n), "rb").read() for n in (16, 32, 48, 256)]
-    ico = struct.pack("<HHH", 0, 1, len(pngs)); off = 6 + 16 * len(pngs)
-    for n, d in zip((16, 32, 48, 256), pngs):
-        ico += struct.pack("<BBBBHHII", n % 256, n % 256, 0, 0, 1, 32, len(d), off); off += len(d)
-    open(os.path.join(OUT, "MundusNovus.ico"), "wb").write(ico + b"".join(pngs))
-    # product icons: MNSprite, MNBox, MNSocial
-    for kind in FACES:
-        d = os.path.join(OUT, "products", kind); os.makedirs(d, exist_ok=True)
-        open(os.path.join(d, "%s-icon.svg" % kind), "w").write(mark_svg(64, bg=COL["ink"], radius=14, rects=product_rects(kind)))
-        open(os.path.join(d, "%s-mark.svg" % kind), "w").write(mark_svg(64, rects=product_rects(kind)))
-        for n in (16, 32, 48, 64, 128, 180, 192, 256, 512, 1024):
-            cv = Canvas(n, n, COL["ink"]); draw_mark(cv, n * 0.1, n * 0.1, n * 0.8 / 64, rects=product_rects(kind))
-            if n >= 64:
-                cv.round_mask(int(n * 0.2237))
-            cv.png(os.path.join(d, "%s-%d.png" % (kind, n)))
-        cv = Canvas(512, 512, COL["sea"]); draw_mark(cv, 512 * .2, 512 * .2, 512 * .6 / 64, rects=product_rects(kind, orb=COL["ink"])); cv.png(os.path.join(d, "%s-maskable-512.png" % kind))
-        iconset = os.path.join(d, "%s.iconset" % kind); os.makedirs(iconset, exist_ok=True)
-        for n, name in ((16, "16x16"), (32, "16x16@2x"), (32, "32x32"), (64, "32x32@2x"), (128, "128x128"), (256, "128x128@2x"), (256, "256x256"), (512, "256x256@2x"), (512, "512x512"), (1024, "512x512@2x")):
-            open(os.path.join(iconset, "icon_%s.png" % name), "wb").write(open(os.path.join(d, "%s-%d.png" % (kind, n)), "rb").read())
-        if subprocess.run(["which", "iconutil"], capture_output=True).returncode == 0:
-            subprocess.run(["iconutil", "-c", "icns", iconset, "-o", os.path.join(d, "%s.icns" % kind)], check=True)
-        pngs = [open(os.path.join(d, "%s-%d.png" % (kind, n)), "rb").read() for n in (16, 32, 48, 256)]
-        ico = struct.pack("<HHH", 0, 1, len(pngs)); off = 6 + 16 * len(pngs)
-        for n, dd in zip((16, 32, 48, 256), pngs):
-            ico += struct.pack("<BBBBHHII", n % 256, n % 256, 0, 0, 1, 32, len(dd), off); off += len(dd)
-        open(os.path.join(d, "%s.ico" % kind), "wb").write(ico + b"".join(pngs))
+    r = Renderer()
+    try:
+        mark = mark_body()
+        w("mark.svg", svg(mark))
+        w("mark-mono-ink.svg", svg(mark_body(COL["ink"], COL["ink"], COL["ink"])))
+        w("mark-mono-cream.svg", svg(mark_body(COL["cream"], COL["cream"], COL["cream"])))
+        w("app-icon.svg", tile(mark))
+        # lockups: the mark beside ASTERIA over TECHNOLOGY
+        for theme, fg, sub in (("dark", COL["cream"], COL["gold"]), ("light", COL["ink"], COL["deep"])):
+            u, x0 = 5, 280
+            lw = x0 + max(text_width("ASTERIA", u * 2), text_width("TECHNOLOGY", u)) + 24
+            body = nested(mark, 0, 0, 256) + text_svg_rects("ASTERIA", x0, 60, u * 2, fg) + text_svg_rects("TECHNOLOGY", x0, 60 + 12 * u * 2, u, sub)
+            w("lockup-%s.svg" % theme, svg(body, lw, 256))
+        for n in SIZES:
+            r.png(svg(mark), os.path.join(OUT, "mark-%d.png" % n), n)
+            r.png(tile(mark), os.path.join(OUT, "app-icon-%d.png" % n), n)
+        r.png(svg(nested(mark, 77, 77, 358), bg=COL["ink"]), os.path.join(OUT, "maskable-512.png"), 512)
+        # link preview, 1200 x 630: the mark and the name on the night sky, with a few stars
+        sky = "".join(circle(x, y, s, COL["cream"]) for x, y, s in ((90, 80, 2), (310, 520, 1.5), (660, 70, 2), (1100, 140, 2.5), (980, 560, 1.5), (560, 590, 2), (1140, 420, 1.5), (40, 400, 1.5)))
+        og = svg(sky + nested(mark, 100, 125, 380) + text_svg_rects("ASTERIA", 520, 228, 12, COL["cream"]) + text_svg_rects("TECHNOLOGY", 520, 362, 6, COL["gold"]),
+                 1200, 630, bg=COL["ink"])
+        r.png(og, os.path.join(OUT, "og-1200x630.png"), 1200, 630)
+        ico([os.path.join(OUT, "app-icon-%d.png" % n) for n in (16, 32, 48, 256)], os.path.join(OUT, "Asteria.ico"))
+        icns(lambda n: os.path.join(OUT, "app-icon-%d.png" % n), os.path.join(OUT, "Asteria.iconset"), os.path.join(OUT, "Asteria.icns"))
+        # product icons
+        for kind in SIGNS:
+            d = os.path.join(OUT, "products", kind)
+            shutil.rmtree(d, ignore_errors=True)
+            os.makedirs(d)
+            icon = tile(product_body(kind))
+            open(os.path.join(d, "%s-icon.svg" % kind), "w").write(icon)
+            open(os.path.join(d, "%s-mark.svg" % kind), "w").write(icon)
+            for n in SIZES:
+                r.png(icon, os.path.join(d, "%s-%d.png" % (kind, n)), n)
+            r.png(svg(nested(product_body(kind), 77, 77, 358), bg=COL["ink"]), os.path.join(d, "%s-maskable-512.png" % kind), 512)
+            ico([os.path.join(d, "%s-%d.png" % (kind, n)) for n in (16, 32, 48, 256)], os.path.join(d, "%s.ico" % kind))
+            icns(lambda n: os.path.join(d, "%s-%d.png" % (kind, n)), os.path.join(d, "%s.iconset" % kind), os.path.join(d, "%s.icns" % kind))
+    finally:
+        r.close()
     print("brand written to", OUT)
 
 

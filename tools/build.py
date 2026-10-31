@@ -1,6 +1,6 @@
-"""Builds mundusnovus.org into site/.
+"""Builds asteria.technology into site/.
 
-Copies the brand, the two apps (from MNSprite and MNBox checked out beside this repository), and the
+Copies the brand, the two apps (from Asteria Sprite and Asteria Box checked out beside this repository), and the
 desktop downloads (from dist/, made by tools/package.py) into site/, and writes a small note file per track for the
 note roll on the home page. Railway serves site/ exactly as it is in the repository, so commit what this writes.
 
@@ -27,7 +27,7 @@ def brand():
     shutil.copy(os.path.join(REPO, "brand", "tokens.css"), dst)
     for d in ("font", "logo"):
         replace_dir(os.path.join(REPO, "brand", d), os.path.join(dst, d))
-    for junk in ("build_font.py", "chancel-glyphs.json"):
+    for junk in ("build_font.py", "asteria-pixel-glyphs.json"):
         p = os.path.join(dst, "font", junk)
         if os.path.exists(p):
             os.remove(p)

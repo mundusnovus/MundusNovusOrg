@@ -225,7 +225,7 @@
     function checkStatus(force) {
       var shell = window.csHost; if (!shell || !shell.request) { app.keyState = 'no shell'; status.textContent = app.keyState; return Promise.resolve(); }
       return shell.request('/v1/status').then(function (r) {
-        var ok = r && r.json && r.json.key && (r.json.key.sprite || r.json.key.MNSprite);
+        var ok = r && r.json && r.json.key && (r.json.key.sprite || r.json.key.MNSprite || r.json.key.ChristianSprite);
         app.keyReady = !!ok; app.keyState = ok ? 'ready' : 'add a key'; status.textContent = app.keyState; keys.hidden = !!ok; el.classList.toggle('nokey', !ok);
         if (!ok && force) app.chatError('The assistant runs on your own Anthropic key, kept only on this device. Choose "Add your key".');
         if (ok && force) U.toast('Key found. The assistant is ready.');

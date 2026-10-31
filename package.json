@@ -1,11 +1,11 @@
 {
-  "name": "mundusnovus-org",
+  "name": "asteria-org",
   "version": "1.0.0",
   "private": true,
-  "description": "mundusnovus.org and MNSocial",
+  "description": "asteria.technology and Asteria Social",
   "type": "module",
   "engines": { "node": ">=24" },
   "scripts": { "start": "node server.mjs", "test": "node --test test/*.test.mjs" },
   "license": "GPL-3.0-only",
-  "author": "Mundus Novus"
+  "author": "Asteria Technology"
 }

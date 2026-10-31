@@ -3,25 +3,25 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; script-src 'self' file: 'unsafe-eval'; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: data: blob:; object-src 'none'; connect-src 'self' https://api.anthropic.com https://cloud.mundusnovus.org">
-<title>MNBox</title>
-<meta name="description" content="A free, open-source music maker from Mundus Novus, built on BeepBox.">
-<meta name="theme-color" content="#0c1222">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' file: data: blob:; script-src 'self' file: 'unsafe-eval'; style-src 'self' file: 'unsafe-inline'; img-src 'self' file: data: blob:; media-src 'self' file: data: blob:; object-src 'none'; connect-src 'self' https://api.anthropic.com https://cloud.asteria.technology">
+<title>Asteria Box</title>
+<meta name="description" content="A free, open-source music maker from Asteria Technology, built on BeepBox.">
+<meta name="theme-color" content="#0a1518">
 <meta name="color-scheme" content="light dark">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="icon.svg"><link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="stylesheet" href="brand/tokens.css"><link rel="stylesheet" href="brand/mn-app.css"><link rel="stylesheet" href="box/box.css">
+<link rel="stylesheet" href="brand/tokens.css"><link rel="stylesheet" href="brand/as-app.css"><link rel="stylesheet" href="box/box.css">
 </head>
 <body class="cs">
 	<div id="cbApp">
 		<header id="cbBar">
-			<div class="cb-brand"><img src="icon-192.png" width="28" height="28" alt=""><span>MN<b>Box</b></span></div>
+			<div class="cb-brand"><img src="icon-192.png" width="28" height="28" alt=""><span>Asteria<b>Box</b></span></div>
 			<button class="cb-btn" id="cbNew" title="New song (Ctrl+N)">New</button>
 			<button class="cb-btn" id="cbOpen" title="Open a song (Ctrl+O)">Open…</button>
 			<div class="cb-menu"><button class="cb-btn" id="cbRecent" aria-haspopup="menu" title="Recent songs">Recent</button><div class="cb-drop" id="cbRecentDrop" role="menu"></div></div>
 			<button class="cb-btn" id="cbSave" title="Save (Ctrl+S)">Save</button>
 			<button class="cb-btn" id="cbSaveAs" title="Save as (Ctrl+Shift+S)">Save as…</button>
-			<button class="cb-btn" id="cbCloud" title="Open, save and autosave in MNCloud">Cloud</button>
+			<button class="cb-btn" id="cbCloud" title="Open, save and autosave in Asteria Cloud">Cloud</button>
 			<div class="cb-menu"><button class="cb-btn" id="cbExport" aria-haspopup="menu" title="Export audio, MIDI or a game bundle">Export</button>
 				<div class="cb-drop" id="cbExportDrop" role="menu">
 					<button data-export="mastered">Mastered MP3, ready to share…</button>
@@ -33,19 +33,19 @@
 			<span class="cb-status" id="cbStatus"></span>
 			<button class="cb-btn" id="cbTheme" title="Switch colour theme">Theme</button>
 			<button class="cb-btn" id="cbToggle" aria-pressed="true" title="Show or hide the Composer">Composer</button>
-			<button class="cb-btn" id="cbAbout" title="About MNBox">About</button>
+			<button class="cb-btn" id="cbAbout" title="About Asteria Box">About</button>
 		</header>
 		<div id="cbMain">
-			<div id="beepboxEditorContainer"><noscript>MNBox needs JavaScript.</noscript></div>
+			<div id="beepboxEditorContainer"><noscript>Asteria Box needs JavaScript.</noscript></div>
 			<aside id="composer" aria-label="Composer"></aside>
 		</div>
 	</div>
 	<div class="cb-banner" id="cbBanner" role="status" aria-live="polite"></div>
 	<div class="cb-modal" id="cbModal"><div class="cb-card" id="cbCard" role="dialog" aria-modal="true"></div></div>
 
-	<script src="brand/mn-host.js"></script>
-	<script src="brand/mn-cloud.js"></script>
-	<script src="brand/mn-cloud-ui.js"></script>
+	<script src="brand/as-host.js"></script>
+	<script src="brand/as-cloud.js"></script>
+	<script src="brand/as-cloud-ui.js"></script>
 	<script src="beepbox_editor.min.js"></script>
 	<script src="box/theory.js"></script>
 	<script src="box/presets-band.js"></script>

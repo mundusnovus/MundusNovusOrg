@@ -1,0 +1,36 @@
+/* Asteria Technology app chrome: what every app shares on top of tokens.css. The frosted bar, sheets, dialogs and
+   controls; each app keeps its own layout. */
+.cs, .cs * { box-sizing: border-box; }
+.cs {
+  --as-fill: color-mix(in srgb, var(--as-fg) 8%, transparent);
+  --as-fill-2: color-mix(in srgb, var(--as-fg) 14%, transparent);
+  --as-glass-edge: color-mix(in srgb, var(--as-fg) 10%, transparent);
+  --as-shadow-2: 0 18px 48px rgb(0 0 0 / .28);
+  --as-wallpaper: radial-gradient(120% 80% at 50% 120%, color-mix(in srgb, var(--as-sea) 16%, transparent), transparent 60%);
+  font-family: var(--as-text); color: var(--as-fg); background: var(--as-bg);
+}
+.cs :focus-visible { outline: 3px solid var(--as-focus); outline-offset: 2px; border-radius: var(--as-radius-s); }
+.cs ::selection { background: color-mix(in srgb, var(--as-gold) 40%, transparent); }
+.as-display { font-family: var(--as-display); text-transform: uppercase; letter-spacing: .02em; -webkit-font-smoothing: none; }
+
+/* the key dialog the host shows */
+dialog.as-keys { border: 1px solid var(--as-line); border-radius: var(--as-radius-l); padding: 0; width: min(440px, 92vw); color: var(--as-fg); background: var(--as-surface); box-shadow: var(--as-shadow-2, 0 18px 48px rgb(0 0 0 / .3)); }
+dialog.as-keys::backdrop { background: rgb(10 3 4 / .45); backdrop-filter: blur(6px); }
+dialog.as-keys[open] { animation: as-sheet var(--as-med) var(--as-ease-out); }
+dialog.as-keys form { padding: 22px; display: grid; gap: 12px; }
+dialog.as-keys h2 { margin: 0; font: 400 20px var(--as-display); text-transform: uppercase; -webkit-font-smoothing: none; }
+dialog.as-keys p { margin: 0; color: var(--as-fg-2); font-size: 14px; line-height: 1.5; }
+dialog.as-keys label { display: grid; gap: 6px; font-size: 13px; color: var(--as-fg-2); }
+dialog.as-keys input, dialog.as-keys select { font: 14px var(--as-mono); padding: 10px 12px; border-radius: var(--as-radius-s); border: 1px solid var(--as-line); background: var(--as-bg); color: var(--as-fg); }
+dialog.as-keys menu { display: flex; gap: 8px; margin: 6px 0 0; padding: 0; }
+dialog.as-keys menu span { flex: 1; }
+dialog.as-keys button { font: 600 14px var(--as-text); padding: 9px 14px; border-radius: var(--as-radius-s); border: 1px solid var(--as-line); background: var(--as-surface-2); color: var(--as-fg); cursor: pointer; }
+dialog.as-keys button.primary { background: var(--as-accent); border-color: transparent; color: #fff; }
+@keyframes as-sheet { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+
+/* the Asteria Cloud panel (as-cloud-ui.js) */
+dialog.asteria-cloud { width: min(520px, 94vw); }
+.asteria-cloud-list { display: grid; gap: 6px; max-height: 44vh; overflow: auto; }
+.asteria-cloud-file { display: grid; text-align: left; gap: 2px; width: 100%; padding: 10px 12px !important; }
+.asteria-cloud-file small, .asteria-cloud-empty, .asteria-cloud-msg { color: var(--as-fg-2); font-size: 13px; }
+.asteria-cloud-auto { display: flex !important; flex-direction: row; gap: 8px; align-items: center; color: var(--as-fg) !important; }

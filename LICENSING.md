@@ -1,7 +1,7 @@
-# The Mundus Novus License
+# The Asteria License
 
-Everything Mundus Novus makes is free and open source, under the
-**Mundus Novus License 1.0**. You can read the full text in [LICENSE](LICENSE).
+Everything Asteria Technology makes is free and open source, under the
+**Asteria License 1.0**. You can read the full text in [LICENSE](LICENSE).
 
 ## What it means
 
@@ -11,7 +11,7 @@ Everything Mundus Novus makes is free and open source, under the
 - **It works with any GPLv3 project.** It adds no restrictions. You may
   pass the work on simply as GPLv3 and leave our introduction out.
 - **What you make is yours.** Pictures, songs and documents made with our
-  tools, or set in the Chancel typeface, do not fall under the GPL just
+  tools, or set in the Asteria Pixel typeface, do not fall under the GPL just
   because you used them. This extra permission comes from GPLv3 section 7.
 - **Our convictions are not conditions.** The license opens with a short
   Christian Unionist statement of why we share: human dignity, the common
@@ -22,7 +22,7 @@ Everything Mundus Novus makes is free and open source, under the
 ## Other people's work
 
 Third-party parts keep their own licenses, and those licenses sit beside
-them. Examples are BeepBox (MIT) and lamejs (LGPL) in MNBox, and the
+them. Examples are BeepBox (MIT) and lamejs (LGPL) in Asteria Box, and the
 AT Protocol libraries in Social and the PDS.
 
 ## Contributing

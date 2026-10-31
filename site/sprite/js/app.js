@@ -15,7 +15,7 @@
     flipH: 'shift+h', flipV: 'shift+v', brushBigger: ']', brushSmaller: '['
   };
   var ACTION_LABELS = {
-    'file.new': 'New sprite', 'file.open': 'Open', 'file.save': 'Save', 'file.saveAs': 'Save as', 'file.export': 'Export', 'file.cloud': 'MNCloud', undo: 'Undo', redo: 'Redo', copy: 'Copy', cut: 'Cut', paste: 'Paste', delete: 'Clear selection', selectAll: 'Select all', deselect: 'Deselect', invertSel: 'Invert selection',
+    'file.new': 'New sprite', 'file.open': 'Open', 'file.save': 'Save', 'file.saveAs': 'Save as', 'file.export': 'Export', 'file.cloud': 'Asteria Cloud', undo: 'Undo', redo: 'Redo', copy: 'Copy', cut: 'Cut', paste: 'Paste', delete: 'Clear selection', selectAll: 'Select all', deselect: 'Deselect', invertSel: 'Invert selection',
     swapColors: 'Swap colours', zoomIn: 'Zoom in', zoomOut: 'Zoom out', zoomFit: 'Zoom to fit', zoom100: 'Zoom 1:1... (x8)', toggleGrid: 'Toggle grid', togglePixelGrid: 'Toggle pixel grid', toggleOnion: 'Toggle onion skin', symX: 'Mirror X', symY: 'Mirror Y', cycleTile: 'Cycle tiling mode',
     framePrev: 'Previous frame', frameNext: 'Next frame', frameFirst: 'First frame', frameLast: 'Last frame', play: 'Play / pause', frameNew: 'New frame', frameDup: 'Duplicate frame', layerNew: 'New layer', toggleDocks: 'Show / hide side panels', focusAI: 'Focus AI prompt', 'help.keys': 'Keyboard shortcuts',
     flipH: 'Flip horizontally', flipV: 'Flip vertically', brushBigger: 'Bigger brush', brushSmaller: 'Smaller brush'
@@ -42,8 +42,8 @@
     });
   };
   A.setTitle = function () {
-    var doc = this.S.doc; document.title = doc.name + ' - MNSprite';
-    if (shell && shell.window) { try { shell.window.setTitle(doc.name + (doc.dirty() ? ' *' : '') + ' — MNSprite'); shell.window.setDirty(doc.dirty()); } catch (e) {} }
+    var doc = this.S.doc; document.title = doc.name + ' - Asteria Sprite';
+    if (shell && shell.window) { try { shell.window.setTitle(doc.name + (doc.dirty() ? ' *' : '') + ' — Asteria Sprite'); shell.window.setDirty(doc.dirty()); } catch (e) {} }
     if (this.titleEl) this.titleEl.textContent = doc.name + (doc.dirty() ? ' *' : '');
   };
   A.confirmDiscard = async function () { if (!this.S.doc.dirty()) return true; return U.confirmBox('Unsaved changes', 'Discard the changes to "' + this.S.doc.name + '"?', 'Discard'); };
@@ -223,7 +223,7 @@
       d.undoStack.length = 0; this.useDoc(d);
     },
     'file.open': function () { return this.fileOpenDialog(); },
-    'file.save': function () { return this.save(false); }, 'file.cloud': function () { if (window.csCloudUI) window.csCloudUI.show(); }, 'file.saveAs': function () { return this.save(true); }, 'file.export': function () { return this.exportDialog(); },
+    'file.save': function () { return this.save(false); }, 'file.cloud': function () { if (window.asCloudUI) window.asCloudUI.show(); }, 'file.saveAs': function () { return this.save(true); }, 'file.export': function () { return this.exportDialog(); },
     undo: function (_, S, doc) { if (this.editor.stroke || this.editor.poly) return; doc.undo(); }, redo: function (_, S, doc) { if (this.editor.stroke || this.editor.poly) return; doc.redo(); },
     copy: function (_, S, d, ed) { ed.copy(false); }, cut: function (_, S, d, ed) { ed.copy(true); }, paste: function (_, S, d, ed) { ed.paste(); },
     delete: function (_, S, d, ed) { ed.clearSelection(); },
@@ -331,9 +331,9 @@
     // help
     'help.keys': function () { return this.keysDialog(); },
     'help.about': function () {
-      return U.dialog({ title: 'About MNSprite', cancel: false, ok: 'Close', fields: [
-        { type: 'note', text: 'MNSprite ' + VERSION + ': a pixel-art editor and animator, with an assistant that draws with you.' },
-        { type: 'note', text: 'Mundus Novus, mundusnovus.org. Free and open source under the GPL. MNSprite is not Aseprite and is not affiliated with it; it reads the documented .aseprite format (import only) so you can bring your files in.' },
+      return U.dialog({ title: 'About Asteria Sprite', cancel: false, ok: 'Close', fields: [
+        { type: 'note', text: 'Asteria Sprite ' + VERSION + ': a pixel-art editor and animator, with an assistant that draws with you.' },
+        { type: 'note', text: 'Asteria Technology, asteria.technology. Free and open source under the GPL. Asteria Sprite is not Aseprite and is not affiliated with it; it reads the documented .aseprite format (import only) so you can bring your files in.' },
         { type: 'note', text: 'Your project files are .asprite.json. Exports: PNG, GIF, APNG, sprite sheets with Aseprite-compatible JSON and Godot SpriteFrames (.tres).' }] });
     }
   };
@@ -420,7 +420,7 @@
     var self = this, S = this.S, doc = function () { return S.doc; }, ed = function () { return self.editor; };
     function it(label, action, extra) { return Object.assign({ label: label, action: action }, extra || {}); }
     return [
-      { label: 'File', items: function () { return [it('New...', 'file.new'), it('Open...', 'file.open'), { label: 'Open recent', submenu: function () { return self.recentItems(); } }, '-', it('Save', 'file.save'), it('Save as...', 'file.saveAs'), it('MNCloud...', 'file.cloud'), '-', it('Export...', 'file.export'), '-', it('Close window', 'quit')]; } },
+      { label: 'File', items: function () { return [it('New...', 'file.new'), it('Open...', 'file.open'), { label: 'Open recent', submenu: function () { return self.recentItems(); } }, '-', it('Save', 'file.save'), it('Save as...', 'file.saveAs'), it('Asteria Cloud...', 'file.cloud'), '-', it('Export...', 'file.export'), '-', it('Close window', 'quit')]; } },
       { label: 'Edit', items: function () { return [it('Undo', 'undo', { disabled: function () { return !doc().canUndo(); } }), it('Redo', 'redo', { disabled: function () { return !doc().canRedo(); } }), '-', it('Cut', 'cut'), it('Copy', 'copy'), it('Paste', 'paste'), it('Clear', 'delete'), '-', it('Select all', 'selectAll'), it('Deselect', 'deselect'), it('Invert selection', 'invertSel'), '-',
         it('Flip horizontally', 'flipH'), it('Flip vertically', 'flipV'), it('Rotate 90°', 'rotate90'), it('Rotate...', 'rotateDlg'), it('Shift...', 'shiftDlg'), '-', it('Outline...', 'outlineDlg'), it('Drop shadow...', 'shadowDlg'), it('Shade by light direction...', 'lightDlg'), it('Replace colour...', 'replaceDlg'), it('Adjust hue/saturation...', 'hueDlg'), '-', it('Keyboard shortcuts...', 'help.keys')]; } },
       { label: 'Sprite', items: [it('Canvas size...', 'canvasSize'), it('Scale sprite...', 'scaleSprite'), it('Crop to content', 'cropContent'), it('Crop to selection', 'cropSelection'), '-', it('Flip sprite horizontally', 'flipSpriteH'), it('Flip sprite vertically', 'flipSpriteV'), '-',
@@ -435,7 +435,7 @@
         it('Mirror X (vertical axis)', 'symX', { checked: function () { return e.sym.x; } }), it('Mirror Y (horizontal axis)', 'symY', { checked: function () { return e.sym.y; } }), '-',
         { label: 'Tiled mode: off', action: 'setTile', arg: 'off', checked: function () { return e.tile === 'off'; } }, { label: 'Tiled mode: horizontal', action: 'setTile', arg: 'x', checked: function () { return e.tile === 'x'; } }, { label: 'Tiled mode: vertical', action: 'setTile', arg: 'y', checked: function () { return e.tile === 'y'; } }, { label: 'Tiled mode: both', action: 'setTile', arg: 'xy', checked: function () { return e.tile === 'xy'; } }, '-',
         it('Mouse wheel pans (touchpad)', 'toggleWheel', { checked: function () { return e.wheelPans; } }), it('Show / hide side panels', 'toggleDocks')]; } },
-      { label: 'Help', items: [it('Keyboard shortcuts...', 'help.keys'), it('About MNSprite', 'help.about')] }
+      { label: 'Help', items: [it('Keyboard shortcuts...', 'help.keys'), it('About Asteria Sprite', 'help.about')] }
     ];
   };
   ACTIONS.quit = function () { if (shell && shell.window && shell.window.close) shell.window.close(); };
@@ -462,7 +462,7 @@
     var menubar = U.buildMenubar(this.menuSpec(), function (a, arg) { self.act(a, arg); }, function (a) { var k = self.keymap.map[a]; return k ? U.prettyKey(k) : ''; });
     this.menubar = menubar;
     this.titleEl = h('span', { class: 'doc-title' }, S.doc.name);
-    var logo = h('div', { class: 'brand' }, h('img', { src: 'icon.png', alt: '', width: 26, height: 26 }), h('span', { class: 'bname' }, 'MN', h('b', null, 'Sprite')));
+    var logo = h('div', { class: 'brand' }, h('img', { src: 'icon.png', alt: '', width: 26, height: 26 }), h('span', { class: 'bname' }, 'Asteria', h('b', null, 'Sprite')));
     var undoB = h('button', { class: 'tool tiny', title: 'Undo (Ctrl+Z)', 'aria-label': 'Undo', onclick: function () { self.act('undo'); } }, '↶'), redoB = h('button', { class: 'tool tiny', title: 'Redo (Ctrl+Y)', 'aria-label': 'Redo', onclick: function () { self.act('redo'); } }, '↷');
     var panelsB = h('button', { class: 'tool tiny panels-btn', title: 'Panels', 'aria-label': 'Show or hide the panels', onclick: function () { self.act('toggleDocks'); } }, '☰');
     var top = h('header', { class: 'top' }, logo, menubar, h('span', { class: 'grow' }), this.titleEl, undoB, redoB, panelsB);
@@ -480,13 +480,13 @@
     this.statusL = h('span', null, 'Ready'); this.statusC = h('span', { class: 'grow' }); this.statusR = h('span', null);
     var status = h('footer', { class: 'status' }, this.statusL, this.statusC, this.statusR);
     root.append(top, h('div', { class: 'main' }, this.toolbox, center, dock), this.timeline, status);
-    // MNCloud: open, save and (when switched on) autosave sprites in the person's /MNSprite folder
-    if (window.csCloudUI) window.csCloudUI.attach({ folder: '/MNSprite', ext: '.asprite.json', name: function () { return baseOf(S.doc.name); },
+    // Asteria Cloud: open, save and (when switched on) autosave sprites in the person's /MNSprite folder
+    if (window.asCloudUI) window.asCloudUI.attach({ folder: '/MNSprite', ext: '.asprite.json', name: function () { return baseOf(S.doc.name); },
       serialize: function () { return JSON.stringify(S.doc.toJSON()); },
       open: function (name, text) { self.openFileObj({ name: name + '.asprite.json', data: text, binary: false }); },
       saved: function (text, bad) { if (bad) U.toast(text, 'error'); } });
     S.onChange(function (k) {
-      if (window.csCloudUI && S.doc.dirty()) window.csCloudUI.changed();
+      if (window.asCloudUI && S.doc.dirty()) window.asCloudUI.changed();
       self.setTitle(); self.updateStatus(self.editor.hover); undoB.disabled = !S.doc.canUndo(); redoB.disabled = !S.doc.canRedo();
       if (k === 'busy') root.classList.toggle('busy', !!S.busy);
       self.syncView();
@@ -537,7 +537,7 @@
   A.api = { handlers: null };
 
   document.addEventListener('DOMContentLoaded', function () {
-    var app = new App(); window.mnSprite = app;
-    try { app.build(); app.install(); } catch (e) { document.body.appendChild(h('pre', { class: 'fatal' }, 'MNSprite failed to start: ' + (e && e.stack || e))); console.error(e); }
+    var app = new App(); window.asteriaSprite = app;
+    try { app.build(); app.install(); } catch (e) { document.body.appendChild(h('pre', { class: 'fatal' }, 'Asteria Sprite failed to start: ' + (e && e.stack || e))); console.error(e); }
   });
 })();

@@ -1,13 +1,13 @@
-// The Mundus Novus desktop shell for macOS. One small native window around a web app that lives in the bundle
+// The Asteria Technology desktop shell for macOS. One small native window around a web app that lives in the bundle
 // (Contents/Resources/app). It serves the app from app://local/, gives it native open and save dialogs through
-// window.csNative (see brand/host/mn-host.js), asks before closing unsaved work, and opens links in the browser.
-// The app's name, size and file types come from Info.plist, so MNSprite and MNBox share this file.
+// window.csNative (see brand/host/as-host.js), asks before closing unsaved work, and opens links in the browser.
+// The app's name, size and file types come from Info.plist, so Asteria Sprite and Asteria Box share this file.
 import Cocoa
 import UniformTypeIdentifiers
 import WebKit
 
 let info = Bundle.main.infoDictionary ?? [:]
-let appName = info["CFBundleName"] as? String ?? "Mundus Novus"
+let appName = info["CFBundleName"] as? String ?? "Asteria Technology"
 let appRoot = Bundle.main.resourceURL!.appendingPathComponent("app", isDirectory: true)
 
 // ---------------------------------------------------------------- the app's files, served from the bundle

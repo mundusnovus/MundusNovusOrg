@@ -1,4 +1,4 @@
-/* MNBox: the Composer side panel and its tool-use loop.
+/* Asteria Box: the Composer side panel and its tool-use loop.
  * Talks to the Anthropic API through window.csHost.request, with the person's own key, kept only on this device. */
 (function (root) {
 	"use strict";
@@ -116,7 +116,7 @@
 		this.modelSel.title = "Model";
 		[["claude-sonnet-5-5", "Sonnet 5.5"], ["claude-opus-5-5", "Opus 5.5"], ["claude-haiku-5-5", "Haiku 5.5"]].forEach((m) => { const o = el("option", null, m[1]); o.value = m[0]; this.modelSel.appendChild(o); });
 		this.modelSel.value = W.csHost.keys.model();
-		this.modelSel.addEventListener("change", () => { try { localStorage.setItem("mn.anthropic.model", this.modelSel.value); } catch (e) { /* ignore */ } if (this.client) this.client.model = this.modelSel.value; });
+		this.modelSel.addEventListener("change", () => { try { localStorage.setItem("as.anthropic.model", this.modelSel.value); } catch (e) { /* ignore */ } if (this.client) this.client.model = this.modelSel.value; });
 		head.appendChild(this.modelSel);
 		this.keyBtn = el("button", "ac-btn ac-small", "Key");
 		this.keyBtn.title = "Your Anthropic key";

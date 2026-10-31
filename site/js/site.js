@@ -1,10 +1,10 @@
-/* mundusnovus.org: the mark that draws itself, a sprite being drawn, the album player and the note roll
+/* asteria.technology: a sprite being drawn, the album player and the note roll
    that follows it. Everything waits until it is on screen, and holds still for people who ask for less motion. */
 (function () {
   'use strict';
   var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var $ = function (id) { return document.getElementById(id); };
-  var C = { ink: '#0c1222', night: '#131c31', coal: '#1c2742', abyss: '#0c2558', sea: '#2a62c9', deep: '#17449a', gold: '#e9b04b', light: '#ffd47e', goldDeep: '#a8761a', cream: '#f4ecdb', bright: '#4a82e6', ember: '#c4432d' };
+  var C = { ink: '#0a1518', night: '#12232a', coal: '#1a3038', abyss: '#0a3a45', sea: '#1c8c9e', deep: '#116674', gold: '#e9b04b', light: '#ffd47e', goldDeep: '#a8761a', cream: '#f4ecdb', bright: '#3bb3c3', ember: '#c4432d' };
   function onScreen(el, fn) {
     if (!el) return;
     if (!('IntersectionObserver' in window)) return fn(true);
@@ -12,8 +12,8 @@
   }
 
   // ---------------------------------------------------------------- addresses and the account
-  // Links to the other Mundus Novus addresses carry data-sub (and data-path); they are rewritten from this page's
-  // own address, so they also work on a test machine. One Mundus Novus account is shared by every address.
+  // Links to the other Asteria Technology addresses carry data-sub (and data-path); they are rewritten from this page's
+  // own address, so they also work on a test machine. One Asteria account is shared by every address.
   var ROOT = location.host.replace(/^(www|sprite|box|social|cloud|office)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
   document.querySelectorAll('a[data-sub]').forEach(function (a) { a.href = SUB(a.dataset.sub === 'main' ? '' : a.dataset.sub, a.dataset.path); });
   (function () {
@@ -21,7 +21,7 @@
     fetch('/api/me', { credentials: 'same-origin' }).then(function (r) { return r.json(); }).then(function (r) {
       var a = document.createElement('a'); a.className = 'account';
       if (r.user) {
-        a.href = SUB('social', '/@' + r.user.name); a.title = 'Your Mundus Novus account';
+        a.href = SUB('social', '/@' + r.user.name); a.title = 'Your Asteria account';
         if (r.user.avatar) { var i = document.createElement('img'); i.src = r.user.avatar; i.alt = ''; a.appendChild(i); }
         else { var b = document.createElement('span'); b.className = 'initial'; b.textContent = (r.user.display || r.user.name)[0]; a.appendChild(b); }
         var n = document.createElement('span'); n.className = 'account-name'; n.textContent = r.user.display; a.appendChild(n);
@@ -107,41 +107,6 @@
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(function (el, i) { el.style.transitionDelay = (el.closest('.hero') ? i * 90 : 0) + 'ms'; io.observe(el); });
   } else document.documentElement.classList.add('no-js');
-
-  // ---------------------------------------------------------------- the mark draws itself
-  (function () {
-    var cv = $('heroMark'); if (!cv) return;
-    // the world fills in row by row, the new world rises on it, the gold band goes round, and the cross is raised last
-    var g = cv.getContext('2d'), steps = [], CX = 32, CY = 39, R = 21;
-    function span(y) { var dy = y + .5 - CY, hw = Math.sqrt(Math.max(0, R * R - dy * dy)); return [Math.round(CX - hw), Math.round(CX + hw)]; }
-    function onWorld(x, y, w, h, c) { for (var yy = y; yy < y + h; yy++) { var s = span(yy), a = Math.max(x, s[0]), b = Math.min(x + w, s[1]); if (b > a && Math.abs(yy + .5 - CY) < R) steps.push([a, yy, b - a, 1, c]); } }
-    for (var y = CY - R; y < CY + R; y++) { var sp = span(y); if (sp[1] > sp[0]) steps.push([sp[0], y, sp[1] - sp[0], 1, C.sea]); }
-    [[14, 44, 16, 3], [16, 47, 13, 2], [19, 49, 8, 2], [23, 51, 4, 2], [24, 53, 9, 2], [25, 55, 8, 2], [26, 57, 6, 1], [27, 58, 4, 1],
-     [41, 44, 9, 2], [42, 46, 7, 3], [44, 49, 3, 2]].forEach(function (l) { onWorld(l[0], l[1], l[2], l[3], C.cream); });
-    var band = steps.length;
-    for (var x = CX - R; x < CX + R; x += 3) onWorld(x, 37, 3, 4, C.gold);
-    for (y = CY - R; y < 37; y += 2) onWorld(30, y, 4, 2, C.gold);
-    for (y = 17; y >= 1; y -= 2) steps.push([29, y, 6, 2, C.gold]);
-    steps.push([22, 6, 20, 5, C.gold]);
-    function draw(n) { g.clearRect(0, 0, 64, 64); for (var i = 0; i < n; i++) { var s = steps[i]; g.fillStyle = s[4]; g.fillRect(s[0], s[1], s[2], s[3]); } }
-    if (reduce) return draw(steps.length);
-    var n = 0, t0 = 0;
-    (function tick(t) {
-      if (!t0) t0 = t;
-      var want = Math.min(steps.length, Math.floor((t - t0) / 28));
-      if (want !== n) { n = want; draw(n); }
-      if (n < steps.length) requestAnimationFrame(tick);
-      else idle();
-    })(performance.now());
-    function idle() { // light runs round the gold band
-      var k = 0, w = 2 * R;
-      setInterval(function () {
-        draw(steps.length);
-        var x = CX - R + (k++ % (w / 2)) * 2, s = span(37);
-        if (x >= s[0] && x + 2 <= s[1]) { g.fillStyle = C.light; g.fillRect(x, 37, 2, 4); }
-      }, 120);
-    }
-  })();
 
   // ---------------------------------------------------------------- a lantern, drawn the way a person would
   (function () {

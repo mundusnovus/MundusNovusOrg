@@ -7,8 +7,8 @@ import { createHash, createPublicKey, verify } from 'node:crypto';
 import { makeServer } from '../server.mjs';
 
 test('first-party OIDC code flow, signature, PKCE, replay and session revocation', async () => {
-  const dir = mkdtempSync(join(tmpdir(), 'mn-oidc-'));
-  const secret = 'test-only-client-secret-32-characters', callback = 'https://cloud.mundusnovus.org/apps/user_oidc/code';
+  const dir = mkdtempSync(join(tmpdir(), 'as-oidc-'));
+  const secret = 'test-only-client-secret-32-characters', callback = 'https://cloud.asteria.technology/apps/user_oidc/code';
   const server = makeServer({ DATA_DIR: dir, OIDC_CLIENTS: JSON.stringify([{ id: 'cloud', secret, redirectUris: [callback], requirePkce: true }]) });
   await new Promise(r => server.listen(0, '127.0.0.1', r));
   const base = 'http://127.0.0.1:' + server.address().port;
@@ -19,9 +19,9 @@ test('first-party OIDC code flow, signature, PKCE, replay and session revocation
   const token = (code, extra = {}, auth = secret) => fetch(base + '/oauth/token', { method: 'POST', headers: { 'content-type': 'application/x-www-form-urlencoded', authorization: 'Basic ' + Buffer.from('cloud:' + auth).toString('base64') }, body: new URLSearchParams({ grant_type: 'authorization_code', code, redirect_uri: callback, code_verifier: verifier, ...extra }) });
   try {
     const discovery = await (await get('/.well-known/openid-configuration')).json();
-    assert.equal(discovery.issuer, 'https://social.mundusnovus.org');
+    assert.equal(discovery.issuer, 'https://social.asteria.technology');
     assert.equal(statSync(join(dir, 'oidc-rs256.pem')).mode & 0o777, 0o600);
-    const login = await get(authorize); assert.match(login.headers.get('location'), /^https:\/\/social.mundusnovus.org\/signin\?return=/);
+    const login = await get(authorize); assert.match(login.headers.get('location'), /^https:\/\/social.asteria.technology\/signin\?return=/);
     assert.equal((await get(authorize.replace(encodeURIComponent(callback), encodeURIComponent('https://evil.test/')))).status, 400);
     const silent = await get(authorize + '&prompt=none'); assert.match(silent.headers.get('location'), /error=login_required/);
     assert.equal((await get(authorize + '&client_id=other')).status, 400);

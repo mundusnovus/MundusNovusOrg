@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""Build Chancel, the Mundus Novus typeface, as TrueType (.ttf) and WOFF (.woff) from chancel-glyphs.json.
+"""Build Asteria Pixel, the Asteria Technology typeface, as TrueType (.ttf) and WOFF (.woff) from asteria-pixel-glyphs.json.
 
 Pure standard library. Each glyph's pixels are traced into one clean outline (no overlapping squares),
 so the font renders without seams at any size.
 
-    python3 brand/font/build_font.py            # writes brand/font/Chancel-Regular.{ttf,woff}
+    python3 brand/font/build_font.py            # writes brand/font/AsteriaPixel-Regular.{ttf,woff}
 """
 import json
 import os
@@ -15,16 +15,17 @@ import zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(HERE))
 OUT = HERE
-SRC = json.load(open(os.path.join(HERE, "chancel-glyphs.json"), encoding="utf-8"))
+SRC = json.load(open(os.path.join(HERE, "asteria-pixel-glyphs.json"), encoding="utf-8"))
 CAP = SRC["capHeight"]
 
 PX = 100            # font units per pixel
 UPM = 1000
 ASC, DESC, GAP = 1000, 300, 100
 VERSION = "1.000"
-FAMILY = "Chancel"
-COPYRIGHT = "Copyright 2026 Mundus Novus"
-LICENSE = "Mundus Novus License 1.0: GPL-3.0-only, with permission to embed the font in documents and works of your own. See LICENSE."
+FAMILY = "Asteria Pixel"
+PS = FAMILY.replace(" ", "")   # PostScript names and file names take no spaces
+COPYRIGHT = "Copyright 2026 Asteria Technology"
+LICENSE = "Asteria License 1.0: GPL-3.0-only, with permission to embed the font in documents and works of your own. See LICENSE."
 LICENSE_URL = "https://openfontlicense.org"
 DESCRIPTION = SRC["description"]
 
@@ -219,8 +220,8 @@ def build(STYLE):
                       bytes([2, 0, 6, 9, 0, 0, 0, 0, 0, 0]), 0b11, 0, 0, 0, b"CMWL",
                       (0x0020 if bold else 0x0040) | 0x0080, codes[0], min(codes[-1], 0xFFFF), ASC, -DESC, GAP, ASC, DESC, 1, 0,
                       500, 700, 0, 32, 1)
-    names = {0: COPYRIGHT, 1: FAMILY, 2: STYLE, 3: "%s;CSYS;%s-%s" % (VERSION, FAMILY, STYLE), 4: "%s %s" % (FAMILY, STYLE),
-             5: "Version " + VERSION, 6: "%s-%s" % (FAMILY, STYLE), 8: "Mundus Novus", 9: "Mundus Novus",
+    names = {0: COPYRIGHT, 1: FAMILY, 2: STYLE, 3: "%s;ASTR;%s-%s" % (VERSION, PS, STYLE), 4: "%s %s" % (FAMILY, STYLE),
+             5: "Version " + VERSION, 6: "%s-%s" % (PS, STYLE), 8: "Asteria Technology", 9: "Asteria Technology",
              10: DESCRIPTION, 13: LICENSE, 14: LICENSE_URL}
     post = struct.pack(">IIhhIIIII", 0x00030000, 0, -100, 100, 0, 0, 0, 0, 0)
     tables = {"head": head, "hhea": hhea, "maxp": maxp, "OS/2": os2, "hmtx": hmtx, "cmap": cmap_table(cmap),
@@ -232,7 +233,7 @@ def build(STYLE):
     font = sfnt(tables)
 
     os.makedirs(OUT, exist_ok=True)
-    base = os.path.join(OUT, "%s-%s" % (FAMILY, STYLE))
+    base = os.path.join(OUT, "%s-%s" % (PS, STYLE))
     open(base + ".ttf", "wb").write(font)
     open(base + ".woff", "wb").write(woff(tables, font))
     print("%s %s: %d glyphs, %d bytes TTF" % (FAMILY, STYLE, n, len(font)))

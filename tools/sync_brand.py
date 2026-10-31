@@ -1,4 +1,4 @@
-"""Copies the Mundus Novus brand into the apps checked out beside this repository: the product icons (from
+"""Copies the Asteria Technology brand into the apps checked out beside this repository: the product icons (from
 brand/logo/products/, made by brand/build_brand.py), the design tokens and the shared host files. Run it after
 changing the brand, then commit each repository.
 
@@ -9,7 +9,7 @@ import os, re, shutil, sys
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT = os.path.dirname(REPO)
 LOGO = os.path.join(REPO, "brand", "logo", "products")
-HOST = ["mn-app.css", "mn-cloud-ui.js", "mn-cloud.js", "mn-host.js"]
+HOST = ["as-app.css", "as-cloud-ui.js", "as-cloud.js", "as-host.js"]
 
 
 def copy(src, dst):
@@ -46,8 +46,14 @@ def web_app(kind, app):
 def tokens(dst, font_path=None):
     s = open(os.path.join(REPO, "brand", "tokens.css")).read()
     if font_path:  # an app that keeps the font beside the tokens rather than in font/
-        s = re.sub(r'@font-face \{[^}]*\}', '@font-face { font-family: "Chancel"; src: url("%s") format("woff"); font-display: swap; }' % font_path, s, count=1)
+        s = re.sub(r'@font-face \{[^}]*\}', '@font-face { font-family: "Asteria Pixel"; src: url("%s") format("woff"); font-display: swap; }' % font_path, s, count=1)
     open(dst, "w").write(s)
+
+
+def fonts(dst, kinds=("ttf", "woff")):
+    """Asteria Pixel, built by brand/font/build_font.py"""
+    for k in kinds:
+        copy(os.path.join(REPO, "brand", "font", "AsteriaPixel-Regular." + k), os.path.join(dst, "AsteriaPixel-Regular." + k))
 
 
 def main():
@@ -57,27 +63,31 @@ def main():
         icons(kind, os.path.join(r, "src", "icons"), only_existing=True)
         web_app(kind, os.path.join(r, "src", "app"))
         tokens(os.path.join(r, "src", "app", "brand", "tokens.css"))
+        fonts(os.path.join(r, "src", "app", "brand", "font"))
         for f in HOST:
             copy(os.path.join(REPO, "brand", "host", f), os.path.join(r, "src", "app", "brand", f))
     cloud = need("MNCloud")
     icons("cloud", os.path.join(cloud, "brand", "icons"))
     for f in ("cloud-180.png", "cloud-192.png", "cloud-512.png", "cloud-icon.svg", "cloud-mark.svg", "cloud.ico"):
         copy(os.path.join(LOGO, "cloud", f), os.path.join(cloud, "public", "brand", f))
-    tokens(os.path.join(cloud, "public", "brand", "tokens.css"), "Chancel-Regular.woff")
+    tokens(os.path.join(cloud, "public", "brand", "tokens.css"), "AsteriaPixel-Regular.woff")
+    fonts(os.path.join(cloud, "brand"))
+    fonts(os.path.join(cloud, "public", "brand"), ("woff",))
     office = need("MNOffice")
     icons("office", os.path.join(office, "brand", "icons"))
+    fonts(os.path.join(office, "brand"))
     copy(os.path.join(LOGO, "office", "office-icon.svg"), os.path.join(office, "desktop", "brand", "svg", "app-icon.svg"))
     for theme in ("light", "dark"):
         copy(os.path.join(LOGO, "office", "office-mark.svg"), os.path.join(office, "desktop", "brand", "svg", "logo-%s.svg" % theme))
     # Learn: icons, the tokens with the font beside them, and the link preview
-    learn = os.path.join(ROOT, "MNLearn") if os.path.isdir(os.path.join(ROOT, "MNLearn")) else need("MundusNovusLearn")
+    learn = os.path.join(ROOT, "MNLearn") if os.path.isdir(os.path.join(ROOT, "MNLearn")) else need("AsteriaLearn")
     dst = os.path.join(learn, "public", "brand")
     for f in ("learn-180.png", "learn-192.png", "learn-512.png", "learn-maskable-512.png", "learn-icon.svg", "learn-mark.svg", "learn.ico"):
         copy(os.path.join(LOGO, "learn", f), os.path.join(dst, f))
-    copy(os.path.join(REPO, "brand", "font", "Chancel-Regular.woff"), os.path.join(dst, "Chancel-Regular.woff"))
+    copy(os.path.join(REPO, "brand", "font", "AsteriaPixel-Regular.woff"), os.path.join(dst, "AsteriaPixel-Regular.woff"))
     copy(os.path.join(REPO, "brand", "logo", "og-1200x630.png"), os.path.join(dst, "og-1200x630.png"))
-    tokens(os.path.join(dst, "tokens.css"), "Chancel-Regular.woff")
-    print("brand copied into MNSprite, MNBox, MNCloud, MNOffice and Learn")
+    tokens(os.path.join(dst, "tokens.css"), "AsteriaPixel-Regular.woff")
+    print("brand copied into Asteria Sprite, Asteria Box, Asteria Cloud, Asteria Office and Asteria Learn")
 
 
 if __name__ == "__main__":

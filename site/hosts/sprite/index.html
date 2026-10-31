@@ -3,17 +3,17 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>MNSprite</title>
+<title>Asteria Sprite</title>
 <meta name="description" content="A free, open-source pixel-art editor and animator. Use it in your browser or download it.">
-<meta name="theme-color" content="#0c1222">
-<meta property="og:title" content="MNSprite">
+<meta name="theme-color" content="#0a1518">
+<meta property="og:title" content="Asteria Sprite">
 <meta property="og:description" content="A free, open-source pixel-art editor and animator. Use it in your browser or download it.">
-<meta property="og:image" content="https://mundusnovus.org/brand/logo/og-1200x630.png">
-<meta property="og:url" content="https://sprite.mundusnovus.org/">
+<meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://sprite.asteria.technology/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/brand/logo/MundusNovus.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg">
-<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png">
-<link rel="preload" href="/brand/font/Chancel-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png?v=asteria">
+<link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
 <script src="/js/site.js" defer></script>
@@ -21,9 +21,9 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" data-sub="main" aria-label="Mundus Novus, home"><img src="/brand/logo/mark.svg" width="28" height="28" alt=""><span>Mundus <b>Novus</b></span></a>
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
   <nav aria-label="Main">
-    <a href="https://sprite.mundusnovus.org/" data-sub="sprite" aria-current="page">Sprite</a><a href="https://box.mundusnovus.org/" data-sub="box">Box</a><a href="https://social.mundusnovus.org/" data-sub="social">Social</a><a href="https://cloud.mundusnovus.org/" data-sub="cloud">Cloud</a><a href="https://office.mundusnovus.org/" data-sub="office">Office</a><a href="https://learn.mundusnovus.org/" data-sub="learn">Learn</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a>
+    <a href="https://sprite.asteria.technology/" data-sub="sprite" aria-current="page">Sprite</a><a href="https://box.asteria.technology/" data-sub="box">Box</a><a href="https://social.asteria.technology/" data-sub="social">Social</a><a href="https://cloud.asteria.technology/" data-sub="cloud">Cloud</a><a href="https://office.asteria.technology/" data-sub="office">Office</a><a href="https://learn.asteria.technology/" data-sub="learn">Learn</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a>
   </nav>
   <span id="account"></span>
 </header>
@@ -31,7 +31,7 @@
 <main id="main">
 <section class="hero app-hero" aria-labelledby="hero-title">
   <img class="app-icon reveal" src="/brand/logo/products/sprite/sprite-256.png" width="112" height="112" alt="">
-  <h1 id="hero-title" class="display reveal">MN<b>Sprite</b></h1>
+  <h1 id="hero-title" class="display reveal">Asteria<wbr><b>Sprite</b></h1>
   <p class="lede reveal">Draw, animate and export pixel art. Describe a sprite and the assistant draws it with you, one step you can undo at a time.</p>
   <div class="actions reveal"><a class="btn primary" href="/app/">Open the editor</a><a class="btn" href="#download">Download</a></div>
 </section>
@@ -41,7 +41,7 @@
     <div class="sprite-stage"><canvas id="spriteCanvas" width="16" height="16"></canvas><ol class="palette" id="spritePalette" aria-hidden="true"></ol></div>
   </figure>
 </section>
-<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--mn-step-3); margin: 0 0 48px">What it does</h2>
+<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--as-step-3); margin: 0 0 48px">What it does</h2>
 <div class="features">
   <div class="reveal"><h3>Layers and frames</h3><p>Blend modes, onion skin, tags and playback. Indexed or full colour.</p></div>
   <div class="reveal"><h3>Brushes that shade</h3><p>Pixel-perfect pencil, shading and dither brushes, gradients, mirror and tiled drawing.</p></div>
@@ -56,7 +56,7 @@
   <div class="copy reveal">
     <p class="eyebrow">Work with your agent</p>
     <h2 id="agent-title" class="display">Ask your agent</h2>
-    <p>MNSprite comes with instructions for AI agents. An agent that can run code can use the same tools as the editor's own assistant, and hand you a file you can open here and keep working on.</p>
+    <p>Asteria Sprite comes with instructions for AI agents. An agent that can run code can use the same tools as the editor's own assistant, and hand you a file you can open here and keep working on.</p>
     <ol class="steps">
       <li><b>Claude.</b> In the Claude desktop app, open Cowork, give it a folder to work in, and paste the prompt.</li>
       <li><b>ChatGPT.</b> Start a task in agent mode, or in Codex, and paste the prompt.</li>
@@ -64,20 +64,20 @@
     </ol>
   </div>
   <figure class="prompt reveal">
-    <pre id="prompt-sprite">Make me a sprite with MNSprite. Get it from https://github.com/mundusnovus/MNSprite (download the ZIP or clone it), read AGENTS.md in it, and follow it. Here is what I want: a 32 by 32 knight with a lantern, four frames of walking, in warm colours. When you are done, give me the .asprite.json project and a sprite sheet.</pre>
+    <pre id="prompt-sprite">Make me a sprite with Asteria Sprite. Get it from https://github.com/mundusnovus/Asteria Sprite (download the ZIP or clone it), read AGENTS.md in it, and follow it. Here is what I want: a 32 by 32 knight with a lantern, four frames of walking, in warm colours. When you are done, give me the .asprite.json project and a sprite sheet.</pre>
     <button class="btn primary" type="button" data-copy="prompt-sprite">Copy the prompt</button>
   </figure>
 </section>
-<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Mundus Novus</h2><div class="cards">
-<article class="card reveal"><h3>MNBox</h3><p>Music, from chiptune to a full band.</p><a href="https://box.mundusnovus.org/" data-sub="box">Open Box</a></article>
-<article class="card reveal"><h3>MNCloud</h3><p>3 GB for your files, saved from every app.</p><a href="https://cloud.mundusnovus.org/" data-sub="cloud">Open Cloud</a></article>
+<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Asteria Technology</h2><div class="cards">
+<article class="card reveal"><h3>Asteria Box</h3><p>Music, from chiptune to a full band.</p><a href="https://box.asteria.technology/" data-sub="box">Open Box</a></article>
+<article class="card reveal"><h3>Asteria Cloud</h3><p>3 GB for your files, saved from every app.</p><a href="https://cloud.asteria.technology/" data-sub="cloud">Open Cloud</a></article>
 <article class="card reveal"><h3>Everything, downloadable</h3><p>Every app for every platform, with checksums.</p><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a></article></div></section>
 </main>
 
 <footer class="foot">
-  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg" width="24" height="24" alt=""><span>Mundus Novus</span></div>
-  <p class="verse">Freely you have received; freely give. <cite>Matthew 10:8</cite></p>
-  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.mundusnovus.org/" data-sub="social">Social</a></nav>
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
+  <p class="verse">Good tools, freely given.</p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Source</a><a href="/source/#license" data-sub="main" data-path="/source/#license">License</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
 </footer>
 </body>
 </html>

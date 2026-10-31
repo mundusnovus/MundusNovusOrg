@@ -1,4 +1,4 @@
-# mundusnovus.org and Social. Node 24, no packages to install.
+# asteria.technology and Social. Node 24, no packages to install.
 FROM node:24-slim
 WORKDIR /app
 LABEL org.opencontainers.image.licenses="GPL-3.0-only"

@@ -1,18 +1,18 @@
 # MundusNovusOrg
 
-The home of **Mundus Novus**: the website, MNSocial, the brand, the Chancel typeface, the
-soundtrack *Freely Given*, and the tools that package MNSprite and MNBox for download.
+The home of **Asteria Technology**: the website, Asteria Social, the brand, the Asteria Pixel typeface, the
+soundtrack *Freely Given*, and the tools that package Asteria Sprite and Asteria Box for download.
 
 One server answers every address, by host name:
 
 | Address | What it serves |
 | --- | --- |
-| `mundusnovus.org` (and `www.`, which redirects) | The main site, with `/downloads/` for everything |
-| `sprite.mundusnovus.org` | Sprite's page (`site/hosts/sprite/`), the live editor at `/app/`, and its downloads |
-| `box.mundusnovus.org` | Box's page (`site/hosts/box/`), the live editor at `/app/`, and its downloads |
-| `social.mundusnovus.org` | Social (`site/social/`) |
+| `asteria.technology` (and `www.`, which redirects) | The main site, with `/downloads/` for everything |
+| `sprite.asteria.technology` | Sprite's page (`site/hosts/sprite/`), the live editor at `/app/`, and its downloads |
+| `box.asteria.technology` | Box's page (`site/hosts/box/`), the live editor at `/app/`, and its downloads |
+| `social.asteria.technology` | Social (`site/social/`) |
 
-One Mundus Novus account works everywhere: every address answers `/api/`, and the sign-in cookie is set for the
+One Asteria account works everywhere: every address answers `/api/`, and the sign-in cookie is set for the
 whole domain (`COOKIE_DOMAIN`).
 
 ## What is here
@@ -23,8 +23,8 @@ whole domain (`COOKIE_DOMAIN`).
 | `server.mjs` | Serves the site and Social. Node 24, no packages. |
 | `social/` | Social's server: `app.mjs` (the API) and `pds.mjs` (the link to the account server). |
 | `site/social/` | Social's app in the browser. |
-| `brand/` | Tokens, the host every app stands on (`host/mn-host.js`), logos (`build_brand.py`) and the Chancel font (`font/`). |
-| `tools/studio/` | The soundtrack: `album.js` (the tracks), `engine.js` and `covers.js`, made with MNBox. |
+| `brand/` | Tokens, the host every app stands on (`host/as-host.js`), logos (`build_brand.py`) and the Asteria Pixel font (`font/`). |
+| `tools/studio/` | The soundtrack: `album.js` (the tracks), `engine.js` and `covers.js`, made with Asteria Box. |
 | `tools/package/` | Builds the desktop downloads (`package.py`) and the macOS shell (`macos/Shell.swift`). |
 | `test/` | End-to-end tests for the server and Social. |
 
@@ -40,7 +40,7 @@ the server stops.
 
 ## Build what the site serves
 
-Check out MNSprite and MNBox beside this folder, then:
+Check out Asteria Sprite and Asteria Box beside this folder, then:
 
 ```bash
 python3 tools/package/package.py
@@ -61,15 +61,15 @@ Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `
 ## Deploy (Railway)
 
 One service from this repository (it has a `Dockerfile` and `railway.json`), with a volume at `/data` and the
-domains `mundusnovus.org`, `www.`, `sprite.`, `box.` and `social.mundusnovus.org`. Set:
+domains `asteria.technology`, `www.`, `sprite.`, `box.` and `social.asteria.technology`. Set:
 
 | Variable | Value |
 | --- | --- |
 | `PDS_URL` | How this server reaches the account server, e.g. `http://pds.railway.internal:3000` (see MundusNovusPDS) |
-| `PDS_PUBLIC_URL` | Its public address, `https://pds.mundusnovus.org` (for pictures) |
-| `COOKIE_DOMAIN` | `mundusnovus.org`, so one sign-in counts on every address |
+| `PDS_PUBLIC_URL` | Its public address, `https://pds.asteria.technology` (for pictures) |
+| `COOKIE_DOMAIN` | `asteria.technology`, so one sign-in counts on every address |
 | `PDS_ADMIN_PASSWORD` | The same admin password the PDS uses |
-| `PDS_HANDLE_DOMAIN` | `pds.mundusnovus.org` |
+| `PDS_HANDLE_DOMAIN` | `pds.asteria.technology` |
 | `SESSION_SECRET` | 64 random hex characters. Keep it: it protects stored sessions. |
 | `STAFF` | Social's owner and moderators, with titles: `dac=owner:Chief Organizer, anna=moderator`. The owner can also name moderators and titles from the Moderation page; names set here can't be changed there. |
 
@@ -81,4 +81,4 @@ node --test test/*.test.mjs
 
 ## License
 
-Free and open source under the **Mundus Novus License 1.0** (GPL-3.0-only). See [LICENSING.md](LICENSING.md).
+Free and open source under the **Asteria License 1.0** (GPL-3.0-only). See [LICENSING.md](LICENSING.md).

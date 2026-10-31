@@ -407,7 +407,7 @@
       if (any) cels.push({ layer: self.layerIndex(ids[0]), frame: self.frameIndex(ids[1]), data: celToB64(self, buf) });
     });
     return {
-      format: 'mn-sprite', version: 1, name: this.name, width: this.w, height: this.h, mode: this.mode,
+      format: 'asteria-sprite', version: 1, name: this.name, width: this.w, height: this.h, mode: this.mode,
       palette: this.palette.map(function (c) { return C.hex(c, true); }),
       layers: this.layers.map(function (l) { return { name: l.name, visible: l.visible, opacity: l.opacity, blend: l.blend, locked: l.locked }; }),
       frames: this.frames.map(function (f) { return { duration: f.duration }; }),
@@ -417,7 +417,7 @@
   };
   Doc.fromJSON = function (j) {
     if (typeof j === 'string') j = JSON.parse(j);
-    if (!j || (j.format !== 'mn-sprite' && j.format !== 'amerika-sprite')) throw new Error('not a MNSprite project'); // Vigil Sprite files open too
+    if (!j || (['asteria-sprite', 'mn-sprite', 'christian-sprite', 'amerika-sprite'].indexOf(j.format) < 0)) throw new Error('not an Asteria Sprite project'); // Vigil Sprite files open too
     var d = new Doc({ w: j.width, h: j.height, mode: j.mode, palette: (j.palette || []).map(C.parse).filter(function (c) { return c !== null; }) });
     d.name = j.name || 'Sprite'; d.layers = []; d.frames = [];
     (j.layers || []).forEach(function (l) { d.layers.push({ id: d.nextId++, name: String(l.name || 'Layer'), visible: l.visible !== false, opacity: clamp(l.opacity === undefined ? 255 : l.opacity, 0, 255), blend: BLEND_MODES.indexOf(l.blend) >= 0 ? l.blend : 'normal', locked: !!l.locked }); });

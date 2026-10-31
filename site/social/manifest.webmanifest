@@ -1,4 +1,4 @@
-{ "name": "MNSocial", "short_name": "Social", "id": "/", "start_url": "/", "scope": "/", "display": "standalone",
-  "background_color": "#0c1222", "theme_color": "#0c1222",
+{ "name": "Asteria Social", "short_name": "Social", "id": "/", "start_url": "/", "scope": "/", "display": "standalone",
+  "background_color": "#0a1518", "theme_color": "#0a1518",
   "icons": [{ "src": "/brand/logo/products/social/social-192.png", "sizes": "192x192", "type": "image/png" }, { "src": "/brand/logo/products/social/social-512.png", "sizes": "512x512", "type": "image/png" },
     { "src": "/brand/logo/products/social/social-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }] }

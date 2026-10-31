@@ -1,4 +1,4 @@
-// MNSocial: the API under /social/api. Accounts and records live on the PDS (see pds.mjs); this
+// Asteria Social: the API under /social/api. Accounts and records live on the PDS (see pds.mjs); this
 // keeps an index in SQLite for feeds, search, notifications, messages, communities and moderation.
 import { DatabaseSync } from 'node:sqlite';
 import { createCipheriv, createDecipheriv, createHash, randomBytes, timingSafeEqual } from 'node:crypto';
@@ -33,14 +33,14 @@ const NAME = /^[a-z0-9](?:[a-z0-9-]{1,18}[a-z0-9])$/;
 const ROUTE_WORDS = ['like', 'repost', 'follow', 'read', 'join', 'keys', 'profile', 'recovery', 'reports', 'people', 'posts', 'restore'];
 // roles, stored in users.admin: members 0, moderators 1 (reports, removing posts, suspending members), the owner 2 (everything)
 const ROLES = { member: 0, moderator: 1, owner: 2 }, ROLE_NAME = ['member', 'moderator', 'owner'];
-const RESERVED = new Set([...ROUTE_WORDS, 'admin', 'root', 'support', 'help', 'social', 'api', 'www', 'pds', 'mundus', 'systems', 'mundusnovus', 'mod', 'moderator', 'official']);
+const RESERVED = new Set([...ROUTE_WORDS, 'admin', 'root', 'support', 'help', 'social', 'api', 'www', 'pds', 'asteria', 'systems', 'mundusnovus', 'mod', 'moderator', 'official']);
 
 class HttpError extends Error { constructor(status, message) { super(message); this.status = status; } }
 const fail = (status, message) => { throw new HttpError(status, message); };
 const now = () => Date.now();
 const sha = (s) => createHash('sha256').update(s).digest('hex');
 
-export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.mundusnovus.org', secret, admins = [], staff = {}, serviceSecret = null }) {
+export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.asteria.technology', secret, admins = [], staff = {}, serviceSecret = null }) {
   // staff comes from the STAFF setting (name=role:Title, ...); ADMIN_NAMES are moderators. Settings outrank the database.
   admins.forEach((n) => { if (!staff[n]) staff[n] = { role: 'moderator', title: null }; });
   const db = new DatabaseSync(dbPath);
@@ -422,20 +422,20 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.mun
       run('update apikeys set used = ? where id = ?', now(), k.id);
       const u = usersById(k.user_id); return u && !u.suspended ? Object.assign(u, { viaKey: true }) : null;
     }
-    const sid = (/(?:^|;\s*)mn_social=([a-f0-9]{48})/.exec(req.headers.cookie || '') || [])[1];
+    const sid = (/(?:^|;\s*)as_social=([a-f0-9]{48})/.exec(req.headers.cookie || '') || [])[1];
     if (!sid) return null;
     const s = one('select * from sessions where id = ? and expires > ?', sid, now());
     const u = s && usersById(s.user_id);
     return u && !u.suspended ? Object.assign(u, { sid }) : null;
   }
-  function cookie(sid, secure) { return 'mn_social=' + sid + '; Path=/' + (cookieDomain ? '; Domain=' + cookieDomain : '') + '; HttpOnly; SameSite=Lax; Max-Age=' + (sid ? 2592000 : 0) + (secure ? '; Secure' : ''); }
+  function cookie(sid, secure) { return 'as_social=' + sid + '; Path=/' + (cookieDomain ? '; Domain=' + cookieDomain : '') + '; HttpOnly; SameSite=Lax; Max-Age=' + (sid ? 2592000 : 0) + (secure ? '; Secure' : ''); }
 
-  // ---------------------------------------------------------------- services: MNCloud asks, server to server
+  // ---------------------------------------------------------------- services: Asteria Cloud asks, server to server
   // Contacts are your Social friends (people you follow and people who follow you). A Cloud share is written as an
-  // org.mundusnovus.cloud.share record in the sharer's own repository on the PDS, and the other person is told.
+  // technology.asteria.cloud.share record in the sharer's own repository on the PDS, and the other person is told.
   function service(req, path, body) {
     const given = String(req.headers['x-cs-service'] || '');
-    if (!serviceSecret || given.length !== serviceSecret.length || !timingSafeEqual(Buffer.from(given), Buffer.from(serviceSecret))) fail(403, 'Not a Mundus Novus service.');
+    if (!serviceSecret || given.length !== serviceSecret.length || !timingSafeEqual(Buffer.from(given), Buffer.from(serviceSecret))) fail(403, 'Not a Asteria Technology service.');
     const q = new URL(req.url, 'http://x').searchParams, byName = (n) => one('select * from users where name = ? and suspended = 0', String(n || '').toLowerCase());
     const brief = (u) => ({ name: u.name, display: u.display || u.name, did: u.did, avatar: u.avatar ? pds.blobUrl(u.did, u.avatar) : null, title: u.title || null });
     if (req.method === 'GET' && path === 'service/person') { const u = byName(q.get('name')); if (!u) fail(404, 'No such person.'); return { person: brief(u) }; }
@@ -449,7 +449,7 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.mun
     if (req.method === 'POST' && path === 'service/cloud-share') {
       const from = byName(body.from), to = byName(body.to); if (!from || !to) fail(404, 'No such person.');
       const file = body.file || {}, perm = body.perm === 'edit' ? 'edit' : 'view';
-      return withPds(from, (s) => pds.createRecord(s, 'org.mundusnovus.cloud.share', { $type: 'org.mundusnovus.cloud.share', subject: to.did,
+      return withPds(from, (s) => pds.createRecord(s, 'technology.asteria.cloud.share', { $type: 'technology.asteria.cloud.share', subject: to.did,
         item: { id: String(file.id || ''), name: String(file.name || '').slice(0, 240), kind: file.dir ? 'folder' : 'file' }, permission: perm, url: String(body.url || ''), createdAt: new Date().toISOString() }))
         .then((r) => {
           run('insert into notifications (user_id, actor_id, kind, created, url, detail) values (?, ?, ?, ?, ?, ?)', to.id, from.id, 'share', now(), String(body.url || ''), String(file.name || '').slice(0, 240));
@@ -458,9 +458,9 @@ export function createSocial({ dbPath = ':memory:', pds, handleDomain = 'pds.mun
     }
     if (req.method === 'POST' && path === 'service/cloud-unshare') {
       const from = byName(body.from); if (!from) fail(404, 'No such person.');
-      const uri = String(body.uri || ''), m = /^at:\/\/([^/]+)\/org\.mundusnovus\.cloud\.share\/([A-Za-z0-9._~:-]+)$/.exec(uri);
+      const uri = String(body.uri || ''), m = /^at:\/\/([^/]+)\/technology\.asteria\.cloud\.share\/([A-Za-z0-9._~:-]+)$/.exec(uri);
       if (!m || m[1] !== from.did) fail(400, 'Not a share record of this person.');
-      return withPds(from, (s) => pds.deleteRecord(s, 'org.mundusnovus.cloud.share', m[2])).then(() => ({ ok: true }));
+      return withPds(from, (s) => pds.deleteRecord(s, 'technology.asteria.cloud.share', m[2])).then(() => ({ ok: true }));
     }
     fail(404, 'Not found.');
   }

@@ -14,7 +14,7 @@ FOOT = home[home.index("<footer"):]
 
 
 def page(path, title, desc, body, url, here=None, main_class=""):
-    head = HEAD.replace("<title>Mundus Novus</title>", "<title>" + title + "</title>")
+    head = HEAD.replace("<title>Asteria Technology</title>", "<title>" + title + "</title>")
     head = re.sub(r'(<meta name="description" content=")[^"]*', lambda m: m.group(1) + desc, head)
     head = re.sub(r'(<meta property="og:title" content=")[^"]*', lambda m: m.group(1) + title, head)
     head = re.sub(r'(<meta property="og:description" content=")[^"]*', lambda m: m.group(1) + desc, head)
@@ -28,13 +28,13 @@ def page(path, title, desc, body, url, here=None, main_class=""):
 
 
 def also(*keys):
-    cards = {"sprite": ("MNSprite", "Pixel art and animation.", "sprite"), "box": ("MNBox", "Music, from chiptune to a full band.", "box"),
-             "social": ("Social", "Share what you make, with one Mundus Novus account.", "social"),
-             "cloud": ("MNCloud", "3 GB for your files, saved from every app.", "cloud")}
-    out = ['<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Mundus Novus</h2><div class="cards">']
+    cards = {"sprite": ("Asteria Sprite", "Pixel art and animation.", "sprite"), "box": ("Asteria Box", "Music, from chiptune to a full band.", "box"),
+             "social": ("Social", "Share what you make, with one Asteria account.", "social"),
+             "cloud": ("Asteria Cloud", "3 GB for your files, saved from every app.", "cloud")}
+    out = ['<section class="open" aria-labelledby="also-title"><h2 id="also-title" class="display reveal">Also from Asteria Technology</h2><div class="cards">']
     for k in keys:
         n, d, sub = cards[k]
-        out.append('<article class="card reveal"><h3>%s</h3><p>%s</p><a href="https://%s.mundusnovus.org/" data-sub="%s">Open %s</a></article>' % (n, d, sub, sub, n.replace("MN", "")))
+        out.append('<article class="card reveal"><h3>%s</h3><p>%s</p><a href="https://%s.asteria.technology/" data-sub="%s">Open %s</a></article>' % (n, d, sub, sub, n.replace("Asteria ", "")))
     out.append('<article class="card reveal"><h3>Everything, downloadable</h3><p>Every app for every platform, with checksums.</p><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a></article></div></section>')
     return "\n".join(out)
 
@@ -65,7 +65,7 @@ def agent(key, name, ask, gives):
 SPRITE = """
 <section class="hero app-hero" aria-labelledby="hero-title">
   <img class="app-icon reveal" src="/brand/logo/products/sprite/sprite-256.png" width="112" height="112" alt="">
-  <h1 id="hero-title" class="display reveal">MN<b>Sprite</b></h1>
+  <h1 id="hero-title" class="display reveal">Asteria<wbr><b>Sprite</b></h1>
   <p class="lede reveal">Draw, animate and export pixel art. Describe a sprite and the assistant draws it with you, one step you can undo at a time.</p>
   <div class="actions reveal"><a class="btn primary" href="/app/">Open the editor</a><a class="btn" href="#download">Download</a></div>
 </section>
@@ -75,7 +75,7 @@ SPRITE = """
     <div class="sprite-stage"><canvas id="spriteCanvas" width="16" height="16"></canvas><ol class="palette" id="spritePalette" aria-hidden="true"></ol></div>
   </figure>
 </section>
-<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--mn-step-3); margin: 0 0 48px">What it does</h2>
+<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--as-step-3); margin: 0 0 48px">What it does</h2>
 <div class="features">
   <div class="reveal"><h3>Layers and frames</h3><p>Blend modes, onion skin, tags and playback. Indexed or full colour.</p></div>
   <div class="reveal"><h3>Brushes that shade</h3><p>Pixel-perfect pencil, shading and dither brushes, gradients, mirror and tiled drawing.</p></div>
@@ -85,12 +85,12 @@ SPRITE = """
   <div class="reveal"><h3>An assistant at your side</h3><p>It works with your own Anthropic key, kept on your device, and every step can be undone. Or <a href="#agent">ask your own agent</a>.</p></div>
 </div></section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="sprite"></div></section>
-""" + agent("sprite", "MNSprite", ("a sprite", "a 32 by 32 knight with a lantern, four frames of walking, in warm colours"), "the .asprite.json project and a sprite sheet") + also("box", "cloud")
+""" + agent("sprite", "Asteria Sprite", ("a sprite", "a 32 by 32 knight with a lantern, four frames of walking, in warm colours"), "the .asprite.json project and a sprite sheet") + also("box", "cloud")
 
 BOX = """
 <section class="hero app-hero" aria-labelledby="hero-title">
   <img class="app-icon reveal" src="/brand/logo/products/box/box-256.png" width="112" height="112" alt="">
-  <h1 id="hero-title" class="display reveal">MN<b>Box</b></h1>
+  <h1 id="hero-title" class="display reveal">Asteria<wbr><b>Box</b></h1>
   <p class="lede reveal">Write music, from chiptune to a whole band. The Composer writes with you, and every change can be undone.</p>
   <div class="actions reveal"><a class="btn primary" href="/app/">Open the editor</a><a class="btn" href="#download">Download</a></div>
 </section>
@@ -101,22 +101,22 @@ BOX = """
     <button class="roll-play" id="rollPlay" type="button" aria-label="Play this song">▶</button>
   </figure>
 </section>
-<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--mn-step-3); margin: 0 0 48px">What it does</h2>
+<section aria-labelledby="what-title"><h2 id="what-title" class="display reveal" style="text-align:center; font-size: var(--as-step-3); margin: 0 0 48px">What it does</h2>
 <div class="features">
   <div class="reveal"><h3>A band</h3><p>Distorted and clean guitars, bass, organ, strings, choir, piano, bells and a real drum kit.</p></div>
   <div class="reveal"><h3>Riffs</h3><p>Power chords that chug, gallop or push, and a pulse bass that hammers.</p></div>
   <div class="reveal"><h3>A mix that balances itself</h3><p>Auto mix listens to each part and sets the volumes against the lead.</p></div>
   <div class="reveal"><h3>Ready to share</h3><p>Mastered MP3s with even loudness, title tags and cover art. WAV, MIDI and seamless game loops too.</p></div>
   <div class="reveal"><h3>The Composer</h3><p>Describe a song and it writes one, or asks before it changes yours. It works with your own Anthropic key. Or <a href="#agent">ask your own agent</a>.</p></div>
-  <div class="reveal"><h3>Built on BeepBox</h3><p>Every BeepBox song opens here. MNBox is free and open source, like BeepBox itself.</p></div>
+  <div class="reveal"><h3>Built on BeepBox</h3><p>Every BeepBox song opens here. Asteria Box is free and open source, like BeepBox itself.</p></div>
 </div></section>
 <section class="music" id="music" aria-labelledby="music-title">
   <div class="album reveal">
     <img id="albumCover" src="/media/music/covers/album-600.png" width="600" height="600" alt="Freely Given, cover">
     <div>
-      <p class="eyebrow">Made in MNBox</p>
+      <p class="eyebrow">Made in Asteria Box</p>
       <h2 id="music-title" class="display">Freely Given</h2>
-      <p class="quiet" id="albumMeta">Eight tracks · Mundus Novus · 2026</p>
+      <p class="quiet" id="albumMeta">Eight tracks · Asteria Technology · 2026</p>
       <div class="player" id="player" aria-label="Music player">
         <button class="btn primary round" id="playBtn" type="button" aria-label="Play">▶</button>
         <div class="now"><strong id="nowTitle">First Light</strong><span id="nowAbout"></span>
@@ -128,17 +128,17 @@ BOX = """
   <ol class="tracks reveal" id="tracks"></ol>
 </section>
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="box"></div></section>
-""" + agent("box", "MNBox", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "cloud")
+""" + agent("box", "Asteria Box", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "cloud")
 
 DOWNLOADS = """
 <h1 class="display">Downloads</h1>
-<p>Every Mundus Novus app, free, for every platform. Pick yours; we started with this computer's.</p>
+<p>Every Asteria Technology app, free, for every platform. Pick yours; we started with this computer's.</p>
 <div data-downloads></div>
-<h2 class="display" id="cloud-office">MNCloud and MNOffice</h2>
+<h2 class="display" id="cloud-office">Asteria Cloud and Asteria Office</h2>
 <p>The desktop apps for Cloud (keeps a folder on your computer in sync) and Office (edit documents offline) are built for Windows, macOS and Linux with every release.</p>
 <ul class="dl">
-<li><a href="https://github.com/mundusnovus/MNCloud/releases/latest"><b>MNCloud for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
-<li><a href="https://github.com/mundusnovus/MNOffice/releases/latest"><b>MNOffice for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
+<li><a href="https://github.com/mundusnovus/MNCloud/releases/latest"><b>Asteria Cloud for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
+<li><a href="https://github.com/mundusnovus/MNOffice/releases/latest"><b>Asteria Office for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
 </ul>
 <h2 class="display" id="all">Every file</h2>
 <p>Each file has a SHA-256 checksum, so you can check it arrived unchanged.</p>
@@ -148,16 +148,16 @@ DOWNLOADS = """
 <li><b>macOS.</b> Open the disk image and drag the app to Applications. The first time, right-click the app and choose Open, because it is not yet notarized by Apple.</li>
 <li><b>Windows.</b> Unzip the folder and double-click the <code>.cmd</code> file. The app opens in Microsoft Edge as its own window.</li>
 <li><b>Linux.</b> Install the <code>.deb</code> with your software installer, or unpack the <code>.tar.gz</code> and run the launcher inside.</li>
-<li><b>Phones and tablets.</b> Open <a href="https://sprite.mundusnovus.org/app/" data-sub="sprite" data-path="/app/">Sprite</a> or <a href="https://box.mundusnovus.org/app/" data-sub="box" data-path="/app/">Box</a> in your browser and add it to your home screen.</li>
+<li><b>Phones and tablets.</b> Open <a href="https://sprite.asteria.technology/app/" data-sub="sprite" data-path="/app/">Sprite</a> or <a href="https://box.asteria.technology/app/" data-sub="box" data-path="/app/">Box</a> in your browser and add it to your home screen.</li>
 </ul>
 <p>The source of every app is on the <a href="/source/" data-sub="main" data-path="/source/">source page</a>.</p>
 """
 
-page("hosts/sprite/index.html", "MNSprite", "A free, open-source pixel-art editor and animator. Use it in your browser or download it.", SPRITE, "https://sprite.mundusnovus.org/", "sprite")
-page("hosts/box/index.html", "MNBox", "A free, open-source music maker built on BeepBox. Use it in your browser or download it.", BOX, "https://box.mundusnovus.org/", "box")
-page("downloads/index.html", "Downloads · Mundus Novus", "Download MNSprite and MNBox for macOS, Windows and Linux.", DOWNLOADS, "https://mundusnovus.org/downloads/", None, "page")
-page("source/index.html", "Source · Mundus Novus", "The source of everything Mundus Novus makes, and the Mundus Novus License.", open(os.path.join(REPO, "tools", "source-body.html")).read(), "https://mundusnovus.org/source/", None, "page")
-page("404.html", "Not here · Mundus Novus", "There is nothing at this address.", '<h1 class="display">Not here</h1><p>There is nothing at this address. Try the <a href="/" data-sub="main">home page</a>.</p>', "https://mundusnovus.org/", None, "page")
+page("hosts/sprite/index.html", "Asteria Sprite", "A free, open-source pixel-art editor and animator. Use it in your browser or download it.", SPRITE, "https://sprite.asteria.technology/", "sprite")
+page("hosts/box/index.html", "Asteria Box", "A free, open-source music maker built on BeepBox. Use it in your browser or download it.", BOX, "https://box.asteria.technology/", "box")
+page("downloads/index.html", "Downloads · Asteria Technology", "Download Asteria Sprite and Asteria Box for macOS, Windows and Linux.", DOWNLOADS, "https://asteria.technology/downloads/", None, "page")
+page("source/index.html", "Source · Asteria Technology", "The source of everything Asteria Technology makes, and the Asteria License.", open(os.path.join(REPO, "tools", "source-body.html")).read(), "https://asteria.technology/source/", None, "page")
+page("404.html", "Not here · Asteria Technology", "There is nothing at this address.", '<h1 class="display">Not here</h1><p>There is nothing at this address. Try the <a href="/" data-sub="main">home page</a>.</p>', "https://asteria.technology/", None, "page")
 # the downloads link in the bar is marked on its own page
 p = os.path.join(SITE, "downloads", "index.html")
 text = open(p).read()

@@ -3,73 +3,73 @@
  "apps": [
   {
    "key": "sprite",
-   "name": "MNSprite",
-   "version": "2.1.0",
+   "name": "Asteria Sprite",
+   "version": "2.2.0",
    "about": "A free pixel-art editor and animator with an assistant that draws with you.",
    "files": [
     {
-     "file": "MNSprite-2.1.0-macOS.dmg",
+     "file": "Asteria-Sprite-2.2.0-macOS.dmg",
      "platform": "macos",
      "label": "macOS 13 or later, Apple silicon and Intel",
-     "bytes": 506591,
-     "sha256": "d54b8415d68a936a82dc839d7f3d9d6493aaa33debcc1449f39be4111e407c4b"
+     "bytes": 776383,
+     "sha256": "457d066166b8ed468fa50555fdd3ca344fcecd7ce1dc2903426ff4206dbb3e47"
     },
     {
-     "file": "MNSprite-2.1.0-Windows.zip",
+     "file": "Asteria-Sprite-2.2.0-Windows.zip",
      "platform": "windows",
      "label": "Windows 10 or 11",
-     "bytes": 144636,
-     "sha256": "8530b90b874782738e5ccf675dc9120cafcfbee493f91770de4567699f4337c3"
+     "bytes": 257929,
+     "sha256": "f805427a70b10099457f22deb7ed3a90ecd78a59f36bb1192e4550dc4b86e743"
     },
     {
-     "file": "mn-sprite_2.1.0_all.deb",
+     "file": "asteria-sprite_2.2.0_all.deb",
      "platform": "linux",
      "label": "Debian, Ubuntu and relatives (.deb)",
-     "bytes": 137456,
-     "sha256": "9cd8ec4d23dedd6bbd4540b816ec81df7b4fdf02fd284c00fb4114019e762b6b"
+     "bytes": 279064,
+     "sha256": "51fc7fa95aa3ba0fc9e90f631af14bc01fab3e5cc31cf1dad4c239ea8831f2cb"
     },
     {
-     "file": "MNSprite-2.1.0-Linux.tar.gz",
+     "file": "Asteria-Sprite-2.2.0-Linux.tar.gz",
      "platform": "linux",
      "label": "Any Linux (.tar.gz)",
-     "bytes": 137028,
-     "sha256": "cff12a2d31eb049c9e77541cf4cd6a69a7d11484f53318e1ab02b911ee5a54de"
+     "bytes": 278657,
+     "sha256": "46f08204438d8283189ce90b0a7ccbba8733e3f98aad80c7d104fa91a81a7bb5"
     }
    ]
   },
   {
    "key": "box",
-   "name": "MNBox",
-   "version": "4.1.0",
+   "name": "Asteria Box",
+   "version": "4.2.0",
    "about": "A free music maker built on BeepBox, with a Composer that writes music with you.",
    "files": [
     {
-     "file": "MNBox-4.1.0-macOS.dmg",
+     "file": "Asteria-Box-4.2.0-macOS.dmg",
      "platform": "macos",
      "label": "macOS 13 or later, Apple silicon and Intel",
-     "bytes": 785088,
-     "sha256": "50ee9322c4ca2611f378349fc74ada4c7881b1a8737c64f16d6af846f23efb24"
+     "bytes": 1091841,
+     "sha256": "f539503f176a7db62cbdae8d0470054611370f98ba25b92dd4ec4a6c1e9c9fef"
     },
     {
-     "file": "MNBox-4.1.0-Windows.zip",
+     "file": "Asteria-Box-4.2.0-Windows.zip",
      "platform": "windows",
      "label": "Windows 10 or 11",
-     "bytes": 361196,
-     "sha256": "869400c19482e5635a827a90f89adab2acf751f6099a85ee021f756823b33ccd"
+     "bytes": 468741,
+     "sha256": "5d3837f58025f412764cb5c7e60735b8fccab243573c5f3629416d544aefad39"
     },
     {
-     "file": "mn-box_4.1.0_all.deb",
+     "file": "asteria-box_4.2.0_all.deb",
      "platform": "linux",
      "label": "Debian, Ubuntu and relatives (.deb)",
-     "bytes": 358472,
-     "sha256": "e79ac8b1c94c4abaa9a0d6ad1057c5a790e1af71cd2b8266681b67566c275307"
+     "bytes": 511816,
+     "sha256": "1477c57b8f02e9119a71f9d0d987060192b31a00b6ef26f4723855baa6a34441"
     },
     {
-     "file": "MNBox-4.1.0-Linux.tar.gz",
+     "file": "Asteria-Box-4.2.0-Linux.tar.gz",
      "platform": "linux",
      "label": "Any Linux (.tar.gz)",
-     "bytes": 358044,
-     "sha256": "1491c2419441760a9750674783de1c265d1c8bf4f5c3a93e9c926af1b9204658"
+     "bytes": 511320,
+     "sha256": "1c191a1dbe4550922f6d8dd948c4ebe2a342f44211059b93b8d72058e552d4e6"
     }
    ]
   }

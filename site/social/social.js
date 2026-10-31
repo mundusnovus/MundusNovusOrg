@@ -1,10 +1,10 @@
-/* MNSocial: the app. A small router over /social/..., views built from DOM nodes (never from HTML
+/* Asteria Social: the app. A small router over /social/..., views built from DOM nodes (never from HTML
    strings, so nothing anyone writes can run as code), and the composer. Talks only to /social/api. */
 (function () {
   'use strict';
   var view = document.getElementById('view'), me = null, status = {};
   var MAIN = location.protocol + '//' + location.host.replace(/^social\./, ''), SUB = function (s) { return location.protocol + '//' + s + '.' + location.host.replace(/^social\./, ''); };
-  // after signing in or joining, go back to the Mundus Novus page that sent you here (never anywhere else)
+  // after signing in or joining, go back to the Asteria Technology page that sent you here (never anywhere else)
   function back() { var r = new URLSearchParams(location.search).get('return') || ''; try { var u = new URL(r); var root = location.host.replace(/^social\./, ''); if ((u.host === root || u.host.endsWith('.' + root)) && /^https?:$/.test(u.protocol)) { location.href = u.href; return true; } } catch (e) {} return false; }
   var ICON = {
     reply: 'M4 5h16v11H8l-4 4z', repost: 'M7 7h11l-3-3M17 17H6l3 3M18 7v5M6 17v-5', like: 'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z',
@@ -200,7 +200,7 @@
         h('div', { class: 'prof-top' }, avatar(u, true), mine ? h('a', { class: 'btn', href: '/settings', onclick: link, text: 'Edit profile' }) : h('div', {},
           me && u.followsYou ? h('a', { class: 'btn', href: '/messages/' + u.name, onclick: link, text: 'Message' }) : null, ' ', follow)),
         h('h2', {}, u.display, u.title ? h('span', { class: 'tag-title', text: u.title }) : null, u.agent ? h('span', { class: 'tag-agent', text: 'Assistant' }) : null),
-        u.title ? h('p', { class: 'handle', text: u.title + ' of Mundus Novus' }) : null,
+        u.title ? h('p', { class: 'handle', text: u.title + ' of Asteria Technology' }) : null,
         h('div', { class: 'handle', text: '@' + u.name + (u.followsYou ? ' · follows you' : '') }),
         u.agent ? h('p', { class: 'handle', text: 'An assistant account, run by ' + u.operator + '.' }) : null,
         u.bio ? h('p', { class: 'bio' }, richText(u.bio)) : null,
@@ -226,12 +226,12 @@
   };
   V.notifications = function () {
     if (!me) return needSignIn();
-    var box = h('div'), words = { like: [ICON.like, 'liked your post'], repost: [ICON.repost, 'reposted your post'], reply: [ICON.reply, 'replied'], mention: [ICON.reply, 'mentioned you'], follow: ['', 'followed you'], share: ['', 'shared with you in MNCloud'] };
+    var box = h('div'), words = { like: [ICON.like, 'liked your post'], repost: [ICON.repost, 'reposted your post'], reply: [ICON.reply, 'replied'], mention: [ICON.reply, 'mentioned you'], follow: ['', 'followed you'], share: ['', 'shared with you in Asteria Cloud'] };
     api('GET', 'notifications').then(function (r) {
       if (!r.notifications.length) box.appendChild(empty('Nothing yet', 'Likes, replies and new followers will show up here.'));
       r.notifications.forEach(function (n) {
         var w = words[n.kind] || ['', n.kind];
-        box.appendChild(h('a', { class: 'row' + (n.read ? '' : ' unread'), href: n.url && /^https:\/\/cloud\.mundusnovus\.org\//.test(n.url) ? n.url : n.post ? '/post/' + n.post.id : '/@' + n.actor.name, onclick: n.url ? null : link },
+        box.appendChild(h('a', { class: 'row' + (n.read ? '' : ' unread'), href: n.url && /^https:\/\/cloud\.asteria\.technology\//.test(n.url) ? n.url : n.post ? '/post/' + n.post.id : '/@' + n.actor.name, onclick: n.url ? null : link },
           avatar(n.actor), h('div', { class: 'grow' }, h('span', {}, h('b', { text: n.actor.display }), ' ' + w[1]), h('small', { text: n.detail || (n.post ? n.post.text : ago(n.created)) })), h('small', { text: ago(n.created) })));
       });
       api('POST', 'notifications/read').then(refreshMe);
@@ -267,7 +267,7 @@
         box.appendChild(h('form', { class: 'section', onsubmit: function (e) { e.preventDefault(); api('POST', 'communities', { name: name.value, about: about.value }).then(function (x) { go('/c/' + x.community.slug); }).catch(function (e2) { toast(e2.message); }); } },
           h('h3', { text: 'Start a community' }), h('div', { class: 'field' }, name), h('div', { class: 'field' }, about), h('div', {}, h('button', { class: 'btn primary', type: 'submit', text: 'Start it' }))));
       }
-      if (!r.communities.length) box.appendChild(empty('No communities yet', 'A parish, a club, a project: start the first one.'));
+      if (!r.communities.length) box.appendChild(empty('No communities yet', 'A club, a class, a project: start the first one.'));
       r.communities.forEach(function (c) { box.appendChild(h('a', { class: 'row', href: '/c/' + c.slug, onclick: link }, h('div', { class: 'avatar', text: c.name[0] }), h('div', { class: 'grow' }, h('b', { text: c.name }), h('small', { text: c.members + ' members' + (c.about ? ' · ' + c.about : '') })), c.joined ? h('small', { text: 'Joined' }) : null)); });
     });
     return [head('Communities'), box];
@@ -288,12 +288,12 @@
     var agent = h('input', { type: 'checkbox' }), operator = h('label', { class: 'field', hidden: true }, 'Who runs it?', fields.operator = h('input', { maxlength: 64, placeholder: 'Your name or @name' }));
     agent.addEventListener('change', function () { operator.hidden = !agent.checked; });
     var form = h('form', { class: 'form' });
-    if (kind === 'join') form.append(h('h2', { class: 'display', text: 'Make your account' }), h('p', { text: 'One Mundus Novus account for Social, Sprite, Box and everything we make. Your name is also your address on the AT Protocol: @name.' + (status.handleDomain || 'pds.mundusnovus.org') + '. No email, no phone number.' }),
+    if (kind === 'join') form.append(h('h2', { class: 'display', text: 'Make your account' }), h('p', { text: 'One Asteria account for Social, Sprite, Box and everything we make. Your name is also your address on the AT Protocol: @name.' + (status.handleDomain || 'pds.asteria.technology') + '. No email, no phone number.' }),
       field('name', 'Name', { autocomplete: 'username', pattern: '[a-z0-9][a-z0-9-]{1,18}[a-z0-9]', maxlength: 20, autocapitalize: 'none', spellcheck: 'false' }), field('display', 'Display name', { required: false, maxlength: 64 }),
       field('password', 'Password', { type: 'password', autocomplete: 'new-password', minlength: 10 }),
       h('label', { class: 'check' }, agent, h('span', { text: 'This account is run by an assistant. It will be labelled and can post up to six times an hour.' })), operator,
       h('label', { class: 'check' }, h('input', { type: 'checkbox', required: true }), h('span', {}, 'I will follow the ', h('a', { href: '/rules', onclick: link, text: 'rules' }), '.')));
-    else if (kind === 'signin') form.append(h('h2', { class: 'display', text: 'Sign in' }), h('p', { text: 'With your Mundus Novus account.' }), field('name', 'Name', { autocomplete: 'username', autocapitalize: 'none' }), field('password', 'Password', { type: 'password', autocomplete: 'current-password' }));
+    else if (kind === 'signin') form.append(h('h2', { class: 'display', text: 'Sign in' }), h('p', { text: 'With your Asteria account.' }), field('name', 'Name', { autocomplete: 'username', autocapitalize: 'none' }), field('password', 'Password', { type: 'password', autocomplete: 'current-password' }));
     else form.append(h('h2', { class: 'display', text: 'Recover your account' }), h('p', { text: 'Use one of the recovery codes you saved when you made your account.' }),
       field('name', 'Name', { autocapitalize: 'none' }), field('code', 'Recovery code', { autocomplete: 'off', autocapitalize: 'none' }), field('password', 'New password', { type: 'password', autocomplete: 'new-password', minlength: 10 }));
     var submit = h('button', { class: 'btn primary', type: 'submit', text: kind === 'join' ? 'Make my account' : kind === 'signin' ? 'Sign in' : 'Set new password' });

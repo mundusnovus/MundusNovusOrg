@@ -1,14 +1,14 @@
-// Mundus Novus on the web, one server for every address. It looks at the host name:
-//   mundusnovus.org     the main site (site/), with /downloads for everything
-//   www.…                    sends people to mundusnovus.org
+// Asteria Technology on the web, one server for every address. It looks at the host name:
+//   asteria.technology     the main site (site/), with /downloads for everything
+//   www.…                    sends people to asteria.technology
 //   sprite.… and box.…       each app's home page (site/hosts/<app>/), the live editor at /app/, and its downloads
-//   social.…                 MNSocial (site/social/), its API at /api/
+//   social.…                 Asteria Social (site/social/), its API at /api/
 // Brand files, music and downloads (/brand/, /media/, /downloads/files/, /css/, /js/) are shared by every address.
 // No dependencies beyond Node 24. Settings:
 //   PORT, DATA_DIR (where Social keeps its index), PDS_URL (how this server reaches the PDS), PDS_PUBLIC_URL (how
 //   browsers reach it, for pictures), PDS_ADMIN_PASSWORD, PDS_HANDLE_DOMAIN, SESSION_SECRET, ADMIN_NAMES, and
-//   COOKIE_DOMAIN (mundusnovus.org), so one sign-in counts on every address: one Mundus Novus account.
-//   SERVICE_SECRET lets MNCloud ask Social for contacts and record shares on the PDS.
+//   COOKIE_DOMAIN (asteria.technology), so one sign-in counts on every address: one Asteria account.
+//   SERVICE_SECRET lets Asteria Cloud ask Social for contacts and record shares on the PDS.
 //   STAFF names Social's owner and moderators, with titles: dac=owner:Chief Organizer, anna=moderator
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
@@ -43,10 +43,10 @@ export function makeServer(env = process.env) {
   const pds = env.PDS_URL ? remotePds({ url: env.PDS_URL, publicUrl: env.PDS_PUBLIC_URL, adminPassword: env.PDS_ADMIN_PASSWORD }) : previewPds();
   if (!env.PDS_URL) console.log('Social is in preview: accounts live in memory until PDS_URL is set.');
   if (env.PDS_URL && !env.SESSION_SECRET) throw new Error('Set SESSION_SECRET: it protects the PDS sessions Social keeps.');
-  const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.mundusnovus.org',
+  const social = createSocial({ dbPath: env.PDS_URL ? join(dataDir, 'social.sqlite') : ':memory:', pds, handleDomain: env.PDS_HANDLE_DOMAIN || 'pds.asteria.technology',
     secret: env.SESSION_SECRET, admins: (env.ADMIN_NAMES || '').split(',').map((s) => s.trim().toLowerCase()).filter(Boolean), staff: parseStaff(env.STAFF), serviceSecret: env.SERVICE_SECRET || null });
 
-  const oidc = env.OIDC_CLIENTS ? createOidc({ social, dataDir, issuer: env.OIDC_ISSUER || 'https://social.mundusnovus.org', clients: JSON.parse(env.OIDC_CLIENTS) }) : null;
+  const oidc = env.OIDC_CLIENTS ? createOidc({ social, dataDir, issuer: env.OIDC_ISSUER || 'https://social.asteria.technology', clients: JSON.parse(env.OIDC_CLIENTS) }) : null;
 
   function file(req, res, path) {
     let rel = normalize(decodeURIComponent(path)).replace(/^(\.\.[/\\])+/, '');
@@ -71,13 +71,13 @@ export function makeServer(env = process.env) {
     return true;
   }
 
-  // "social.mundusnovus.org" -> { kind: 'social', base: 'mundusnovus.org' }; anything unknown is the main site
+  // "social.asteria.technology" -> { kind: 'social', base: 'asteria.technology' }; anything unknown is the main site
   function site(req) {
     const host = String(req.headers['x-forwarded-host'] || req.headers.host || 'localhost').split(',')[0].trim().toLowerCase();
     const first = host.split('.')[0];
     return ['www', 'social', 'sprite', 'box'].includes(first) && host.includes('.') ? { kind: first, base: host.slice(first.length + 1) } : { kind: 'main', base: host };
   }
-  const MOVED_FROM = (env.MOVED_FROM ?? 'christiansystems.org').split(',').map((d) => d.trim()).filter(Boolean), MOVED_TO = env.MOVED_TO || 'mundusnovus.org';
+  const MOVED_FROM = (env.MOVED_FROM ?? 'christiansystems.org,mundusnovus.org').split(',').map((d) => d.trim()).filter(Boolean), MOVED_TO = env.MOVED_TO || 'asteria.technology';
   function redirect(res, to) { res.writeHead(301, { location: to, 'cache-control': 'public, max-age=3600' }); res.end(); }
   function notFound(res) {
     res.writeHead(404, { ...SECURITY, 'content-type': 'text/html; charset=utf-8' });
@@ -89,7 +89,7 @@ export function makeServer(env = process.env) {
       const url = new URL(req.url, 'http://local'), secure = req.headers['x-forwarded-proto'] === 'https', path = url.pathname;
       const { kind, base } = site(req), scheme = secure ? 'https://' : 'http://', to = (sub, p) => scheme + (sub ? sub + '.' : '') + base + p + url.search;
       if (path === '/healthz') { res.writeHead(200, { 'content-type': 'text/plain' }); return res.end('ok'); }
-      // Christian Systems became Mundus Novus: every old address moves to the same place on the new domain
+      // Christian Systems became Asteria Technology: every old address moves to the same place on the new domain
       if (MOVED_FROM.includes(base)) {
         res.writeHead(req.method === 'GET' || req.method === 'HEAD' ? 301 : 308, { location: 'https://' + (kind === 'main' || kind === 'www' ? '' : kind + '.') + MOVED_TO + path + url.search, 'cache-control': 'public, max-age=86400' });
         return res.end();
@@ -121,5 +121,5 @@ export function makeServer(env = process.env) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const port = Number(process.env.PORT) || 8080;
-  makeServer().listen(port, () => console.log('mundusnovus.org on :' + port));
+  makeServer().listen(port, () => console.log('asteria.technology on :' + port));
 }

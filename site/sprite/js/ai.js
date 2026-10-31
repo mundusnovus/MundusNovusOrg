@@ -1,5 +1,5 @@
 /* Sprite: AI assistant glue. System prompt, tool loop (uses the shell's AIClient, with a local fallback that only
-   talks to the bridge through mnHost.request), and "one history step per AI turn". No API keys anywhere. Original code. */
+   talks to the bridge through asHost.request), and "one history step per AI turn". No API keys anywhere. Original code. */
 (function (root, factory) {
   if (typeof module === 'object' && module.exports) module.exports = factory(function (n) { return require('./' + n + '.js'); });
   else { root.AS = root.AS || {}; root.AS.ai = factory(function (n) { return root.AS[n]; }); }
@@ -38,7 +38,7 @@
     'STYLE OF REPLY: after you are done, answer in two or three short sentences describing what you made and the choices (size, palette, light), and offer one or two follow-up ideas. Do not paste pixel data into the chat.'
   ].join('\n');
 
-  /** Fallback tool-use loop: same surface as mnHost.AIClient. request(path, body) -> Promise<{status,json}> */
+  /** Fallback tool-use loop: same surface as asHost.AIClient. request(path, body) -> Promise<{status,json}> */
   function LocalAIClient(o) {
     this.o = o; this.messages = []; this.stopped = false;
   }

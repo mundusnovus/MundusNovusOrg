@@ -71,7 +71,7 @@
     var g = c.getContext('2d'), rgba = doc.composite(fi);
     g.putImageData(new ImageData(new Uint8ClampedArray(rgba.buffer.slice(0)), doc.w, doc.h), 0, 0); return c;
   };
-  /** workspace colours follow the Mundus Novus light/dark theme (CSS custom properties on :root) */
+  /** workspace colours follow the Asteria Technology light/dark theme (CSS custom properties on :root) */
   P.theme = function () {
     var key = document.documentElement.getAttribute('data-theme') + ':' + (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (this.themeKey !== key) {

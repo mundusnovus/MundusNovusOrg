@@ -1,5 +1,5 @@
-"""The studio server: serves the MundusNovus folder (this repository and MNBox beside it) and saves
-what the studio pages make. POST /save/mn-music/<path> writes to site/media/music/<path> in this repository.
+"""The studio server: serves the Asteria folder (this repository and Asteria Box beside it) and saves
+what the studio pages make. POST /save/asteria-music/<path> writes to site/media/music/<path> in this repository.
 
     python3 tools/studio/server.py 8790      then open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html
 """
@@ -22,7 +22,7 @@ class Handler(http.server.SimpleHTTPRequestHandler):
 
     def do_POST(self):
         path = self.path.split("?")[0]
-        target = inside(MUSIC, path[len("/save/mn-music/"):]) if path.startswith("/save/mn-music/") else None
+        target = inside(MUSIC, path[len("/save/asteria-music/"):]) if path.startswith("/save/asteria-music/") else None
         if not target:
             self.send_error(404)
             return
