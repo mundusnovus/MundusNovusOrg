@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Keys Support — Asteria Technology</title>
+<meta name="description" content="Support for Asteria Keys: vault, AutoFill, passkeys, iCloud sync, Face ID and recovery.">
+<meta name="theme-color" content="#0a1518">
+<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
+<link rel="apple-touch-icon" href="/brand/logo/products/keys/keys-256.png">
+<link rel="stylesheet" href="/brand/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
+  <nav aria-label="Main">
+    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#apple" data-sub="main" data-path="/#apple">Apple stuff</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+  </nav>
+  <span id="account"></span>
+</header>
+
+<main id="main" class="page">
+<p class="eyebrow">Asteria Keys · Support</p>
+<h1 class="display">Locked out, or just locked?</h1>
+<p class="lede">Email <a href="mailto:me@demetria.xyz?subject=Asteria%20Keys%20support">me@demetria.xyz</a>. Include the app version, the device, and whether this is about the vault, AutoFill, passkeys, iCloud or Face ID / Touch ID. Do not send your master password. We do not want it, and the app is designed so we cannot use it.</p>
+
+<h2 class="display">Common ones</h2>
+<h3>Face ID or Touch ID stopped working</h3>
+<p>Unlock once with your master password. The key is stored in the keychain behind biometrics; after a device restart or a biometric change, the system may ask for the password first. If biometrics are unavailable, the master password and recovery key still work.</p>
+<h3>iCloud is not syncing</h3>
+<p>Settings in the app says which store is in use. If it says “on this device”, the build has no iCloud entitlement or iCloud is unavailable. Sign in to iCloud in System Settings, then relaunch the app. Only ciphertext is synced; a slow first sync is normal, especially with a large vault.</p>
+<h3>AutoFill does not appear</h3>
+<p>Open iOS Settings → General → AutoFill &amp; Passwords → Asteria Keys and turn it on. On the Mac, open Safari Settings → AutoFill and enable Asteria Keys. AutoFill needs the vault to be unlocked.</p>
+<h3>I forgot my master password and recovery key</h3>
+<p>Then the vault cannot be opened. That is the encryption doing its job. There is no Asteria server, no support override, and no “just this once” button. We are sorry. We are also not sorry.</p>
+
+<h2 class="display">Privacy and security</h2>
+<p>Read the <a href="/privacy/">privacy policy</a> and the <a href="/keys/">app page</a>. The master password never leaves your device. Apple Intelligence sees counts of findings for the security coach, never a password, username, site or note.</p>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
+  <p class="verse">Thoughtful software. No ads. Ever.</p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+</footer>
+</body>
+</html>

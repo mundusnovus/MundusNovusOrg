@@ -14,7 +14,7 @@
   // ---------------------------------------------------------------- addresses and the account
   // Links to the other Asteria Technology addresses carry data-sub (and data-path); they are rewritten from this page's
   // own address, so they also work on a test machine. One Asteria account is shared by every address.
-  var ROOT = location.host.replace(/^(www|sprite|box|social|cloud|office)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
+  var ROOT = location.host.replace(/^(www|sprite|box|social|cloud|office|learn)\./, ''), SUB = function (s, p) { return location.protocol + '//' + (s ? s + '.' : '') + ROOT + (p || '/'); };
   document.querySelectorAll('a[data-sub]').forEach(function (a) { a.href = SUB(a.dataset.sub === 'main' ? '' : a.dataset.sub, a.dataset.path); });
   (function () {
     var slot = $('account'); if (!slot) return;
@@ -150,7 +150,7 @@
     audio.src = '/media/music/mp3/' + name(t) + '.mp3';
     $('nowTitle').textContent = t.title; $('nowAbout').textContent = t.about;
     $('albumCover').src = '/media/music/covers/' + name(t) + '-600.png'; $('albumCover').alt = t.title + ', cover';
-    var rt = $('rollTitle'); if (rt) rt.textContent = t.slug + '.beepbox';
+    var rt = $('rollTitle'); if (rt) rt.textContent = t.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '.beepbox';
     document.querySelectorAll('#tracks button').forEach(function (b, i) { b.setAttribute('aria-current', i === k ? 'true' : 'false'); });
     loadRoll(t);
     if ('mediaSession' in navigator) navigator.mediaSession.metadata = new MediaMetadata({ title: t.title, artist: album.artist, album: album.album, artwork: [{ src: '/media/music/covers/' + name(t) + '-600.png', sizes: '600x600', type: 'image/png' }] });

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Asteria Search — the engine inside Browse</title>
+<meta name="description" content="Asteria Search is the on-device metasearch library inside Asteria Browse 2.0: public sources, merged results, ad filtering and Apple Intelligence re-ranking. No Asteria search server, no account, no API key.">
+<meta name="theme-color" content="#0a1518">
+<meta property="og:title" content="Asteria Search — the engine inside Browse">
+<meta property="og:description" content="Not a web index. A library that asks the sources directly, removes the ads, and lets Apple Intelligence sort the useful bits.">
+<meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
+<meta property="og:url" content="https://asteria.technology/search/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
+<link rel="apple-touch-icon" href="/brand/logo/products/browse/browse-180.png">
+<link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
+<link rel="stylesheet" href="/brand/tokens.css">
+<link rel="stylesheet" href="/css/site.css">
+<script src="/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="bar" id="bar">
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
+  <nav aria-label="Main">
+    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#apple" data-sub="main" data-path="/#apple">Apple stuff</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+  </nav>
+  <span id="account"></span>
+</header>
+
+<main id="main" class="page">
+<p class="eyebrow">Inside Asteria Browse 2.0 · iOS 27 / macOS 27</p>
+<div class="app-head">
+  <img class="app-icon" src="/brand/logo/products/browse/browse-256.png" width="92" height="92" alt="">
+  <div><h1 class="display">Asteria Search</h1><p class="lede">Not a search engine. A library with opinions, and a strong preference for not being lied to by ads.</p></div>
+</div>
+
+<p>Asteria Search is the proprietary Swift package that powers search in <a href="/browse/">Asteria Browse</a>. It asks public sources directly from the device, merges what they return, removes ad networks and tracking parameters, and lets Apple Intelligence judge the top results. There is no Asteria search index, no Asteria account, no API key, and no server in the middle pretending to be neutral.</p>
+
+<div class="app-shots">
+  <figure class="wide"><img src="/media/apps/browse/search.png" width="1400" height="875" alt="Asteria Browse search results with an on-device overview."><figcaption>The result page in Browse. The overview cites its sources; the sources are not decorative.</figcaption></figure>
+</div>
+
+<h2 class="display">How it works</h2>
+<div class="features">
+  <div><h3>Ask the sources</h3><p>Web search asks Bing, DuckDuckGo, Wikipedia in the region’s language, and Bing News. Images ask Bing Images and Wikimedia Commons. Videos ask Bing Videos. Brave is available but off by default; Google is never scraped. You can choose Google as your browser engine if you prefer, which is a different sentence.</p></div>
+  <div><h3>Merge, then filter</h3><p>Reciprocal rank fusion merges the lists. Every link passes a public HTTP(S) check and then an ad-network and paid-campaign filter. Tracking keys are removed. Result types are classified from the address and byline, so a forum post does not get to masquerade as a reference work.</p></div>
+  <div><h3>Let the model sort</h3><p>The top twelve web results are judged on device by Foundation Models: useful, advertising, spam, off topic, and a relevance from 0 to 10. Snippets are untrusted input. A reference work is never removed, and at most a third of the judged results can be. If the model skips most of them, the fused order stands.</p></div>
+  <div><h3>Write the overview</h3><p>Two to four sentences with numbered sources, streamed as it is written. It reads snippets, not full pages, so it can be wrong. That is why the sources are beside it and why the page does not pretend otherwise.</p></div>
+  <div><h3>Fail one source, not the search</h3><p>A human check, a rate limit, or a page that stops parsing fails that source only. The host rests for five minutes. The library never solves challenges, poses as another browser, rotates proxies, or retries. We have limits. They are features.</p></div>
+  <div><h3>Private Cloud Compute, gated</h3><p>Private Cloud Compute is available only when the caller passes it and Apple’s managed entitlement is present. Until then, the overview runs on the device. The switch in Settings is disabled for the same reason, and says so.</p></div>
+</div>
+
+<h2 class="display">The privacy bit</h2>
+<p>The transport is an ephemeral URLSession with no cookies and no cache. The app sends one identifying User-Agent and your preferred languages. Queries, IP addresses and request metadata still reach each source that is asked; asking from your device does not make search anonymous. There is no query history, analytics or caching in the library. A region sends a country, a language and optionally a city; the city is used only to rewrite “near me” for web sources, and Wikipedia never receives it.</p>
+<p>No SearXNG, AltStackSearch or other copyleft implementation was copied or linked. The library is proprietary Swift, built by Asteria Technology, and it lives inside <a href="/browse/">Asteria Browse</a>.</p>
+
+<div class="status-line">Proprietary library · Inside Asteria Browse 2.0 · <a href="/browse/">Open Browse</a> · <a href="/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
+</main>
+
+<footer class="foot">
+  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
+  <p class="verse">Thoughtful software. No ads. Ever.</p>
+  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+</footer>
+</body>
+</html>

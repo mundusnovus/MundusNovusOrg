@@ -1,7 +1,6 @@
 # MundusNovusOrg
 
-The home of **Asteria Technology**, now focused on Swift apps for iOS and macOS: the website, Asteria Social, the brand, the Asteria Pixel typeface, the
-soundtrack *Made to Last*, and the tools that package Asteria Sprite and Asteria Box for download.
+The home of **Asteria Technology**: the website for the native iOS 27 and macOS 27 apps (Browse, Keys, Timeclock, Food and Mood, Swift: Zero to Hero, Box), Asteria Social, the brand, the Asteria Pixel typeface, the soundtrack *Made to Last*, and the tools that package Asteria Sprite and Asteria Box for download.
 
 One server answers every address, by host name:
 

@@ -196,7 +196,8 @@ section { padding: clamp(72px, 12vw, 160px) max(var(--as-space), env(safe-area-i
 .apple-apps, .principles { max-width: 1240px; margin: 0 auto; }
 .section-intro { max-width: 58ch; margin: 0 auto 40px; color: var(--as-fg-2); font-size: var(--as-step-1); text-align: center; }
 .apple-apps > .eyebrow, .principles > .eyebrow { text-align: center; }
-.apple-apps .cards, .principles .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.apple-apps .cards { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.principles .cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .apple-apps .card { display: flex; flex-direction: column; align-items: flex-start; padding: 30px; }
 .apple-apps .card > .eyebrow { font-size: .72rem; margin: 22px 0 10px; }
 .apple-apps .card h3 { font-size: 1.55rem; line-height: 1.2; }
@@ -218,3 +219,19 @@ section { padding: clamp(72px, 12vw, 160px) max(var(--as-space), env(safe-area-i
 }
 .apple-apps > h2, .principles > h2 { text-align: center; }
 .apple-apps .card > .eyebrow, .apple-apps .card > .product-note { flex: none; }
+
+/* app detail pages */
+.app-head { display: flex; gap: 20px; align-items: center; margin: 8px 0 18px; }
+.app-head .app-icon { width: 92px; height: 92px; flex: none; }
+.app-head h1 { margin: 0; font-size: var(--as-step-3); }
+.app-head .lede { margin: 8px 0 0; max-width: 52ch; }
+.badge-note { display: inline-block; margin-left: 6px; padding: 2px 8px; border-radius: 999px; background: var(--as-surface-2); color: var(--as-fg-2); font: 600 11px/1.4 var(--as-text); letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
+.app-shots { display: flex; flex-wrap: wrap; gap: 16px; margin: 24px 0 8px; align-items: flex-start; }
+.app-shots figure { margin: 0; flex: 1 1 220px; max-width: 340px; }
+.app-shots figure.wide { flex: 1 1 100%; max-width: 100%; }
+.app-shots img { width: 100%; height: auto; border-radius: 18px; border: 1px solid var(--as-line); box-shadow: var(--as-shadow); }
+.app-shots figcaption { margin-top: 8px; color: var(--as-fg-2); font-size: 13px; }
+.status-line { margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--as-line); color: var(--as-fg-2); font-size: 14px; }
+.features { margin: 28px 0 8px; }
+.features h3 { font-size: var(--as-step-1); }
+@media (max-width: 640px) { .app-head { align-items: flex-start; } .app-head .app-icon { width: 64px; height: 64px; } }

@@ -79,7 +79,7 @@
   async function save(path, blob) { var r = await fetch('/save/' + path, { method: 'POST', body: blob }); if (!r.ok) throw new Error('save ' + path); }
   root.FG.covers = async function () {
     await font();
-    var list = root.FG.TRACKS.map(function (t) { return [String(t.n).padStart(2, '0') + '-' + t.slug, t.slug, t.title, String(t.n).padStart(2, '0') + ' · Made to Last']; });
+    var list = root.FG.TRACKS.map(function (t) { return [String(t.n).padStart(2, '0') + '-' + t.slug, t.slug, t.title, 'TRACK ' + t.n + ' · Made to Last']; });
     list.push(['album', 'album', 'Made to Last', 'Asteria Technology']);
     for (var k = 0; k < list.length; k++) for (var s of [1200, 600]) await save('asteria-music/covers/' + list[k][0] + '-' + s + '.png', await png(render(list[k][1], list[k][2], list[k][3], s)));
     return list.length;

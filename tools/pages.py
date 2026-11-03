@@ -14,7 +14,7 @@ FOOT = home[home.index("<footer"):]
 
 
 def page(path, title, desc, body, url, here=None, main_class=""):
-    head = HEAD.replace("<title>Asteria Technology</title>", "<title>" + title + "</title>")
+    head = re.sub(r"<title>[^<]*</title>", "<title>" + title + "</title>", HEAD, count=1)
     head = re.sub(r'(<meta name="description" content=")[^"]*', lambda m: m.group(1) + desc, head)
     head = re.sub(r'(<meta property="og:title" content=")[^"]*', lambda m: m.group(1) + title, head)
     head = re.sub(r'(<meta property="og:description" content=")[^"]*', lambda m: m.group(1) + desc, head)
@@ -96,7 +96,7 @@ BOX = """
 </section>
 <section class="product" aria-label="The notes of the song now playing">
   <figure class="window reveal" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto; width: 100%" aria-label="The notes of the song now playing">
-    <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">first-light.beepbox</span></div>
+    <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">local-only.beepbox</span></div>
     <canvas class="roll" id="roll" width="640" height="360"></canvas>
     <button class="roll-play" id="rollPlay" type="button" aria-label="Play this song">▶</button>
   </figure>
@@ -119,7 +119,7 @@ BOX = """
       <p class="quiet" id="albumMeta">Eight tracks · Asteria Technology · 2026</p>
       <div class="player" id="player" aria-label="Music player">
         <button class="btn primary round" id="playBtn" type="button" aria-label="Play">▶</button>
-        <div class="now"><strong id="nowTitle">First Light</strong><span id="nowAbout"></span>
+        <div class="now"><strong id="nowTitle">Local Only</strong><span id="nowAbout"></span>
           <div class="progress" id="progress" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i id="progressFill"></i></div>
         </div>
       </div>
@@ -130,28 +130,7 @@ BOX = """
 <section class="download-section" id="download" aria-labelledby="dl-title"><h2 id="dl-title" class="display reveal">Download</h2><div data-downloads data-app="box"></div></section>
 """ + agent("box", "Asteria Box", ("a song", "a two-minute rock song in E minor at 160 bpm, with distorted guitars, an organ and a choir"), "the .beepbox song and a WAV") + also("sprite", "cloud")
 
-DOWNLOADS = """
-<h1 class="display">Downloads</h1>
-<p>Our new apps put iOS and macOS first. Most have an upfront price, with minimal in-app purchases for upgrades. No Asteria app will ever have ads.</p><p>Explore <a href="/browse/" data-sub="main" data-path="/browse/">Asteria Browse</a>, <a href="/foodandmood/" data-sub="main" data-path="/foodandmood/">Food and Mood</a> and <a href="/swift/" data-sub="main" data-path="/swift/">Swift: Zero to Hero</a> for product details. Store links will appear when available.</p><h2 class="display">Creative tools for your desktop</h2><p>These downloads are our existing free, open-source Sprite and Box apps. Pick your platform below.</p>
-<div data-downloads></div>
-<h2 class="display" id="cloud-office">Asteria Cloud and Asteria Office</h2>
-<p>The desktop apps for Cloud (keeps a folder on your computer in sync) and Office (edit documents offline) are built for Windows, macOS and Linux with every release.</p>
-<ul class="dl">
-<li><a href="https://github.com/mundusnovus/MNCloud/releases/latest"><b>Asteria Cloud for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
-<li><a href="https://github.com/mundusnovus/MNOffice/releases/latest"><b>Asteria Office for your computer</b><small>Windows, macOS and Linux</small><span>Releases</span></a></li>
-</ul>
-<h2 class="display" id="all">Every file</h2>
-<p>Each file has a SHA-256 checksum, so you can check it arrived unchanged.</p>
-<div data-download-table></div>
-<h2 class="display">Opening these desktop downloads</h2>
-<ul>
-<li><b>macOS.</b> Open the disk image and drag the app to Applications. The first time, right-click the app and choose Open, because it is not yet notarized by Apple.</li>
-<li><b>Windows.</b> Unzip the folder and double-click the <code>.cmd</code> file. The app opens in Microsoft Edge as its own window.</li>
-<li><b>Linux.</b> Install the <code>.deb</code> with your software installer, or unpack the <code>.tar.gz</code> and run the launcher inside.</li>
-<li><b>Phones and tablets.</b> Open <a href="https://sprite.asteria.technology/app/" data-sub="sprite" data-path="/app/">Sprite</a> or <a href="https://box.asteria.technology/app/" data-sub="box" data-path="/app/">Box</a> in your browser and add it to your home screen.</li>
-</ul>
-<p>Source for our open-source projects is on the <a href="/source/" data-sub="main" data-path="/source/">source page</a>.</p>
-"""
+DOWNLOADS = open(os.path.join(REPO, "tools", "downloads-body.html")).read()
 
 page("hosts/sprite/index.html", "Asteria Sprite", "A free, open-source pixel-art editor and animator. Use it in your browser or download it.", SPRITE, "https://sprite.asteria.technology/", "sprite")
 page("hosts/box/index.html", "Asteria Box", "A free, open-source music maker built on BeepBox. Use it in your browser or download it.", BOX, "https://box.asteria.technology/", "box")
@@ -166,8 +145,8 @@ print("pages written")
 
 # Native product pages share the main site identity; copy lives in tracked body files.
 for slug, title, description in [
-    ("browse", "Asteria Browse", "A Swift browser for Mac, iPhone and iPad. Proprietary Asteria software, with no ads. Ever."),
-    ("foodandmood", "Asteria Food and Mood", "A native Swift food and mood journal for iPhone. Proprietary Asteria software, with no ads. Ever."),
-    ("swift", "Swift: Zero to Hero", "Learn Swift and Apple app development with Asteria’s course and native Mac app.")
+    ("browse", "Asteria Browse — a calmer browser, a sharper search", "A native WebKit browser for Mac, iPhone and iPad with Spaces, private tabs, Asteria Search and on-device Apple Intelligence. Proprietary Asteria software, with no ads. Ever."),
+    ("foodandmood", "Asteria Food and Mood — the food journal, minus the paper", "A native Swift food and mood journal for iPhone. Keep the six-column journal, use Apple Intelligence and Siri, and send a tidy spreadsheet to your nutritionist."),
+    ("swift", "Swift: Zero to Hero 2.0 — learn Swift on your device", "A complete Swift course for iPhone, iPad and Mac: 173 lessons, 83 exercises, on-device checking, Apple Intelligence coaching, Siri, iCloud progress and 24 milestones.")
 ]:
     page(slug + "/index.html", title, description, open(os.path.join(REPO, "tools", slug + "-body.html")).read(), "https://asteria.technology/" + slug + "/", main_class="page")
