@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Asteria Food and Mood — the food journal, minus the paper</title>
 <meta name="description" content="A native Swift food and mood journal for iPhone. Keep the six-column journal, use Apple Intelligence and Siri, and send a tidy spreadsheet to your nutritionist.">
-<meta name="theme-color" content="#0a1518">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05080f" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Asteria Food and Mood — the food journal, minus the paper">
 <meta property="og:description" content="A native Swift food and mood journal for iPhone. Keep the six-column journal, use Apple Intelligence and Siri, and send a tidy spreadsheet to your nutritionist.">
 <meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
 <meta property="og:url" content="https://asteria.technology/foodandmood/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
-<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png?v=asteria">
+<link rel="icon" href="/brand/logo/app-icon-26-32.png" sizes="32x32" type="image/png"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark-26.svg">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-26-180.png">
 <link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
@@ -21,52 +23,89 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
-  <nav aria-label="Main">
-    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#apple" data-sub="main" data-path="/#apple">Apple stuff</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> <b>Technology</b></span></a>
+  <nav id="nav" aria-label="Main">
+    <a href="/post/" data-sub="main" data-path="/post/"><img src="/brand/logo/products/post/post-256.png" width="18" height="18" alt="">Post</a>
+    <a href="/browse/" data-sub="main" data-path="/browse/"><img src="/brand/logo/products/browse/browse3-256.png" width="18" height="18" alt="">Browse</a>
+    <a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a>
+    <a href="/foodandmood/" data-sub="main" data-path="/foodandmood/"><img src="/brand/logo/products/foodandmood/foodmood26-256.png" width="18" height="18" alt="">Food and Mood</a>
+    <a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a>
+    <div class="more">
+      <button class="more-btn" type="button" aria-expanded="false" aria-controls="more-panel">More <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#chevron-down"/></svg></button>
+      <div class="more-panel" id="more-panel" hidden>
+        <p>More apps</p>
+        <a href="/keys/" data-sub="main" data-path="/keys/"><img src="/brand/logo/products/keys/keys-128.png" width="28" height="28" alt=""><span>Keys<small>Passwords, only yours</small></span></a>
+        <a href="/timeclock/" data-sub="main" data-path="/timeclock/"><img src="/brand/logo/products/timeclock/timeclock-128.png" width="28" height="28" alt=""><span>Timeclock<small>Punch in, clock out</small></span></a>
+        <a href="/swift/" data-sub="main" data-path="/swift/"><img src="/brand/logo/products/zerotohero/zerotohero-128.png" width="28" height="28" alt=""><span>Swift: Zero to Hero<small>The course</small></span></a>
+        <a href="/box-swift/" data-sub="main" data-path="/box-swift/"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box, native<small>In the workshop</small></span></a>
+        <a href="https://sprite.asteria.technology/" data-sub="sprite"><img src="/brand/logo/products/sprite/sprite-128.png" width="28" height="28" alt=""><span>Sprite<small>Pixel art, in the browser</small></span></a>
+        <a href="https://box.asteria.technology/" data-sub="box"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box for the web<small>Music, in the browser</small></span></a>
+        <a href="https://learn.asteria.technology/" data-sub="learn"><img src="/brand/logo/products/learn/learn-128.png" width="28" height="28" alt=""><span>Learn<small>The free Swift course</small></span></a>
+        <a href="https://social.asteria.technology/" data-sub="social"><img src="/brand/logo/products/social/social-128.png" width="28" height="28" alt=""><span>Social<small>The web one</small></span></a>
+        <p>Asteria</p>
+        <a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a>
+        <a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+        <a href="/support/" data-sub="main" data-path="/support/">Support</a>
+        <a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a>
+      </div>
+    </div>
   </nav>
   <span id="account"></span>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#menu"/></svg></button>
 </header>
 
 <main id="main" class="page">
-<p class="eyebrow">iPhone · iOS 27 · Written in Swift</p>
+<p class="eyebrow">The 26 lineup · iPhone · iOS 27 · Written in Swift</p>
 <div class="app-head">
-  <img class="app-icon" src="/brand/logo/products/foodandmood/foodandmood-256.png" width="92" height="92" alt="">
+  <img class="app-icon" src="/brand/logo/products/foodandmood/foodmood26-256.png" width="96" height="96" alt="">
   <div><h1 class="display">Food and Mood</h1><p class="lede">The paper journal your nutritionist gave you. Without the paper, the smudges, or the “what did I eat on Tuesday”.</p></div>
 </div>
+<div class="actions"><a class="btn primary" href="https://testflight.apple.com/join/cQjQMBeX"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#airplane"/></svg>Join the beta on TestFlight</a></div>
 
 <p>Food and Mood is a journal for what you eat and drink, how you feel, how you move and how your digestion goes. It follows the six-column paper journal many nutritionists hand out: foods, drinks, supplements, energy and mood, movement, and digestion. Then it turns your days into a spreadsheet that opens cleanly in Excel, and a PDF that does not look like a receipt from 2004.</p>
 
 <div class="app-shots">
-  <figure><img src="/media/apps/foodandmood/today.png" width="414" height="900" alt="Food and Mood Today screen, with meals, mood and water."><figcaption>Today. The journal, as you actually fill it in.</figcaption></figure>
-  <figure><img src="/media/apps/foodandmood/patterns.png" width="414" height="900" alt="Food and Mood patterns, with charts for mood, energy and water."><figcaption>Patterns. Correlation is not causation, but it is a place to start.</figcaption></figure>
-  <figure><img src="/media/apps/foodandmood/share.png" width="414" height="900" alt="Food and Mood share screen, choosing Excel, PDF or CSV."><figcaption>Share. Excel, PDF or CSV, for a range of days you choose.</figcaption></figure>
+  <figure><img src="/media/apps/foodandmood/fm-1-today.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood Today screen, with meals, mood and water."><figcaption>Today. The journal, as you actually fill it in.</figcaption></figure>
+  <figure><img src="/media/apps/foodandmood/fm-2-journal.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood Journal tab, listing days with their meals and notes."><figcaption>Journal. Every day, searchable, in one place.</figcaption></figure>
+  <figure><img src="/media/apps/foodandmood/fm-3-patterns.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood patterns, with charts for mood, energy and water."><figcaption>Patterns. Correlation is not causation, but it is a place to start.</figcaption></figure>
+  <figure><img src="/media/apps/foodandmood/fm-4-share.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood share screen, choosing Excel, PDF or CSV."><figcaption>Share. Excel, PDF or CSV, for a range of days you choose.</figcaption></figure>
 </div>
 
 <h2 class="display">What it does</h2>
 <div class="features">
-  <div><h3>Write as the day goes</h3><p>Foods, drinks, supplements, energy and mood, movement, and digestion. Wake time, bedtime, a reflection, mood and energy from 1 to 5, Bristol type and water. Delete a meal, or set its day and time after the fact.</p></div>
-  <div><h3>Say it in your own words</h3><p>Describe breakfast, lunch and the evening. Apple Intelligence keeps them as separate meals, with the times you gave, and leaves sleep and the day’s notes where they belong. You check everything before it is saved, which is the only sensible arrangement.</p></div>
-  <div><h3>Siri, briefly</h3><p>“Log water in Food and Mood.” “How’s my day in Food and Mood.” Ask the journal a question about the last month, find a meal in Spotlight, or export the journal to Shortcuts. Answers describe what you wrote; they are not medical advice.</p></div>
-  <div><h3>The spreadsheet is the point</h3><p>Choose the days and send an Excel workbook with an overview, every moment in one sortable table, a summary of each day, and a page for each day laid out like the paper journal. PDF and CSV are there too.</p></div>
-  <div><h3>Bring in the old journal</h3><p>Import the original Food &amp; Mood Journal workbook. Times are put in order, Bristol types and water are picked out of your notes, and every word you wrote is kept. Importing the same file twice does not double anything.</p></div>
-  <div><h3>iCloud, privately</h3><p>The journal is stored with SwiftData in your own private iCloud database, so it moves to a new iPhone with you. There are no accounts, no ads and no tracking. Asteria cannot read it. Neither can anyone else who asks nicely.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#fork-knife"/></svg><h3>Write as the day goes</h3><p>Foods, drinks, supplements, energy and mood, movement, and digestion. Wake time, bedtime, a reflection, mood and energy from 1 to 5, Bristol type and water. Delete a meal, or set its day and time after the fact.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><h3>Say it in your own words</h3><p>Describe breakfast, lunch and the evening. Apple Intelligence keeps them as separate meals, with the times you gave, and leaves sleep and the day’s notes where they belong. You check everything before it is saved, which is the only sensible arrangement.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#waveform"/></svg><h3>Siri, briefly</h3><p>“Log water in Food and Mood.” “How’s my day in Food and Mood.” Ask the journal a question about the last month, find a meal in Spotlight, or export the journal to Shortcuts. Answers describe what you wrote; they are not medical advice.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#tablecells"/></svg><h3>The spreadsheet is the point</h3><p>Choose the days and send an Excel workbook with an overview, every moment in one sortable table, a summary of each day, and a page for each day laid out like the paper journal. PDF and CSV are there too.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#download"/></svg><h3>Bring in the old journal</h3><p>Import the original Food &amp; Mood Journal workbook. Times are put in order, Bristol types and water are picked out of your notes, and every word you wrote is kept. Importing the same file twice does not double anything.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#icloud"/></svg><h3>iCloud, privately</h3><p>The journal is stored with SwiftData in your own private iCloud database, so it moves to a new iPhone with you. There are no accounts, no ads and no tracking. Asteria cannot read it. Neither can anyone else who asks nicely.</p></div>
+</div>
+
+<h2 class="display">New in 26.1</h2>
+<div class="features">
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#camera"/></svg><h3>Snap a meal</h3><p>Take or pick a photo of a meal and Apple Intelligence writes the foods and drinks it can see into a moment for you to check. The photo isn't kept, and the time stays yours to set.</p></div>
+  <div><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#chart"/></svg><h3>What tends to go together</h3><p>Patterns compares the foods and drinks you keep writing with the other days, in plain counts (“On days with…”, never “because”), and suggests a few questions to ask your nutritionist.</p></div>
 </div>
 
 <h2 class="display">What’s new in 2.5</h2>
 <p>A new icon, single-day exports that no longer include the day before, Siri water logging and day summaries, an Ask Your Journal box on Patterns, and a clearer iCloud status in Settings. The journal is still yours. The paper is still gone.</p>
 
 <h2 class="display">Our promise</h2>
-<p>A proprietary Asteria Technology app. No ads, ever. $0.99, once. Submitted for App Store review; a link will appear here when it is available.</p>
+<p>A proprietary Asteria Technology app. No ads, ever. $0.99, once. Submitted for App Store review; a link will appear here when it is available. Until then, the beta is open on <a href="https://testflight.apple.com/join/cQjQMBeX">TestFlight</a>.</p>
 <p class="quiet">Food and Mood is a personal journal. It does not diagnose, treat, or give medical or diet advice. If your nutritionist wants the paper version, we are sorry.</p>
 
-<div class="status-line">Proprietary software · In review · $0.99 · iPhone · <a href="/foodandmood/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
+<div class="status-line"><a href="https://testflight.apple.com/join/cQjQMBeX">Beta on TestFlight</a> · Proprietary software · In review · $0.99 · iPhone · <a href="/foodandmood/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
 </main>
 
 <footer class="foot">
-  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
-  <p class="verse">Thoughtful software. No ads. Ever.</p>
-  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/support/" data-sub="main" data-path="/support/">Support</a><a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  <div class="foot-grid">
+    <div><div class="foot-brand"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> Technology</span></div>
+      <p class="verse">Thoughtful software. No ads. Ever. We'd say it louder, but then it would be an ad.</p></div>
+    <nav aria-labelledby="foot-26"><h2 id="foot-26">The 26 lineup</h2><a href="/post/" data-sub="main" data-path="/post/">Post</a><a href="/browse/" data-sub="main" data-path="/browse/">Browse</a><a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a><a href="/foodandmood/" data-sub="main" data-path="/foodandmood/">Food and Mood</a><a href="/#music" data-sub="main" data-path="/#music">The soundtrack</a></nav>
+    <nav aria-labelledby="foot-more"><h2 id="foot-more">More apps</h2><a href="/keys/" data-sub="main" data-path="/keys/">Keys</a><a href="/timeclock/" data-sub="main" data-path="/timeclock/">Timeclock</a><a href="/swift/" data-sub="main" data-path="/swift/">Swift: Zero to Hero</a><a href="https://sprite.asteria.technology/" data-sub="sprite">Sprite</a><a href="https://box.asteria.technology/" data-sub="box">Box</a><a href="https://learn.asteria.technology/" data-sub="learn">Learn</a></nav>
+    <nav aria-labelledby="foot-co"><h2 id="foot-co">Asteria</h2><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a><a href="/support/" data-sub="main" data-path="/support/">Support</a><a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  </div>
+  <div class="legal"><span>© 2026 Asteria Technology</span><span>Made in Swift. Sold upfront. Never with ads.</span></div>
 </footer>
 </body>
 </html>

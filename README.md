@@ -1,6 +1,6 @@
 # MundusNovusOrg
 
-The home of **Asteria Technology**: the website for the native iOS 27 and macOS 27 apps (Browse, Keys, Timeclock, Food and Mood, Swift: Zero to Hero, Box), Asteria Social, the brand, the Asteria Pixel typeface, the soundtrack *Made to Last*, and the tools that package Asteria Sprite and Asteria Box for download.
+The home of **Asteria Technology**: the website for the 26 lineup (Post, Browse, Search and Food and Mood, each with its own section and page), the other native iOS 27 and macOS 27 apps (Keys, Timeclock, Swift: Zero to Hero, Box), Asteria Social, the brand, the Asteria Pixel typeface, the soundtrack *Made to Last*, and the tools that package Asteria Sprite and Asteria Box for download.
 
 One server answers every address, by host name:
 
@@ -54,9 +54,29 @@ The first needs a Mac with Swift. Commit what they write under `site/`.
 python3 tools/studio/server.py 8790
 ```
 
-Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `await FG.covers()` then
-`await FG.make('all')` in the console. Files go to `site/media/music/`. After regenerating covers without rendering the music again, run
-`python3 tools/studio/retag.py` to refresh MP3 titles and embedded artwork without changing audio.
+Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `await FG.make('all')` in the console.
+Files go to `site/media/music/`. Track titles and notes live in `tools/studio/album.js` and `site/media/music/album.json`.
+
+The covers are drawn, not pixelled: `tools/studio/covers.swift` paints each one at 3000 × 3000 in night, aqua and heavy
+and writes `-3000.jpg`, `-1200.png` and `-600.png`. (`FG.covers()` in the studio is the old pixel-art generator; don't
+run it, or it will overwrite them.) Then refresh the MP3 tags, which never touches the audio:
+
+```bash
+swiftc -O tools/studio/covers.swift -o /tmp/covers && /tmp/covers
+python3 tools/studio/retag.py
+```
+
+## The look
+
+SF Pro (the system font stack) for reading and headlines, Asteria Pixel only for the word "Asteria", SF Symbols-style
+line icons in `site/css/symbols.svg` (used as `<use href="/css/symbols.svg?v=26.1#name">`; bump `v` when you add one,
+because SVGs are cached for a day), Liquid Glass surfaces, light and dark. The palette is in `brand/tokens.css`:
+aqua #00FFD3, heavy #FF0058, night #05080F, with deep aqua #00826B and #D10048 for text on light backgrounds.
+The logo is `brand/logo/mark-26.svg` (the Asteria star with a heavy orbit) and `brand/logo/app-icon-26.svg`; the
+older ribbon mark is still written by `brand/build_brand.py` for the apps that use it.
+
+The home page is the template for the bar and footer: `python3 tools/pages.py` writes them into every page it
+generates and into the hand-written pages it lists in `HAND`.
 
 ## Deploy (Railway)
 

@@ -21,7 +21,7 @@ import { previewPds, remotePds } from './social/pds.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), 'site');
 const TYPES = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.json': 'application/json',
-  '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon', '.woff': 'font/woff', '.ttf': 'font/ttf',
+  '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff': 'font/woff', '.ttf': 'font/ttf',
   '.mp3': 'audio/mpeg', '.txt': 'text/plain; charset=utf-8', '.dmg': 'application/x-apple-diskimage', '.zip': 'application/zip', '.deb': 'application/vnd.debian.binary-package',
   '.gz': 'application/gzip', '.icns': 'image/icns' };
 const SHARED = /^\/(brand|media|css|js|downloads\/files)\//, APPS = ['sprite', 'box'];

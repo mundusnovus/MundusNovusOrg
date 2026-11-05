@@ -9,7 +9,7 @@ REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE = os.path.join(REPO, "site")
 home = open(os.path.join(SITE, "index.html")).read()
 HEAD = home[:home.index("<body>")]
-BAR = home[home.index('<a class="skip"'):home.index('<main id="main">')]
+BAR = home[home.index('<a class="skip"'):home.index('<main id="main"')]
 FOOT = home[home.index("<footer"):]
 
 
@@ -147,6 +147,25 @@ print("pages written")
 for slug, title, description in [
     ("browse", "Asteria Browse — a calmer browser, a sharper search", "A native WebKit browser for Mac, iPhone and iPad with Spaces, private tabs, Asteria Search and on-device Apple Intelligence. Proprietary Asteria software, with no ads. Ever."),
     ("foodandmood", "Asteria Food and Mood — the food journal, minus the paper", "A native Swift food and mood journal for iPhone. Keep the six-column journal, use Apple Intelligence and Siri, and send a tidy spreadsheet to your nutritionist."),
-    ("swift", "Swift: Zero to Hero 2.0 — learn Swift on your device", "A complete Swift course for iPhone, iPad and Mac: 173 lessons, 83 exercises, on-device checking, Apple Intelligence coaching, Siri, iCloud progress and 24 milestones.")
+    ("swift", "Swift: Zero to Hero 2.0 — learn Swift on your device", "A complete Swift course for iPhone, iPad and Mac: 173 lessons, 83 exercises, on-device checking, Apple Intelligence coaching, Siri, iCloud progress and 24 milestones."),
+    ("post", "Asteria Post — social, minus the shouting", "An Apple Intelligence social app for iPhone, iPad and Mac on the open AT Protocol network. A feed ranked on your device, dials you control, a .post handle, and no ads. Ever.")
 ]:
     page(slug + "/index.html", title, description, open(os.path.join(REPO, "tools", slug + "-body.html")).read(), "https://asteria.technology/" + slug + "/", main_class="page")
+
+
+# Hand-written pages keep their own <main>, title and description, and take the home page's bar, footer and icons.
+HAND = ["keys/index.html", "keys/support/index.html", "timeclock/index.html", "timeclock/privacy/index.html", "timeclock/support/index.html",
+        "search/index.html", "privacy/index.html", "support/index.html", "box-swift/index.html"]
+ICONS_OLD = re.compile(r'<link rel="icon" href="/brand/logo/Asteria\.ico" sizes="any"><link rel="icon" type="image/svg\+xml" href="/brand/logo/mark\.svg\?v=asteria">')
+ICONS_NEW = re.search(r'<link rel="icon"[^\n]*', HEAD).group(0)
+THEME_NEW = "\n".join(re.findall(r'<meta name="(?:color-scheme|theme-color)"[^>]*>', HEAD))
+for rel in HAND:
+    path = os.path.join(SITE, rel)
+    text = open(path).read()
+    head, rest = text[:text.index("<body>")], text[text.index("<body>"):]
+    head = ICONS_OLD.sub(ICONS_NEW, head)
+    head = re.sub(r'<meta name="theme-color" content="#0a1518">', THEME_NEW, head)
+    rest = rest[:rest.index('<a class="skip"')] + BAR + rest[rest.index("<main"):]
+    rest = rest[:rest.index("<footer")] + FOOT
+    open(path, "w").write(head + rest)
+print("hand-written pages given the bar and footer")

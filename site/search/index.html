@@ -5,14 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Asteria Search — the engine inside Browse</title>
 <meta name="description" content="Asteria Search is the on-device metasearch library inside Asteria Browse 2.0: public sources, merged results, ad filtering and Apple Intelligence re-ranking. No Asteria search server, no account, no API key.">
-<meta name="theme-color" content="#0a1518">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05080f" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Asteria Search — the engine inside Browse">
 <meta property="og:description" content="Not a web index. A library that asks the sources directly, removes the ads, and lets Apple Intelligence sort the useful bits.">
 <meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
 <meta property="og:url" content="https://asteria.technology/search/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
-<link rel="apple-touch-icon" href="/brand/logo/products/browse/browse-180.png">
+<link rel="icon" href="/brand/logo/app-icon-26-32.png" sizes="32x32" type="image/png"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark-26.svg">
+<link rel="apple-touch-icon" href="/brand/logo/products/browse/browse3-256.png">
 <link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
@@ -21,24 +23,48 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
-  <nav aria-label="Main">
-    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#apple" data-sub="main" data-path="/#apple">Apple stuff</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> <b>Technology</b></span></a>
+  <nav id="nav" aria-label="Main">
+    <a href="/post/" data-sub="main" data-path="/post/"><img src="/brand/logo/products/post/post-256.png" width="18" height="18" alt="">Post</a>
+    <a href="/browse/" data-sub="main" data-path="/browse/"><img src="/brand/logo/products/browse/browse3-256.png" width="18" height="18" alt="">Browse</a>
+    <a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a>
+    <a href="/foodandmood/" data-sub="main" data-path="/foodandmood/"><img src="/brand/logo/products/foodandmood/foodmood26-256.png" width="18" height="18" alt="">Food and Mood</a>
+    <a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a>
+    <div class="more">
+      <button class="more-btn" type="button" aria-expanded="false" aria-controls="more-panel">More <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#chevron-down"/></svg></button>
+      <div class="more-panel" id="more-panel" hidden>
+        <p>More apps</p>
+        <a href="/keys/" data-sub="main" data-path="/keys/"><img src="/brand/logo/products/keys/keys-128.png" width="28" height="28" alt=""><span>Keys<small>Passwords, only yours</small></span></a>
+        <a href="/timeclock/" data-sub="main" data-path="/timeclock/"><img src="/brand/logo/products/timeclock/timeclock-128.png" width="28" height="28" alt=""><span>Timeclock<small>Punch in, clock out</small></span></a>
+        <a href="/swift/" data-sub="main" data-path="/swift/"><img src="/brand/logo/products/zerotohero/zerotohero-128.png" width="28" height="28" alt=""><span>Swift: Zero to Hero<small>The course</small></span></a>
+        <a href="/box-swift/" data-sub="main" data-path="/box-swift/"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box, native<small>In the workshop</small></span></a>
+        <a href="https://sprite.asteria.technology/" data-sub="sprite"><img src="/brand/logo/products/sprite/sprite-128.png" width="28" height="28" alt=""><span>Sprite<small>Pixel art, in the browser</small></span></a>
+        <a href="https://box.asteria.technology/" data-sub="box"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box for the web<small>Music, in the browser</small></span></a>
+        <a href="https://learn.asteria.technology/" data-sub="learn"><img src="/brand/logo/products/learn/learn-128.png" width="28" height="28" alt=""><span>Learn<small>The free Swift course</small></span></a>
+        <a href="https://social.asteria.technology/" data-sub="social"><img src="/brand/logo/products/social/social-128.png" width="28" height="28" alt=""><span>Social<small>The web one</small></span></a>
+        <p>Asteria</p>
+        <a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a>
+        <a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+        <a href="/support/" data-sub="main" data-path="/support/">Support</a>
+        <a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a>
+      </div>
+    </div>
   </nav>
   <span id="account"></span>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#menu"/></svg></button>
 </header>
 
 <main id="main" class="page">
-<p class="eyebrow">Inside Asteria Browse 2.0 · iOS 27 / macOS 27</p>
+<p class="eyebrow">The 26 lineup · Inside Asteria Browse 26.1 · iOS 27 / macOS 27</p>
 <div class="app-head">
-  <img class="app-icon" src="/brand/logo/products/browse/browse-256.png" width="92" height="92" alt="">
+  <img class="app-icon" src="/media/apps/search/search-tile.svg" width="96" height="96" alt="">
   <div><h1 class="display">Asteria Search</h1><p class="lede">Not a search engine. A library with opinions, and a strong preference for not being lied to by ads.</p></div>
 </div>
 
 <p>Asteria Search is the proprietary Swift package that powers search in <a href="/browse/">Asteria Browse</a>. It asks public sources directly from the device, merges what they return, removes ad networks and tracking parameters, and lets Apple Intelligence judge the top results. There is no Asteria search index, no Asteria account, no API key, and no server in the middle pretending to be neutral.</p>
 
 <div class="app-shots">
-  <figure class="wide"><img src="/media/apps/browse/search.png" width="1400" height="875" alt="Asteria Browse search results with an on-device overview."><figcaption>The result page in Browse. The overview cites its sources; the sources are not decorative.</figcaption></figure>
+  <figure class="wide"><img src="/media/apps/browse/mac-2-search.jpg" width="1800" height="1125" loading="lazy" alt="Asteria Browse on Mac: a search for lighthouses of the world, with an Apple Intelligence overview citing five sources above the results."><figcaption>The result page in Browse. The overview cites its sources; the sources are not decorative.</figcaption></figure>
 </div>
 
 <h2 class="display">How it works</h2>
@@ -55,13 +81,18 @@
 <p>The transport is an ephemeral URLSession with no cookies and no cache. The app sends one identifying User-Agent and your preferred languages. Queries, IP addresses and request metadata still reach each source that is asked; asking from your device does not make search anonymous. There is no query history, analytics or caching in the library. A region sends a country, a language and optionally a city; the city is used only to rewrite “near me” for web sources, and Wikipedia never receives it.</p>
 <p>No SearXNG, AltStackSearch or other copyleft implementation was copied or linked. The library is proprietary Swift, built by Asteria Technology, and it lives inside <a href="/browse/">Asteria Browse</a>.</p>
 
-<div class="status-line">Proprietary library · Inside Asteria Browse 2.0 · <a href="/browse/">Open Browse</a> · <a href="/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
+<div class="status-line">Proprietary library · Inside Asteria Browse 26.1 · <a href="https://testflight.apple.com/join/rcDf2k5c">Try it in the Browse beta on TestFlight</a> · <a href="/browse/">Open Browse</a> · <a href="/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
 </main>
 
 <footer class="foot">
-  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
-  <p class="verse">Thoughtful software. No ads. Ever.</p>
-  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  <div class="foot-grid">
+    <div><div class="foot-brand"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> Technology</span></div>
+      <p class="verse">Thoughtful software. No ads. Ever. We'd say it louder, but then it would be an ad.</p></div>
+    <nav aria-labelledby="foot-26"><h2 id="foot-26">The 26 lineup</h2><a href="/post/" data-sub="main" data-path="/post/">Post</a><a href="/browse/" data-sub="main" data-path="/browse/">Browse</a><a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a><a href="/foodandmood/" data-sub="main" data-path="/foodandmood/">Food and Mood</a><a href="/#music" data-sub="main" data-path="/#music">The soundtrack</a></nav>
+    <nav aria-labelledby="foot-more"><h2 id="foot-more">More apps</h2><a href="/keys/" data-sub="main" data-path="/keys/">Keys</a><a href="/timeclock/" data-sub="main" data-path="/timeclock/">Timeclock</a><a href="/swift/" data-sub="main" data-path="/swift/">Swift: Zero to Hero</a><a href="https://sprite.asteria.technology/" data-sub="sprite">Sprite</a><a href="https://box.asteria.technology/" data-sub="box">Box</a><a href="https://learn.asteria.technology/" data-sub="learn">Learn</a></nav>
+    <nav aria-labelledby="foot-co"><h2 id="foot-co">Asteria</h2><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a><a href="/support/" data-sub="main" data-path="/support/">Support</a><a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  </div>
+  <div class="legal"><span>© 2026 Asteria Technology</span><span>Made in Swift. Sold upfront. Never with ads.</span></div>
 </footer>
 </body>
 </html>

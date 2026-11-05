@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Asteria Technology — apps for iOS 27 and macOS 27</title>
-<meta name="description" content="Proprietary Swift apps for iPhone, iPad, Mac and Watch, built for iOS 27 and macOS 27 with Apple Intelligence, Siri and iCloud. No ads. We're as tired of saying it as you are.">
-<meta name="theme-color" content="#0a1518">
-<meta property="og:title" content="Asteria Technology — apps for iOS 27 and macOS 27">
-<meta property="og:description" content="Native Swift apps with Apple Intelligence, Siri and iCloud. No ads, no analytics, no account. Yes, really.">
+<title>Asteria Technology — the 26 lineup</title>
+<meta name="description" content="Post, Browse, Search and Food and Mood: native Swift apps for iPhone, iPad and Mac, with Apple Intelligence on your device. Named after the year. No ads. Ever.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#05080f" media="(prefers-color-scheme: dark)">
+<meta property="og:title" content="Asteria Technology — the 26 lineup">
+<meta property="og:description" content="Four native apps, Apple Intelligence on your device, and a soundtrack. No ads, no analytics. Yes, really.">
 <meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
 <meta property="og:url" content="https://asteria.technology/">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="/brand/logo/Asteria.ico" sizes="any"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark.svg?v=asteria">
-<link rel="apple-touch-icon" href="/brand/logo/app-icon-180.png?v=asteria">
+<link rel="icon" href="/brand/logo/app-icon-26-32.png" sizes="32x32" type="image/png"><link rel="icon" type="image/svg+xml" href="/brand/logo/mark-26.svg">
+<link rel="apple-touch-icon" href="/brand/logo/app-icon-26-180.png">
 <link rel="preload" href="/brand/font/AsteriaPixel-Regular.woff" as="font" type="font/woff" crossorigin>
 <link rel="stylesheet" href="/brand/tokens.css">
 <link rel="stylesheet" href="/css/site.css">
@@ -21,142 +23,282 @@
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="bar" id="bar">
-  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark.svg?v=asteria" width="28" height="28" alt=""><span>Asteria <b>Technology</b></span></a>
-  <nav aria-label="Main">
-    <a href="/#apps" data-sub="main" data-path="/#apps">Our apps</a><a href="/#apple" data-sub="main" data-path="/#apple">Apple stuff</a><a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+  <a class="brand" href="/" data-sub="main" aria-label="Asteria Technology, home"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> <b>Technology</b></span></a>
+  <nav id="nav" aria-label="Main">
+    <a href="/post/" data-sub="main" data-path="/post/"><img src="/brand/logo/products/post/post-256.png" width="18" height="18" alt="">Post</a>
+    <a href="/browse/" data-sub="main" data-path="/browse/"><img src="/brand/logo/products/browse/browse3-256.png" width="18" height="18" alt="">Browse</a>
+    <a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a>
+    <a href="/foodandmood/" data-sub="main" data-path="/foodandmood/"><img src="/brand/logo/products/foodandmood/foodmood26-256.png" width="18" height="18" alt="">Food and Mood</a>
+    <a href="/#music" data-sub="main" data-path="/#music">Soundtrack</a>
+    <div class="more">
+      <button class="more-btn" type="button" aria-expanded="false" aria-controls="more-panel">More <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#chevron-down"/></svg></button>
+      <div class="more-panel" id="more-panel" hidden>
+        <p>More apps</p>
+        <a href="/keys/" data-sub="main" data-path="/keys/"><img src="/brand/logo/products/keys/keys-128.png" width="28" height="28" alt=""><span>Keys<small>Passwords, only yours</small></span></a>
+        <a href="/timeclock/" data-sub="main" data-path="/timeclock/"><img src="/brand/logo/products/timeclock/timeclock-128.png" width="28" height="28" alt=""><span>Timeclock<small>Punch in, clock out</small></span></a>
+        <a href="/swift/" data-sub="main" data-path="/swift/"><img src="/brand/logo/products/zerotohero/zerotohero-128.png" width="28" height="28" alt=""><span>Swift: Zero to Hero<small>The course</small></span></a>
+        <a href="/box-swift/" data-sub="main" data-path="/box-swift/"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box, native<small>In the workshop</small></span></a>
+        <a href="https://sprite.asteria.technology/" data-sub="sprite"><img src="/brand/logo/products/sprite/sprite-128.png" width="28" height="28" alt=""><span>Sprite<small>Pixel art, in the browser</small></span></a>
+        <a href="https://box.asteria.technology/" data-sub="box"><img src="/brand/logo/products/box/box-128.png" width="28" height="28" alt=""><span>Box for the web<small>Music, in the browser</small></span></a>
+        <a href="https://learn.asteria.technology/" data-sub="learn"><img src="/brand/logo/products/learn/learn-128.png" width="28" height="28" alt=""><span>Learn<small>The free Swift course</small></span></a>
+        <a href="https://social.asteria.technology/" data-sub="social"><img src="/brand/logo/products/social/social-128.png" width="28" height="28" alt=""><span>Social<small>The web one</small></span></a>
+        <p>Asteria</p>
+        <a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a>
+        <a href="/source/" data-sub="main" data-path="/source/">Open source</a>
+        <a href="/support/" data-sub="main" data-path="/support/">Support</a>
+        <a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a>
+      </div>
+    </div>
   </nav>
   <span id="account"></span>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav" aria-label="Menu"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#menu"/></svg></button>
 </header>
 
-<main id="main">
-  <section class="hero" aria-labelledby="hero-title">
-    <svg class="hero-mark" viewBox="0 0 512 512" aria-hidden="true"><defs><linearGradient id="front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3bb3c3"/><stop offset="1" stop-color="#1c8c9e"/></linearGradient><linearGradient id="fold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c8c9e"/><stop offset="1" stop-color="#116674"/></linearGradient><linearGradient id="gold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd47e"/><stop offset="1" stop-color="#e9b04b"/></linearGradient><linearGradient id="page" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4ecdb"/><stop offset="1" stop-color="#e5d8bd"/></linearGradient></defs><polygon class="fold" points="224,96 288,96 416,416 352,416" fill="url(#fold)"/><polygon class="front" points="96,416 160,416 288,96 224,96" fill="url(#front)"/><path class="star" d="M256 278 Q266.4 319.6 308 330Q266.4 340.4 256 382Q245.6 340.4 204 330Q245.6 319.6 256 278Z" fill="url(#gold)"/></svg>
-    <p class="eyebrow reveal">Proprietary iOS 27 &amp; macOS 27 · Written in Swift</p>
-    <h1 id="hero-title" class="display reveal">Made for<br>your day.</h1>
-    <p class="lede reveal">Asteria Technology makes native apps for iPhone, iPad, Mac and the occasional Watch. Apple Intelligence where it earns its keep. Siri where you would rather not tap. iCloud for the things you would rather not lose. No ads, no analytics, no account for the apps. We know. We are tired too.</p>
-    <div class="actions reveal">
-      <a class="btn primary" href="#apps">Meet the apps</a>
-      <a class="btn" href="#apple">The Apple stuff</a>
-    </div>
-  </section>
-
-  <section class="open apple-apps" id="apps" aria-labelledby="apps-title">
-    <p class="eyebrow reveal">The 2026 collection</p>
-    <h2 id="apps-title" class="display reveal">Six native apps.<br>And a free course.</h2>
-    <p class="section-intro reveal">iOS 27 and macOS 27 only, because supporting everything is how you end up supporting nothing. Built in Swift with our own type, Liquid Glass, and a quiet suspicion of anything that needs a growth team.</p>
-    <div class="cards">
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/browse/browse-256.png" width="72" height="72" alt=""><p class="eyebrow">Mac · iPhone · iPad</p><h3>Asteria Browse 2.0</h3><p>Spaces, pinned tabs and a browser that minds its own business. Asteria Search asks the sources directly; Apple Intelligence hides the ads, sinks the spam and writes the overview. Siri can open the private tab.</p><p class="product-note">Proprietary software · Planned $2.99</p><a href="/browse/">Explore Browse <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/keys/keys-256.png" width="72" height="72" alt=""><p class="eyebrow">iPhone · iPad · Mac</p><h3>Asteria Keys 2.0</h3><p>Passwords, passkeys, one-time codes, cards and secure notes in one encrypted vault. Face ID or Touch ID, AutoFill, and ciphertext-only iCloud sync. Apple Intelligence drafts a login without ever seeing the secret.</p><p class="product-note">Proprietary software · Coming to the App Store</p><a href="/keys/">Explore Keys <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/timeclock/timeclock-256.png" width="72" height="72" alt=""><p class="eyebrow">iPhone · iPad · Mac · Watch</p><h3>Asteria Timeclock</h3><p>Punch in, take a break, clock out. Clients, rates, overtime, rounding, widgets, Live Activity and a branded PDF timesheet. Siri can clock you out. The Mac menu bar finally does something useful.</p><p class="product-note">Proprietary software · Coming to the App Store</p><a href="/timeclock/">Explore Timeclock <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/foodandmood/foodandmood-128.png" width="72" height="72" alt=""><p class="eyebrow">iPhone</p><h3>Food and Mood 2.5</h3><p>The paper food journal your nutritionist gave you, minus the paper. Describe a meal in your own words; Apple Intelligence fills the columns; you approve. Siri logs water. iCloud keeps the whole thing private.</p><p class="product-note">Proprietary software · In review · $0.99</p><a href="/foodandmood/">Explore Food and Mood <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/zerotohero/zerotohero-256.png" width="72" height="72" alt=""><p class="eyebrow">iPhone · iPad · Mac</p><h3>Swift: Zero to Hero 2.0</h3><p>173 lessons, 10 chapters, 83 exercises, 82 quizzes. Code checked on your device, an AI coach that will not write the answer for you, a weekly plan, and 24 milestones. The only app here that teaches you to build the others.</p><p class="product-note">Proprietary software · In review · Web course free</p><a href="/swift/">Explore the course <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/box/box-256.png" width="72" height="72" alt=""><p class="eyebrow">iPhone · iPad · Mac</p><h3>Asteria Box <span class="badge-note">native</span></h3><p>The music maker, rebuilt in Swift. Foundation Models writes the arrangement, Ask changes the tempo or the instrument, and Siri plays it. You still take the credit, which is the point.</p><p class="product-note">In development · Web Box available now</p><a href="/box-swift/">See what is coming <span aria-hidden="true">↗</span></a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/learn/learn-128.png" width="72" height="72" alt=""><p class="eyebrow">Web · Free</p><h3>Asteria Learn</h3><p>The free browser course behind Swift: Zero to Hero. Read a lesson, write real code, press Run, and find out whether the compiler agrees with you. It usually does not. That is the lesson.</p><p class="product-note">Free · Open course · No account required</p><a href="https://learn.asteria.technology/" data-sub="learn">Open Asteria Learn <span aria-hidden="true">↗</span></a></article>
-    </div>
-    <p class="section-intro reveal" style="margin-top:28px">Asteria Search is not a separate app. It is the engine inside Browse, and it has <a href="/search/">its own page</a> because of course it does.</p>
-  </section>
-
-  <section class="open principles" id="apple" aria-labelledby="apple-title">
-    <p class="eyebrow reveal">The Apple stuff</p>
-    <h2 id="apple-title" class="display reveal">It knows.<br>It listens. It syncs.</h2>
-    <p class="section-intro reveal">Every app here is built around the parts of Apple's platforms that actually save time, not the parts that make a good slide. The model runs on your device. The private database is yours. The entitlement we do not have stays off.</p>
-    <div class="cards">
-      <article class="card reveal"><h3>Apple Intelligence, on purpose.</h3><p>It writes the lesson recap, drafts the shift, sorts the search results, and explains why your code hates you. On device by default. Private Cloud Compute is wired and off until Apple grants the entitlement. We are not holding our breath.</p></article>
-      <article class="card reveal"><h3>Siri, with a job.</h3><p>Clock out. Log water. Find a login. Search the web. Open the next lesson. Siri does the short, useful things, and Shortcuts handles the rest. It still cannot fix your printer. Nobody can.</p></article>
-      <article class="card reveal"><h3>iCloud, without our server.</h3><p>Your progress, vault, shifts, journal and search history live in your private iCloud. We do not run a server, an account system, or an analytics dashboard. There is no growth team. There is barely a team.</p></article>
-    </div>
-  </section>
-
-  <section class="open principles" id="principles" aria-labelledby="principles-title">
-    <p class="eyebrow reveal">A straightforward promise</p>
-    <h2 id="principles-title" class="display reveal">Your attention<br>belongs to you.</h2>
-    <div class="cards">
-      <article class="card reveal"><span class="principle-number" aria-hidden="true">01</span><h3>No ads. Ever.</h3><p>We will not put ads in an Asteria app. We would rather charge you once and go back to work. This is not a moral position. It is a scheduling one.</p></article>
-      <article class="card reveal"><span class="principle-number" aria-hidden="true">02</span><h3>Upfront by default.</h3><p>Prices are on the page, not in a paywall after chapter three. In-app purchases are upgrades, not hostage situations. If an app is free, it is because the course is free, not because you are the product.</p></article>
-      <article class="card reveal"><span class="principle-number" aria-hidden="true">03</span><h3>Built with care, in Swift.</h3><p>Native frameworks, our own type and motion that knows when to stop. The apps are proprietary. The course is open. The license is not a personality.</p></article>
-    </div>
-  </section>
-
-  <div class="collection-heading" id="creative"><p class="eyebrow">Also from Asteria</p><h2 class="display">Tools for making.</h2><p>The older creative tools are still here, still open source, and still better than a subscription. The native Box is in the workshop. The web one is ready now.</p></div>
-
-  <section class="product" id="sprite" aria-labelledby="sprite-title">
-    <div class="copy reveal">
-      <img class="app-icon" src="/brand/logo/products/sprite/sprite-128.png" width="64" height="64" alt="">
-      <h2 id="sprite-title" class="display">Asteria<wbr><b>Sprite</b></h2>
-      <p>Layers, frames and onion skin. Shading and dither brushes, outlines, rotation that keeps pixels clean. Sheets for Godot, GIFs for everyone else.</p>
-      <p class="quiet">Describe a sprite and the assistant draws it with the same tools you use, one step you can undo at a time.</p>
-      <div class="actions"><a class="btn primary" href="https://sprite.asteria.technology/app/" data-sub="sprite" data-path="/app/">Open in your browser</a><a class="btn" href="https://sprite.asteria.technology/" data-sub="sprite">More about Sprite</a></div>
-    </div>
-    <figure class="window reveal" aria-label="A sprite being drawn, pixel by pixel">
-      <div class="window-bar"><i></i><i></i><i></i><span>lantern.asprite.json</span></div>
-      <div class="sprite-stage">
-        <canvas id="spriteCanvas" width="16" height="16"></canvas>
-        <ol class="palette" id="spritePalette" aria-hidden="true"></ol>
+<main id="main" tabindex="-1">
+  <div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title" aria-describedby="gate-desc" hidden>
+    <div class="gate-card">
+      <img src="/media/music/covers/album-600.png" width="168" height="168" alt="The cover of Made to Last: an aqua star circled by a heavy pink orbit.">
+      <h2 id="gate-title">Enter with sound?</h2>
+      <p id="gate-desc">This website has a soundtrack. Of course it does. Eight tracks, made in Asteria Box, and it plays only if you say so.</p>
+      <div class="actions">
+        <button class="btn primary" type="button" id="gateSound"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#speaker-wave"/></svg>Enter with sound</button>
+        <button class="btn" type="button" id="gateQuiet"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#speaker-slash"/></svg>Enter quietly</button>
       </div>
-    </figure>
+      <small>Change your mind any time in the Soundtrack.</small>
+    </div>
+  </div>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="stars" aria-hidden="true"></div>
+    <svg class="hero-mark" viewBox="0 0 512 512" aria-hidden="true"><defs>
+<linearGradient id="hm-star" x1="0.2" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#b8fff2"/><stop offset=".45" stop-color="#00ffd3"/><stop offset="1" stop-color="#00a88b"/></linearGradient>
+<linearGradient id="hm-orbit" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff4d86"/><stop offset=".5" stop-color="#ff0058"/><stop offset="1" stop-color="#ff4d86"/></linearGradient>
+<radialGradient id="hm-core" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
+</defs><path class="orbit-back" pathLength="1" d="M24 262A232 64 0 0 1 488 262" fill="none" stroke="url(#hm-orbit)" stroke-width="26" stroke-linecap="round" opacity=".55" transform="rotate(-24 256 262)"/><path class="star" d="M256 66Q281.48 236.52 452 262Q281.48 287.48 256 458Q230.52 287.48 60 262Q230.52 236.52 256 66Z" fill="url(#hm-star)"/><circle class="core" cx="256" cy="262" r="63" fill="url(#hm-core)" opacity=".55"/><path class="orbit" pathLength="1" d="M24 262A232 64 0 0 0 488 262" fill="none" stroke="url(#hm-orbit)" stroke-width="26" stroke-linecap="round" transform="rotate(-24 256 262)"/><path class="spark" d="M424 48Q431.04 84.96 468 92Q431.04 99.04 424 136Q416.96 99.04 380 92Q416.96 84.96 424 48Z" fill="#ff0058"/></svg>
+    <p class="eyebrow glass reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg>The 26 lineup · iPhone, iPad and Mac</p>
+    <h1 id="hero-title" class="display reveal">Version 26.<br><span class="grad">Named after the year.</span></h1>
+    <p class="lede reveal">Bold, we know. This year: a social app run by Apple Intelligence, a browser that minds its own business, a search that asks the sources itself, and a food journal your nutritionist will actually read. No ads. We're as tired of saying it as you are.</p>
+    <div class="actions reveal">
+      <a class="btn primary" href="#post">Meet the lineup <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#arrow-right"/></svg></a>
+      <button class="btn" type="button" id="soundBtn"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#speaker-wave"/></svg><span>Play the soundtrack</span></button>
+    </div>
+    <nav class="dock glass reveal" aria-label="The 26 lineup">
+      <a href="#post"><img src="/brand/logo/products/post/post-256.png" width="84" height="84" alt=""><span>Post<small>Social</small></span></a>
+      <a href="#browse"><img src="/brand/logo/products/browse/browse3-256.png" width="84" height="84" alt=""><span>Browse<small>Browser</small></span></a>
+      <a href="#search"><img src="/media/apps/search/search-tile.svg" width="84" height="84" alt=""><span>Search<small>Inside Browse</small></span></a>
+      <a href="#foodandmood"><img src="/brand/logo/products/foodandmood/foodmood26-256.png" width="84" height="84" alt=""><span>Food and Mood<small>Journal</small></span></a>
+    </nav>
   </section>
 
-  <section class="product flip" id="box" aria-labelledby="box-title">
-    <div class="copy reveal">
-      <img class="app-icon" src="/brand/logo/products/box/box-128.png" width="64" height="64" alt="">
-      <h2 id="box-title" class="display">Asteria<wbr><b>Box</b></h2>
-      <p>Chiptune or a whole band: guitars, bass, organ, strings, choir and a real drum kit. Power-chord riffs, a mix that balances itself, and MP3s ready to share.</p>
-      <p class="quiet">Built on BeepBox. Every song on this page was written with it. The native Swift 2.0 is in development; this one still works, which is more than most software can say.</p>
-      <div class="actions"><a class="btn primary" href="https://box.asteria.technology/app/" data-sub="box" data-path="/app/">Open in your browser</a><a class="btn" href="/box-swift/">The native one</a></div>
+  <div id="apps">
+  <section class="app" id="post" aria-labelledby="post-title">
+    <div class="copy">
+      <div class="app-title reveal">
+        <img src="/brand/logo/products/post/post-256.png" width="84" height="84" alt="Asteria Post icon">
+        <div><p class="eyebrow">Asteria Post · iPhone, iPad and Mac</p><h2 id="post-title" class="display">Social, minus the shouting.</h2></div>
+      </div>
+      <p class="lede reveal">A social app on the open AT Protocol network, with Apple Intelligence building your feed on your device. Outrage sinks. Promotion sinks. When you reach the end, it tells you you're all caught up. Imagine.</p>
+      <ul class="facts reveal">
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><div><b>A feed made by Apple Intelligence</b><span>Thoughtful posts first, ranked on your device. No ads, ever.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#dials"/></svg><div><b>An algorithm you can actually steer</b><span>Dials for calm, freshness, people you follow and media. Hide topics, mute words, and ask why any post is there.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#bubble"/></svg><div><b>Ask for a feed, with a timer</b><span>Post builds the feed you describe, then goes back to normal on its own. Like a holiday, but for your attention.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#play-rect"/></svg><div><b>Reels and messages</b><span>Videos up to three minutes, one swipe at a time. Chat with anyone on Asteria Post and Bluesky.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#person-circle"/></svg><div><b>A .post handle of your own</b><span>you.post here, you.post.asteria.technology everywhere else on the network. Or sign in with Bluesky.</span></div></li>
+      </ul>
+      <ul class="status reveal" aria-label="Availability"><li class="on">Free</li><li class="on">Beta on TestFlight</li><li>No in-app purchases</li><li>Coming soon to the App Store</li></ul>
+      <div class="actions reveal">
+        <a class="btn primary" href="https://testflight.apple.com/join/RBfEVJcd"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#airplane"/></svg>Join the beta on TestFlight</a>
+        <a class="btn" href="/post/" data-sub="main" data-path="/post/">More about Post</a>
+        <a class="link-arrow" href="https://post.asteria.technology/">post.asteria.technology <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#arrow-up-right"/></svg></a>
+      </div>
     </div>
-    <figure class="window reveal" aria-label="The notes of the song now playing">
-      <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">local-only.beepbox</span></div>
-      <canvas class="roll" id="roll" width="640" height="360"></canvas>
-      <button class="roll-play" id="rollPlay" type="button" aria-label="Play this song">▶</button>
-    </figure>
+    <div class="reveal">
+      <div class="stage has-card">
+        <figure class="phone"><picture><source srcset="/media/apps/post/home-dark.jpg" media="(prefers-color-scheme: dark)"><img src="/media/apps/post/home.jpg" width="600" height="1304" loading="lazy" alt="Asteria Post on iPhone: the For You feed, with a Catch Up card above sample posts."></picture></figure>
+        <figure class="phone back"><img src="/media/apps/post/reels.jpg" width="600" height="1304" loading="lazy" alt="Post's Reels tab: a full-screen sunrise video with like, reply and share buttons."></figure>
+        <div class="ask-card glass" aria-hidden="true">
+          <small><svg class="sym"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg>Build a feed</small>
+          <p>“Space and cooking, nothing political, for two hours.”</p>
+          <div class="chips"><span>Space</span><span>Cooking</span><span class="no">No politics</span><span>2 hours</span></div>
+        </div>
+      </div>
+      <p class="stage-note">Screens show sample posts. Apple Intelligence features need a device that supports it.</p>
+    </div>
   </section>
+
+  <section class="app flip" id="browse" aria-labelledby="browse-title">
+    <div class="copy">
+      <div class="app-title reveal">
+        <img src="/brand/logo/products/browse/browse3-256.png" width="84" height="84" alt="Asteria Browse icon">
+        <div><p class="eyebrow">Asteria Browse · Mac, iPhone and iPad</p><h2 id="browse-title" class="display">A browser that minds its own business.</h2></div>
+      </div>
+      <p class="lede reveal">Native WebKit, Spaces, and a sidebar that doesn't need a guided tour. Apple Intelligence sits beside every page, reads it on your device, and never clicks or types a thing for you. Restraint: our most requested feature.</p>
+      <ul class="facts reveal">
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><div><b>Apple Intelligence beside every page</b><span>A brief of the page, answers with citations that find the passage, and an explanation of whatever you selected. ⇧⌘I on the Mac.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#square-stack"/></svg><div><b>Your tabs, sorted</b><span>Ask one question across every open tab, or let Organize My Tabs sort them into spaces by purpose.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#clock"/></svg><div><b>Find it again</b><span>Describe the page you half remember. History is matched on this device, not on ours. We don't have one.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sidebar"/></svg><div><b>Drag it where it goes</b><span>Tabs into Favorites, Pinned, a folder or another space. Every drag also has a menu and a VoiceOver action.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#eye-slash"/></svg><div><b>Private tabs that mean it</b><span>Each gets its own temporary website data and keeps no history, searches or downloads.</span></div></li>
+      </ul>
+      <ul class="status reveal" aria-label="Availability"><li class="on">Browse 26.1</li><li class="on">Beta on TestFlight</li><li>Planned $2.99</li><li>Data Not Collected</li><li>iOS 27 and macOS 27</li></ul>
+      <div class="actions reveal">
+        <a class="btn primary" href="https://testflight.apple.com/join/rcDf2k5c"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#airplane"/></svg>Join the beta on TestFlight</a>
+        <a class="btn" href="/browse/" data-sub="main" data-path="/browse/">Explore Browse</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="stage wide">
+        <figure class="mac"><img src="/media/apps/browse/mac-2-search.jpg" width="1800" height="1125" loading="lazy" alt="Asteria Browse on Mac: a search for lighthouses of the world, with an Apple Intelligence overview citing five sources above the results."></figure>
+        <figure class="phone"><img src="/media/apps/browse/iphone-1-start.jpg" width="600" height="1304" loading="lazy" alt="Asteria Browse on iPhone: the start page, with spaces and favourites."></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="app" id="search" aria-labelledby="search-title">
+    <div class="copy">
+      <div class="app-title reveal">
+        <img src="/media/apps/search/search-tile.svg" width="84" height="84" alt="">
+        <div><p class="eyebrow">Asteria Search · the engine inside Browse</p><h2 id="search-title" class="display">Not a search engine. A search with opinions.</h2></div>
+      </div>
+      <p class="lede reveal">Asteria Search doesn't crawl the web or pretend to know everything. It asks the sources directly from your device, throws out the ads, and has Apple Intelligence tell the rest to form an orderly queue.</p>
+      <p class="quiet reveal">Google is never scraped. Choose it as Browse's search engine if you like; that's a different sentence. There's no Asteria search server, no account, no API key and no query history.</p>
+      <ul class="status reveal" aria-label="Details"><li class="on">Inside Browse 26.1</li><li>All, Websites, Articles, Images, Videos</li><li>No query history</li></ul>
+      <div class="actions reveal">
+        <a class="btn primary" href="/search/" data-sub="main" data-path="/search/">How Search works <svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#arrow-right"/></svg></a>
+        <a class="btn" href="https://testflight.apple.com/join/rcDf2k5c"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#airplane"/></svg>Try it in the Browse beta</a>
+      </div>
+    </div>
+    <ol class="pipeline glass reveal" aria-label="What happens when you search">
+      <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#globe"/></svg><div><b>Ask the sources</b><span>Straight from your device, each one asked directly.</span>
+        <div class="sources"><i>Bing</i><i>DuckDuckGo</i><i>Wikipedia</i><i>Bing News</i><i>Bing Images</i><i>Wikimedia Commons</i><i>Bing Videos</i></div></div></li>
+      <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#hand-raised"/></svg><div><b>Bin the ads</b><span>Ad networks, ad-click redirects and paid-campaign links are dropped. Tracking keys go too.</span></div></li>
+      <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#dials"/></svg><div><b>Merge fairly</b><span>Reciprocal rank fusion merges the lists. Whichever source answers first gets no prize.</span></div></li>
+      <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><div><b>Let the model sort</b><span>On-device Foundation Models judge the top 12: useful, advertising, spam or off topic. Reference works are never removed.</span></div></li>
+      <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#newspaper"/></svg><div><b>Write the overview</b><span>Two to four sentences with numbered sources. It reads snippets, so it can be wrong, which is why the sources sit right beside it.</span></div></li>
+    </ol>
+  </section>
+
+  <section class="app flip" id="foodandmood" aria-labelledby="fm-title">
+    <div class="copy">
+      <div class="app-title reveal">
+        <img src="/brand/logo/products/foodandmood/foodmood26-256.png" width="84" height="84" alt="Asteria Food and Mood icon">
+        <div><p class="eyebrow">Asteria Food and Mood · iPhone</p><h2 id="fm-title" class="display">The food journal, minus the paper.</h2></div>
+      </div>
+      <p class="lede reveal">The six-column journal your nutritionist hands out, rebuilt in Swift. Say what you ate in your own words, check it, and send a spreadsheet that opens cleanly in Excel. Your nutritionist may weep with joy. Results vary.</p>
+      <ul class="facts reveal">
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><div><b>Say it in your own words</b><span>Apple Intelligence keeps each meal separate, with the time you gave. You check everything before it's saved.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#camera"/></svg><div><b>Snap a meal</b><span>Apple Intelligence writes down the foods and drinks it can see. The photo isn't kept. Your lunch's dignity is.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#chart"/></svg><div><b>Patterns, not diagnoses</b><span>Mood, energy, water, sleep and Bristol types over 7, 14 or 30 days, and what tends to go together, in plain counts. Never “because”.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#tablecells"/></svg><div><b>The spreadsheet is the point</b><span>Excel, PDF or CSV for any range of days, with a page for each day laid out like the paper journal.</span></div></li>
+        <li><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#icloud"/></svg><div><b>Private by design</b><span>Stored in your own iCloud. No accounts, no ads, no tracking. We can't read your journal, and frankly we don't want to.</span></div></li>
+      </ul>
+      <ul class="status reveal" aria-label="Availability"><li class="on">$0.99, once</li><li class="on">Beta on TestFlight</li><li>iPhone</li><li>In App Store review</li><li>Not medical advice</li></ul>
+      <div class="actions reveal">
+        <a class="btn primary" href="https://testflight.apple.com/join/cQjQMBeX"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#airplane"/></svg>Join the beta on TestFlight</a>
+        <a class="btn" href="/foodandmood/" data-sub="main" data-path="/foodandmood/">Explore Food and Mood</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="stage">
+        <figure class="phone"><img src="/media/apps/foodandmood/fm-1-today.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood's Today screen: wake and bed times, water, mood and energy, and the morning's meals."></figure>
+        <figure class="phone back"><img src="/media/apps/foodandmood/fm-3-patterns.jpg" width="600" height="1304" loading="lazy" alt="Food and Mood's Patterns screen, with charts of mood, energy and water."></figure>
+      </div>
+    </div>
+  </section>
+  </div>
 
   <section class="music" id="music" aria-labelledby="music-title">
-    <div class="album reveal">
-      <img id="albumCover" src="/media/music/covers/album-600.png" width="600" height="600" alt="Made to Last, cover">
-      <div>
+    <div class="backdrop" id="backdrop" aria-hidden="true"></div>
+    <div class="album">
+      <figure class="reveal">
+        <img id="albumCover" src="/media/music/covers/album-1200.png" width="1200" height="1200" alt="The cover of Made to Last: an aqua star circled by a heavy pink orbit.">
+        <figcaption><a id="coverLink" href="/media/music/covers/album-3000.jpg" download>Download the cover, 3000 × 3000</a></figcaption>
+      </figure>
+      <div class="reveal">
         <p class="eyebrow">The soundtrack · Made in Asteria Box</p>
         <h2 id="music-title" class="display">Made to Last</h2>
-        <p class="quiet">Eight tracks about local-only software, search results, and the exact moment the timer stops.</p>
+        <p class="quiet">Fast rock with an industrial edge, about private software, honest prices and the exact moment the timer stops. Every note was written in Asteria Box, which is free. Most soundtracks can't say that.</p>
         <p class="quiet" id="albumMeta">Eight tracks · Asteria Technology · 2026</p>
-        <div class="player" id="player" aria-label="Music player">
-          <button class="btn primary round" id="playBtn" type="button" aria-label="Play">▶</button>
-          <div class="now"><strong id="nowTitle">Local Only</strong><span id="nowAbout"></span>
-            <div class="progress" id="progress" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><i id="progressFill"></i></div>
+        <div class="player glass" id="player" role="group" aria-label="Music player">
+          <button class="ctl" type="button" id="prevBtn" aria-label="Previous track"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#backward"/></svg></button>
+          <button class="btn primary round" type="button" id="playBtn" aria-label="Play"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#play"/></svg></button>
+          <button class="ctl" type="button" id="nextBtn" aria-label="Next track"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#forward"/></svg></button>
+          <div class="now"><strong id="nowTitle">Nobody's Watching (We Checked)</strong><span id="nowAbout"></span>
+            <div class="progress" id="progress" role="slider" aria-label="Position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-valuetext="0:00" tabindex="0"><i id="progressFill"></i></div>
+            <div class="times"><span id="tNow">0:00</span><span id="tAll">0:00</span></div>
           </div>
         </div>
       </div>
     </div>
-    <ol class="tracks reveal" id="tracks"></ol>
+    <ol class="tracks reveal" id="tracks" aria-label="Tracks"></ol>
   </section>
 
-  <section class="open" id="work" aria-labelledby="work-title">
-    <h2 id="work-title" class="display reveal">Your files, together.</h2>
+  <section class="catalogue" id="more" aria-labelledby="more-title">
+    <p class="eyebrow reveal">Also from Asteria</p>
+    <h2 id="more-title" class="display reveal">The rest of the family.</h2>
+    <p class="lede reveal">Still here, still ad-free, still slightly smug about it.</p>
+    <div class="tiles">
+      <a class="tile reveal" href="/keys/" data-sub="main" data-path="/keys/"><img src="/brand/logo/products/keys/keys-128.png" width="60" height="60" alt=""><b>Asteria Keys</b><span>Passwords, passkeys and codes in one encrypted vault. No Asteria server to leak it.</span><small>iPhone, iPad and Mac · Coming to the App Store</small></a>
+      <a class="tile reveal" href="/timeclock/" data-sub="main" data-path="/timeclock/"><img src="/brand/logo/products/timeclock/timeclock-128.png" width="60" height="60" alt=""><b>Asteria Timeclock</b><span>Punch in, take a break, clock out. Siri can clock you out. The menu bar finally earns its keep.</span><small>iPhone, iPad, Mac and Watch · Coming to the App Store</small></a>
+      <a class="tile reveal" href="/swift/" data-sub="main" data-path="/swift/"><img src="/brand/logo/products/zerotohero/zerotohero-128.png" width="60" height="60" alt=""><b>Swift: Zero to Hero</b><span>173 lessons, checked on your device, with a coach that refuses to write the answer for you.</span><small>iPhone, iPad and Mac · In review</small></a>
+      <a class="tile reveal" href="/box-swift/" data-sub="main" data-path="/box-swift/"><img src="/brand/logo/products/box/box-128.png" width="60" height="60" alt=""><b>Asteria Box, native</b><span>The music maker, rebuilt in Swift. You still take the credit, which is the point.</span><small>In development</small></a>
+      <a class="tile reveal" href="https://learn.asteria.technology/" data-sub="learn"><img src="/brand/logo/products/learn/learn-128.png" width="60" height="60" alt=""><b>Asteria Learn</b><span>The free browser course. Write real code, press Run, and argue with the compiler.</span><small>Web · Free</small></a>
+      <a class="tile reveal" id="work" href="https://cloud.asteria.technology/" data-sub="cloud"><img src="/brand/logo/products/cloud/cloud-128.png" width="60" height="60" alt=""><b>Asteria Cloud</b><span>3 GB for every Asteria account. Sprite, Box and Office save there.</span><small>Web</small></a>
+      <a class="tile reveal" href="https://office.asteria.technology/" data-sub="office"><img src="/brand/logo/products/office/office-128.png" width="60" height="60" alt=""><b>Asteria Office</b><span>Documents, spreadsheets, presentations and PDFs. Write together in the browser.</span><small>Web</small></a>
+      <a class="tile reveal" id="social" href="https://social.asteria.technology/" data-sub="social"><img src="/brand/logo/products/social/social-128.png" width="60" height="60" alt=""><b>Social, on the web</b><span>A calm place to share what you make, with one Asteria account. Post is where it's headed.</span><small>Web</small></a>
+    </div>
+
+    <div class="workshop" id="creative">
+      <article class="bench reveal" id="sprite" aria-labelledby="sprite-title">
+        <header><img src="/brand/logo/products/sprite/sprite-128.png" width="52" height="52" alt=""><div><h3 id="sprite-title">Asteria Sprite</h3><p>Pixel art and animation, free and open source.</p></div></header>
+        <figure class="window" aria-label="A sprite being drawn, pixel by pixel">
+          <div class="window-bar"><i></i><i></i><i></i><span>lantern.asprite.json</span></div>
+          <div class="sprite-stage"><canvas id="spriteCanvas" width="16" height="16"></canvas><ol class="palette" id="spritePalette" aria-hidden="true"></ol></div>
+        </figure>
+        <div class="actions"><a class="btn primary small" href="https://sprite.asteria.technology/app/" data-sub="sprite" data-path="/app/">Open in your browser</a><a class="btn small" href="https://sprite.asteria.technology/" data-sub="sprite">More about Sprite</a></div>
+      </article>
+      <article class="bench reveal" id="box" aria-labelledby="box-title">
+        <header><img src="/brand/logo/products/box/box-128.png" width="52" height="52" alt=""><div><h3 id="box-title">Asteria Box</h3><p>Chiptune or a whole band. Every song on this page was written with it.</p></div></header>
+        <figure class="window" aria-label="The notes of the song now playing">
+          <div class="window-bar"><i></i><i></i><i></i><span id="rollTitle">nobodys-watching.beepbox</span></div>
+          <canvas class="roll" id="roll" width="640" height="360"></canvas>
+          <button class="roll-play" id="rollPlay" type="button" aria-label="Play"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#play"/></svg></button>
+        </figure>
+        <div class="actions"><a class="btn primary small" href="https://box.asteria.technology/app/" data-sub="box" data-path="/app/">Open in your browser</a><a class="btn small" href="/box-swift/" data-sub="main" data-path="/box-swift/">The native one</a></div>
+      </article>
+    </div>
+  </section>
+
+  <section class="fine" id="apple" aria-labelledby="fine-title">
+    <p class="eyebrow reveal" id="principles">How we work</p>
+    <h2 id="fine-title" class="display reveal">The fine print, in large print.</h2>
+    <p class="lede reveal">Short version: we make the app, you pay for it once, and then we leave you alone.</p>
     <div class="cards">
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/cloud/cloud-128.png" width="56" height="56" alt=""><h3>Asteria Cloud</h3><p>3 GB for every Asteria account. Sprite, Box and Office save there, and your computer stays in sync.</p><a href="https://cloud.asteria.technology/" data-sub="cloud">Open Cloud</a></article>
-      <article class="card reveal"><img class="app-icon" src="/brand/logo/products/office/office-128.png" width="56" height="56" alt=""><h3>Asteria Office</h3><p>Documents, spreadsheets, presentations and PDFs. Write together in the browser, or on your desktop.</p><a href="https://office.asteria.technology/" data-sub="office">Open Office</a></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#hand-raised"/></svg><h3>No ads. Ever.</h3><p>Not in Post, not in Browse, not anywhere. We'd rather charge you once and go back to work. It's less a moral position than a scheduling one.</p></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#tag"/></svg><h3>Upfront by default.</h3><p>Prices are on the page, not behind a paywall in chapter three. In-app purchases are upgrades, not hostage situations. If an app is free, it's because it's free.</p></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#sparkles"/></svg><h3>Apple Intelligence, on purpose.</h3><p>On your device by default. It ranks, summarises and suggests, and tells you when it wrote something. Private Cloud Compute stays off until Apple grants the entitlement.</p></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#waveform"/></svg><h3>Siri, with a job.</h3><p>Catch me up. Brief this page. Log water. Clock out. Siri does the short, useful things. It still can't fix your printer. Nobody can.</p></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#icloud"/></svg><h3>iCloud, not our cloud.</h3><p>Your journal, vault, shifts and history live in your private iCloud. No analytics dashboard, no growth team. There's barely a team.</p></article>
+      <article class="card reveal"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#hammer"/></svg><h3>Built in Swift.</h3><p>Native frameworks, SF Pro, Liquid Glass, and motion that knows when to stop. The apps are proprietary; the web tools and the course are open.</p></article>
     </div>
   </section>
 
-  <section class="social" id="social" aria-labelledby="social-title">
-    <div class="copy reveal">
-      <p class="eyebrow">Share what you make</p>
-      <h2 id="social-title" class="display">Social</h2>
-      <p>A calm place to share what you make, on the open AT Protocol. One Asteria account connects our web services, and your posts and followers move with you.</p>
-      <a class="btn primary" href="https://social.asteria.technology/" data-sub="social">Open Social</a>
-    </div>
-    <div class="feed reveal" aria-hidden="true">
-      <div class="post"><img src="/media/music/covers/06-keystone-600.png" alt=""><div><b>Clock Out</b><span>New track, made in Box. Pipe organ, choir and too many guitars.</span></div></div>
-      <div class="post"><img src="/brand/logo/products/sprite/sprite-128.png" alt=""><div><b>Lantern, 32 × 32</b><span>Eight frames of flicker. Sheet and Godot file in the replies.</span></div></div>
-      <div class="post"><img src="/media/music/covers/03-many-hands-600.png" alt=""><div><b>Passkey</b><span>A key you never see. A lock you never pick. A choir that refuses to explain itself.</span></div></div>
-    </div>
-  </section>
+  <div class="mini glass" id="mini" hidden>
+    <img id="miniCover" src="/media/music/covers/album-600.png" width="40" height="40" alt="">
+    <a href="#music"><span id="miniTitle">Made to Last</span><small>Made to Last · Asteria Technology</small></a>
+    <button type="button" id="miniPlay" aria-label="Pause"><svg class="sym" aria-hidden="true"><use href="/css/symbols.svg?v=26.1#pause"/></svg></button>
+  </div>
 </main>
 
 <footer class="foot">
-  <div class="foot-brand"><img src="/brand/logo/mark-mono-cream.svg?v=asteria" width="24" height="24" alt=""><span>Asteria Technology</span></div>
-  <p class="verse">Thoughtful software. No ads. Ever.</p>
-  <nav aria-label="Footer"><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open-source projects</a><a href="/support/" data-sub="main" data-path="/support/">Support</a><a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  <div class="foot-grid">
+    <div><div class="foot-brand"><img src="/brand/logo/mark-26.svg" width="28" height="28" alt=""><span><span class="wordmark">Asteria</span> Technology</span></div>
+      <p class="verse">Thoughtful software. No ads. Ever. We'd say it louder, but then it would be an ad.</p></div>
+    <nav aria-labelledby="foot-26"><h2 id="foot-26">The 26 lineup</h2><a href="/post/" data-sub="main" data-path="/post/">Post</a><a href="/browse/" data-sub="main" data-path="/browse/">Browse</a><a href="/search/" data-sub="main" data-path="/search/"><img src="/media/apps/search/search-tile.svg" width="18" height="18" alt="">Search</a><a href="/foodandmood/" data-sub="main" data-path="/foodandmood/">Food and Mood</a><a href="/#music" data-sub="main" data-path="/#music">The soundtrack</a></nav>
+    <nav aria-labelledby="foot-more"><h2 id="foot-more">More apps</h2><a href="/keys/" data-sub="main" data-path="/keys/">Keys</a><a href="/timeclock/" data-sub="main" data-path="/timeclock/">Timeclock</a><a href="/swift/" data-sub="main" data-path="/swift/">Swift: Zero to Hero</a><a href="https://sprite.asteria.technology/" data-sub="sprite">Sprite</a><a href="https://box.asteria.technology/" data-sub="box">Box</a><a href="https://learn.asteria.technology/" data-sub="learn">Learn</a></nav>
+    <nav aria-labelledby="foot-co"><h2 id="foot-co">Asteria</h2><a href="/downloads/" data-sub="main" data-path="/downloads/">Downloads</a><a href="/source/" data-sub="main" data-path="/source/">Open source</a><a href="/support/" data-sub="main" data-path="/support/">Support</a><a href="/privacy/" data-sub="main" data-path="/privacy/">Privacy</a><a href="https://social.asteria.technology/" data-sub="social">Social</a></nav>
+  </div>
+  <div class="legal"><span>© 2026 Asteria Technology</span><span>Made in Swift. Sold upfront. Never with ads.</span></div>
 </footer>
 </body>
 </html>
