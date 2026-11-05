@@ -55,7 +55,12 @@ python3 tools/studio/server.py 8790
 ```
 
 Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `await FG.make('all')` in the console.
-Files go to `site/media/music/`. Track titles and notes live in `tools/studio/album.js` and `site/media/music/album.json`.
+Files go to `site/media/music/`. Track titles and notes live in `tools/studio/album.js` and `site/media/music/album-26.json`.
+
+The server lets browsers keep everything under `/media/` for a week, so music files are named for their edition:
+`album-26.json`, `covers-26/` and `mp3-26/`. When titles, covers or tags change again, rename them (to `-27`, say) and
+change the same names in `site/js/site.js`, `site/index.html`, `tools/pages.py`, `tools/studio/engine.js`,
+`tools/studio/covers.swift` and `tools/studio/retag.py`, or visitors keep the old ones.
 
 The covers are drawn, not pixelled: `tools/studio/covers.swift` paints each one at 3000 × 3000 in night, aqua and heavy
 and writes `-3000.jpg`, `-1200.png` and `-600.png`. (`FG.covers()` in the studio is the old pixel-art generator; don't
@@ -74,6 +79,9 @@ because SVGs are cached for a day), Liquid Glass surfaces, light and dark. The p
 aqua #00FFD3, heavy #FF0058, night #05080F, with deep aqua #00826B and #D10048 for text on light backgrounds.
 The logo is `brand/logo/mark-26.svg` (the Asteria star with a heavy orbit) and `brand/logo/app-icon-26.svg`; the
 older ribbon mark is still written by `brand/build_brand.py` for the apps that use it.
+
+When you change `brand/tokens.css`, `site/css/site.css` or `site/js/site.js`, raise `?v=` where `site/index.html` links
+them and run `tools/pages.py`, so browsers fetch the new ones.
 
 The home page is the template for the bar and footer: `python3 tools/pages.py` writes them into every page it
 generates and into the hand-written pages it lists in `HAND`.

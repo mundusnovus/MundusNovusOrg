@@ -1,6 +1,6 @@
 // Made to Last: the cover art, drawn rather than pixelled. Night, aqua and heavy, with glass, glow and a little grain.
 // Each cover is drawn at 3000 × 3000 and written three ways: a 3000 px JPEG (full resolution), and 1200 and 600 px
-// PNGs for the site and the MP3 tags. Titles come from site/media/music/album.json.
+// PNGs for the site and the MP3 tags. Titles come from site/media/music/album-26.json.
 //
 //   swiftc -O tools/studio/covers.swift -o /tmp/covers && /tmp/covers      (then python3 tools/studio/retag.py)
 import AppKit
@@ -10,7 +10,7 @@ import CoreText
 let S: CGFloat = 3000
 let here = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
 let music = here.appendingPathComponent("../../site/media/music").standardized
-let out = music.appendingPathComponent("covers")
+let out = music.appendingPathComponent("covers-26")
 let space = CGColorSpace(name: CGColorSpace.sRGB)!
 let ci = CIContext(options: [.workingColorSpace: space])
 
@@ -251,7 +251,7 @@ func save(_ img: CGImage, _ name: String) {
 
 struct Track: Decodable { let n: Int; let slug: String; let title: String }
 struct Album: Decodable { let album: String; let tracks: [Track] }
-let album = try! JSONDecoder().decode(Album.self, from: Data(contentsOf: music.appendingPathComponent("album.json")))
+let album = try! JSONDecoder().decode(Album.self, from: Data(contentsOf: music.appendingPathComponent("album-26.json")))
 let lights: [(CGPoint, CGPoint)] = [(CGPoint(x: 600, y: 500), CGPoint(x: 2600, y: 2300)), (CGPoint(x: 2500, y: 400), CGPoint(x: 400, y: 2000)), (CGPoint(x: 1500, y: 200), CGPoint(x: 2700, y: 1600)),
   (CGPoint(x: 300, y: 1200), CGPoint(x: 2700, y: 600)), (CGPoint(x: 1400, y: 900), CGPoint(x: 2600, y: 2600)), (CGPoint(x: 2400, y: 1300), CGPoint(x: 500, y: 300)),
   (CGPoint(x: 900, y: 2200), CGPoint(x: 2300, y: 500)), (CGPoint(x: 1500, y: 1100), CGPoint(x: 300, y: 2600))]

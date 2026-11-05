@@ -112,7 +112,7 @@ BOX = """
 </div></section>
 <section class="music" id="music" aria-labelledby="music-title">
   <div class="album reveal">
-    <img id="albumCover" src="/media/music/covers/album-600.png" width="600" height="600" alt="Made to Last, cover">
+    <img id="albumCover" src="/media/music/covers-26/album-600.png" width="600" height="600" alt="Made to Last, cover">
     <div>
       <p class="eyebrow">Made in Asteria Box</p>
       <h2 id="music-title" class="display">Made to Last</h2>
@@ -165,6 +165,9 @@ for rel in HAND:
     head, rest = text[:text.index("<body>")], text[text.index("<body>"):]
     head = ICONS_OLD.sub(ICONS_NEW, head)
     head = re.sub(r'<meta name="theme-color" content="#0a1518">', THEME_NEW, head)
+    # the same versioned stylesheets and script as the home page, so browsers fetch the new ones
+    for asset in ("/brand/tokens.css", "/css/site.css", "/js/site.js"):
+        head = re.sub(re.escape(asset) + r'(\?v=[^"]*)?"', re.search(re.escape(asset) + r'[^"]*', HEAD).group(0) + '"', head)
     rest = rest[:rest.index('<a class="skip"')] + BAR + rest[rest.index("<main"):]
     rest = rest[:rest.index("<footer")] + FOOT
     open(path, "w").write(head + rest)
