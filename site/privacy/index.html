@@ -49,7 +49,7 @@
 </header>
 
 <main id="main" class="page">
-<p class="eyebrow">Privacy · Effective 2 November 2026</p>
+<p class="eyebrow">Privacy · Effective 5 November 2026</p>
 <h1 class="display">We do not collect your data.</h1>
 <p class="lede">That is the policy. The rest of this page is the explanation, because “we do not collect your data” has been used to mean several things, and we would like to be specific.</p>
 
@@ -57,24 +57,30 @@
 <ul>
   <li>No Asteria account for the apps. No Asteria analytics. No advertising. No tracking SDKs.</li>
   <li>Your work lives on your device and, where the app supports it, in your own private iCloud database.</li>
-  <li>Apple Intelligence runs on your device. Private Cloud Compute is gated and off in current builds.</li>
-  <li>We cannot read your vault, journal, shifts, songs or search history. There is no Asteria server to read them from.</li>
+  <li>Asteria Intelligence, the AI in Asteria, Post, Browse, Search and Food and Mood, asks before anything is sent. Our gateway keeps none of it; our AI provider, DeepSeek, processes it in China. Keys, Timeclock and Swift: Zero to Hero use Apple Intelligence on your device.</li>
+  <li>We cannot read your vault, journal, shifts, songs or search history. What you send to Asteria Intelligence passes through our gateway without being kept.</li>
 </ul>
 
 <h2 class="display">Where each app keeps its data</h2>
 <div class="features">
-  <div><h3>Browse</h3><p>Tabs, Spaces, bookmarks, history and downloads stay on your device. Search requests go from the device to the public sources you asked for. Private tabs use temporary website data that is discarded when the tab closes. Siri and Spotlight indexing is opt-in and can be removed from Settings.</p></div>
+  <div><h3>Browse</h3><p>Tabs, Spaces, bookmarks, history and downloads stay on your device. Search requests go from the device to the public sources you asked for. Private tabs use temporary website data that is discarded when the tab closes. Siri and Spotlight indexing is opt-in and can be removed from Settings. With Asteria Intelligence on, what it reads for you (a search's results, a page, a selection, your open tabs) is sent to it.</p></div>
   <div><h3>Keys</h3><p>Your vault is encrypted on your device with a key wrapped by your master password. Only ciphertext is stored in your private CloudKit database. Your master password and recovery key are never sent anywhere. Apple Intelligence sees counts of findings for the security coach, not passwords, usernames, sites or notes.</p></div>
   <div><h3>Timeclock</h3><p>Clients, tags, shifts, breaks, rates and settings are stored with SwiftData in your private CloudKit database. Calendar access is optional and read-only. Siri and Spotlight sharing are opt-in. Exports are files you choose to create.</p></div>
-  <div><h3>Food and Mood</h3><p>The journal is stored with SwiftData in your private CloudKit database. The on-device model reads what you type to fill in the journal, and nothing is saved until you confirm it. Exports are files you choose to create. Food and Mood is not medical advice.</p></div>
+  <div><h3>Food and Mood</h3><p>The journal is stored with SwiftData in your private CloudKit database. With Asteria Intelligence on, what you ask it about (a description of a meal, a meal photo, or a shortened journal for a summary or an answer) is sent to it, and nothing is saved until you confirm it. Exports are files you choose to create. Food and Mood is not medical advice.</p></div>
   <div><h3>Swift: Zero to Hero</h3><p>Lessons, code, checklist ticks, streaks and badges are stored in your private CloudKit database. Accent colour and code size use iCloud key-value storage. The on-device exercise engine never sends your code anywhere. The Mac uses your own Swift compiler.</p></div>
   <div><h3>Box</h3><p>The native Box stores songs in your iCloud Drive and settings in key-value storage. The web Box stores songs locally or in Asteria Cloud if you choose to use it. Neither asks for an Asteria account to make music on your own device.</p></div>
   <div><h3>Asteria Learn</h3><p>Progress is stored in your browser or, if you sign in, in your Asteria account. The free course does not require an account. Lesson code is checked by the course runner; it is not used for advertising or profiling.</p></div>
   <div><h3>Asteria Search</h3><p>The library has no query history, analytics or cache. It asks public sources directly. Those sources receive the query, your IP address and request metadata under their own policies. Asking from your device does not make search anonymous.</p></div>
 </div>
 
-<h2 class="display">Apple Intelligence and Private Cloud Compute</h2>
-<p>Apple Intelligence features use Apple’s Foundation Models framework. On-device features run on your device. Private Cloud Compute is compiled into some apps but disabled until Apple grants the managed entitlement; the Settings switch is disabled and says why. If it is enabled in a future build, requests go to Apple’s Private Cloud Compute under Apple’s terms, not to an Asteria server.</p>
+<h2 class="display" id="asteria-intelligence">Asteria Intelligence</h2>
+<p>Asteria Intelligence is the AI in Asteria, Post, Browse, Search and Food and Mood. Nothing is sent until you turn it on in the app, which asks you first. You can turn it off in each app's Settings.</p>
+<p>When you use it, what you ask and what you share with it (for example a chat, a page, a post, a photo, or part of your journal) goes from your device to Asteria Technology's gateway at asteria.technology/intelligence. The gateway passes it to our AI provider and streams the answer back. It does not store or log what you send or what comes back. It keeps only how much was used each day, under a label that can't be traced back to you, for 40 days, so everyone stays within a daily allowance.</p>
+<p>Our AI provider is DeepSeek (Hangzhou DeepSeek Artificial Intelligence Co., Ltd.). DeepSeek processes and stores requests in the People's Republic of China, whose data protection law differs from yours, under its own <a href="https://cdn.deepseek.com/policies/en-US/deepseek-privacy-policy.html">privacy policy</a> and terms. It may keep requests and use them to improve its services. We send it an unlinkable label instead of your name, username or account. Please leave out anything you wouldn't want stored.</p>
+<p>To keep the service for our apps only, apps without an account prove they are a genuine copy with Apple's App Attest, which contains no personal data. Apps with an Asteria Account start a session with it, so your daily allowance is the same in every app.</p>
+
+<h2 class="display">Apple Intelligence</h2>
+<p>Keys, Timeclock and Swift: Zero to Hero use Apple Intelligence through Apple's Foundation Models framework, on your device. Writing Tools, Image Playground and Siri are Apple's, under Apple's privacy policy.</p>
 
 <h2 class="display">Siri and Spotlight</h2>
 <p>Where an app offers Siri, Shortcuts, Spotlight or Handoff, sharing is opt-in. The app indexes the content on your device. Siri requests are handled by Apple under Apple’s privacy policy. You can turn sharing off and remove the index from Settings.</p>

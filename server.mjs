@@ -13,6 +13,8 @@
 //   WIRE_RELAY_URL is where Asteria (the app)'s account server and message relay runs (AsteriaRelay, on Railway's private
 //   network, like http://asteria-relay.railway.internal:8080). asteria.technology/wire/v1/… is passed to it as /v1/…;
 //   the pages at /wire/ are this site's own. Asteria Accounts are Asteria Post accounts (post.asteria.technology).
+//   asteria.technology/intelligence/v1/… is Asteria Intelligence, every Asteria app's AI, run by the same relay
+//   (passed to it as /v1/intelligence/…; answers stream back as they are written).
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
@@ -95,7 +97,7 @@ export function makeServer(env = process.env) {
       const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : Readable.toWeb(req);
       const r = await fetch(wireRelay + path + search, { method: req.method, headers, body, duplex: 'half', redirect: 'manual', signal: AbortSignal.timeout(600_000) });
       const out = { 'cache-control': 'no-store' };
-      for (const name of ['content-type', 'www-authenticate']) { const v = r.headers.get(name); if (v) out[name] = v; }
+      for (const name of ['content-type', 'www-authenticate', 'x-asteria-limit']) { const v = r.headers.get(name); if (v) out[name] = v; }
       res.writeHead(r.status, out);
       if (!r.body || req.method === 'HEAD') return res.end();
       Readable.fromWeb(r.body).pipe(res);
@@ -123,6 +125,7 @@ export function makeServer(env = process.env) {
       }
       if (kind === 'www') return redirect(res, to('', path));
       if (kind === 'main' && path.startsWith('/wire/v1/')) return wire(req, res, path.slice(5), url.search);
+      if (kind === 'main' && path.startsWith('/intelligence/v1/')) return wire(req, res, '/v1/intelligence/' + path.slice('/intelligence/v1/'.length), url.search);
       if (oidc && await oidc.serve(req, res)) return;
       if (await social.serve(req, res, secure, '/api/', env.COOKIE_DOMAIN)) return; // one account everywhere: every address answers /api/
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }

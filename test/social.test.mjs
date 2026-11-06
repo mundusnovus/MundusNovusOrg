@@ -219,7 +219,7 @@ test('Asteria Cloud service: contacts from Social, shares recorded on the PDS', 
   } finally { server.close(); }
 });
 
-test('asteria.technology/wire/v1 reaches the Asteria relay, and only that', async () => {
+test('asteria.technology/wire/v1 and /intelligence/v1 reach the Asteria relay, and only that', async () => {
   const { createServer } = await import('node:http');
   const seen = [];
   const relay = createServer((req, res) => {
@@ -239,6 +239,9 @@ test('asteria.technology/wire/v1 reaches the Asteria relay, and only that', asyn
     assert.equal(r.status, 200);
     assert.deepEqual(seen.at(-1), { method: 'POST', url: '/v1/signup', auth: 'Bearer t', body: '{"username":"maya"}' });
     r = await fetch(base + '/wire/v1/me', { headers: h }); assert.equal(r.status, 401);
+    r = await fetch(base + '/intelligence/v1/chat/completions', { method: 'POST', headers: { ...h, 'content-type': 'application/json', authorization: 'Bearer s' }, body: '{"messages":[]}' });
+    assert.equal(r.status, 200);
+    assert.deepEqual(seen.at(-1), { method: 'POST', url: '/v1/intelligence/chat/completions', auth: 'Bearer s', body: '{"messages":[]}' });
     r = await fetch(base + '/wire/v1/health', { headers: { 'x-forwarded-host': 'social.asteria.test' } }); assert.notEqual((await r.text()).includes('"ok":true'), true);
   } finally { server.close(); relay.close(); }
   const { server: off, base: offBase } = await start();

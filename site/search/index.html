@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Asteria Search — the engine inside Browse</title>
-<meta name="description" content="Asteria Search is the on-device metasearch library inside Asteria Browse 2.0: public sources, merged results, ad filtering and Apple Intelligence re-ranking. No Asteria search server, no account, no API key.">
+<meta name="description" content="Asteria Search is the on-device metasearch library inside Asteria Browse 2.0: public sources, merged results, ad filtering and Asteria Intelligence re-ranking. No Asteria search server, no account, no API key.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#05080f" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="Asteria Search — the engine inside Browse">
-<meta property="og:description" content="Not a web index. A library that asks the sources directly, removes the ads, and lets Apple Intelligence sort the useful bits.">
+<meta property="og:description" content="Not a web index. A library that asks the sources directly, removes the ads, and lets Asteria Intelligence sort the useful bits.">
 <meta property="og:image" content="https://asteria.technology/brand/logo/og-1200x630.png">
 <meta property="og:url" content="https://asteria.technology/search/">
 <meta name="twitter:card" content="summary_large_image">
@@ -61,24 +61,24 @@
   <div><h1 class="display">Asteria Search</h1><p class="lede">Not a search engine. A library with opinions, and a strong preference for not being lied to by ads.</p></div>
 </div>
 
-<p>Asteria Search is the proprietary Swift package that powers search in <a href="/browse/">Asteria Browse</a>. It asks public sources directly from the device, merges what they return, removes ad networks and tracking parameters, and lets Apple Intelligence judge the top results. There is no Asteria search index, no Asteria account, no API key, and no server in the middle pretending to be neutral.</p>
+<p>Asteria Search is the proprietary Swift package that powers search in <a href="/browse/">Asteria Browse</a>. It asks public sources directly from the device, merges what they return, removes ad networks and tracking parameters, and lets Asteria Intelligence judge the top results. There is no Asteria search index, no Asteria account, no API key, and no server in the middle pretending to be neutral.</p>
 
 <div class="app-shots">
-  <figure class="wide"><img src="/media/apps/browse/mac-2-search.jpg" width="1800" height="1125" loading="lazy" alt="Asteria Browse on Mac: a search for lighthouses of the world, with an Apple Intelligence overview citing five sources above the results."><figcaption>The result page in Browse. The overview cites its sources; the sources are not decorative.</figcaption></figure>
+  <figure class="wide"><img src="/media/apps/browse/mac-2-search.jpg" width="1800" height="1125" loading="lazy" alt="Asteria Browse on Mac: a search for lighthouses of the world, with an Asteria Intelligence overview citing five sources above the results."><figcaption>The result page in Browse. The overview cites its sources; the sources are not decorative.</figcaption></figure>
 </div>
 
 <h2 class="display">How it works</h2>
 <div class="features">
   <div><h3>Ask the sources</h3><p>Web search asks Bing, DuckDuckGo, Wikipedia in the region’s language, and Bing News. Images ask Bing Images and Wikimedia Commons. Videos ask Bing Videos. Brave is available but off by default; Google is never scraped. You can choose Google as your browser engine if you prefer, which is a different sentence.</p></div>
   <div><h3>Merge, then filter</h3><p>Reciprocal rank fusion merges the lists. Every link passes a public HTTP(S) check and then an ad-network and paid-campaign filter. Tracking keys are removed. Result types are classified from the address and byline, so a forum post does not get to masquerade as a reference work.</p></div>
-  <div><h3>Let the model sort</h3><p>The top twelve web results are judged on device by Foundation Models: useful, advertising, spam, off topic, and a relevance from 0 to 10. Snippets are untrusted input. A reference work is never removed, and at most a third of the judged results can be. If the model skips most of them, the fused order stands.</p></div>
+  <div><h3>Let the model sort</h3><p>The top twelve web results are judged by Asteria Intelligence, through FoundationModels: useful, advertising, spam, off topic, and a relevance from 0 to 10. Snippets are untrusted input. A reference work is never removed, and at most a third of the judged results can be. If the model skips most of them, the fused order stands.</p></div>
   <div><h3>Write the overview</h3><p>Two to four sentences with numbered sources, streamed as it is written. It reads snippets, not full pages, so it can be wrong. That is why the sources are beside it and why the page does not pretend otherwise.</p></div>
   <div><h3>Fail one source, not the search</h3><p>A human check, a rate limit, or a page that stops parsing fails that source only. The host rests for five minutes. The library never solves challenges, poses as another browser, rotates proxies, or retries. We have limits. They are features.</p></div>
-  <div><h3>Private Cloud Compute, gated</h3><p>Private Cloud Compute is available only when the caller passes it and Apple’s managed entitlement is present. Until then, the overview runs on the device. The switch in Settings is disabled for the same reason, and says so.</p></div>
+  <div><h3>Asteria Intelligence, asked first</h3><p>Ranking and the overview use Asteria Intelligence only after the person turns it on. Asteria’s gateway passes each request to the model and keeps none of it. Off, the fused order stands and nothing is sent.</p></div>
 </div>
 
 <h2 class="display">The privacy bit</h2>
-<p>The transport is an ephemeral URLSession with no cookies and no cache. The app sends one identifying User-Agent and your preferred languages. Queries, IP addresses and request metadata still reach each source that is asked; asking from your device does not make search anonymous. There is no query history, analytics or caching in the library. A region sends a country, a language and optionally a city; the city is used only to rewrite “near me” for web sources, and Wikipedia never receives it.</p>
+<p>The transport is an ephemeral URLSession with no cookies and no cache. The app sends one identifying User-Agent and your preferred languages. Queries, IP addresses and request metadata still reach each source that is asked; asking from your device does not make search anonymous. There is no query history, analytics or caching in the library. With Asteria Intelligence on, the query and the top snippets also go to it for ranking and the overview. A region sends a country, a language and optionally a city; the city is used only to rewrite “near me” for web sources, and Wikipedia never receives it.</p>
 <p>No SearXNG, AltStackSearch or other copyleft implementation was copied or linked. The library is proprietary Swift, built by Asteria Technology, and it lives inside <a href="/browse/">Asteria Browse</a>.</p>
 
 <div class="status-line">Proprietary library · Inside Asteria Browse 26.1 · <a href="https://testflight.apple.com/join/rcDf2k5c">Try it in the Browse beta on TestFlight</a> · <a href="/browse/">Open Browse</a> · <a href="/privacy/">Privacy</a> · <a href="/support/">Support</a></div>
