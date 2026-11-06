@@ -1,6 +1,6 @@
 // Made to Last: the cover art, drawn rather than pixelled. Night, aqua and heavy, with glass, glow and a little grain.
 // Each cover is drawn at 3000 × 3000 and written three ways: a 3000 px JPEG (full resolution), and 1200 and 600 px
-// PNGs for the site and the MP3 tags. Titles come from site/media/music/album-26.json.
+// PNGs for the site and the MP3 tags. Titles come from site/media/music/album-27.json.
 //
 //   swiftc -O tools/studio/covers.swift -o /tmp/covers && /tmp/covers      (then python3 tools/studio/retag.py)
 import AppKit
@@ -10,7 +10,7 @@ import CoreText
 let S: CGFloat = 3000
 let here = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
 let music = here.appendingPathComponent("../../site/media/music").standardized
-let out = music.appendingPathComponent("covers-26")
+let out = music.appendingPathComponent("covers-27")
 let space = CGColorSpace(name: CGColorSpace.sRGB)!
 let ci = CIContext(options: [.workingColorSpace: space])
 
@@ -123,16 +123,23 @@ typealias Art = (CGContext) -> Void
 let C = CGPoint(x: S / 2, y: S * 0.4)
 
 let art: [String: Art] = [
-  // Nobody's Watching: an eye, firmly shut.
+  // Everything Talks to Everything: one star at the middle of the kit, every app wired to it and to its neighbours.
   "first-light": { c in
-    let lid = CGMutablePath(); lid.move(to: CGPoint(x: 780, y: 1150)); lid.addQuadCurve(to: CGPoint(x: 2220, y: 1150), control: CGPoint(x: 1500, y: 1750))
-    var lashes: [CGPath] = []
-    for i in 1...7 { let t = CGFloat(i) / 8, x = 780 + 1440 * t, y = 1150 + 600 * 2 * t * (1 - t) * 1, dx = (t - 0.5) * 260
-      let l = CGMutablePath(); l.move(to: CGPoint(x: x, y: y)); l.addLine(to: CGPoint(x: x + dx, y: y + 190)); lashes.append(l) }
     let ring = CGPath(ellipseIn: CGRect(x: 600, y: 520, width: 1800, height: 1320), transform: nil)
     glass(c, ring, rim: 9)
-    glow(c, 60) { g in stroke(g, lid, aqua, 90); lashes.forEach { stroke(g, $0, aqua, 60) } }
-    stroke(c, lid, a(aqua, 1), 64); lashes.forEach { stroke(c, $0, aqua, 40) }
+    let ctr = CGPoint(x: 1500, y: 1180)
+    let nodes: [CGPoint] = (0..<6).map { i in let ang = CGFloat(i) / 6 * .pi * 2 - .pi / 2; return CGPoint(x: ctr.x + cos(ang) * 640, y: ctr.y + sin(ang) * 440) }
+    let web = CGMutablePath()
+    for (i, n) in nodes.enumerated() { web.move(to: ctr); web.addLine(to: n); web.move(to: n); web.addLine(to: nodes[(i + 1) % nodes.count]) }
+    glow(c, 50) { g in stroke(g, web, aqua, 50) }
+    stroke(c, web, a(aqua, 0.75), 22)
+    for (i, n) in nodes.enumerated() {
+      let dot = CGPath(ellipseIn: CGRect(x: n.x - 70, y: n.y - 70, width: 140, height: 140), transform: nil)
+      glow(c, 30) { g in fill(g, dot, i % 3 == 0 ? heavy : aqua) }
+      fill(c, dot, i % 3 == 0 ? heavy : white)
+    }
+    glow(c, 80) { g in fill(g, star(ctr.x, ctr.y, 300), aqua) }
+    fillGradient(c, star(ctr.x, ctr.y, 250), [rgb(150, 255, 236), aqua], from: CGPoint(x: ctr.x, y: ctr.y - 250), to: CGPoint(x: ctr.x, y: ctr.y + 250))
     glow(c, 40) { g in fill(g, star(2230, 640, 150), heavy) }; fill(c, star(2230, 640, 120), heavy)
   },
   // It Compiled, Ship It: a code window and a check that does not ask questions.
@@ -160,21 +167,21 @@ let art: [String: Art] = [
     glow(c, 90) { g in fill(g, hole, aqua) }
     fillGradient(c, hole, [aqua, rgb(0, 160, 140)], from: CGPoint(x: 1500, y: 330), to: CGPoint(x: 1500, y: 1180))
   },
-  // The Price Is the Price: one tag, one number, no asterisk.
+  // From Havenot to How?: nine plans as nine glass steps, each about double the last, and a star over the top one.
   "fair-price": { c in
-    let tag = CGMutablePath()
-    tag.move(to: CGPoint(x: 900, y: 600)); tag.addLine(to: CGPoint(x: 2300, y: 600)); tag.addArc(tangent1End: CGPoint(x: 2400, y: 600), tangent2End: CGPoint(x: 2400, y: 700), radius: 100)
-    tag.addLine(to: CGPoint(x: 2400, y: 1500)); tag.addArc(tangent1End: CGPoint(x: 2400, y: 1600), tangent2End: CGPoint(x: 2300, y: 1600), radius: 100)
-    tag.addLine(to: CGPoint(x: 900, y: 1600)); tag.addLine(to: CGPoint(x: 520, y: 1100)); tag.closeSubpath()
-    tag.addEllipse(in: CGRect(x: 760, y: 1030, width: 140, height: 140))
-    var t = CGAffineTransform(translationX: 1500, y: 1100).rotated(by: -0.18).translatedBy(x: -1500, y: -1100)
-    let p = tag.copy(using: &t)!
-    glow(c, 70, alpha: 0.7) { g in stroke(g, p, aqua, 40) }
-    glass(c, p, tint: aqua, rim: 10)
-    let d = text("$", 900, .black, rounded: true)
-    var tt = CGAffineTransform(translationX: 1500, y: 1100).rotated(by: -0.18).translatedBy(x: -1500, y: -1100)
-    let dollar = place(d.path, x: 1650 - d.width / 2, baseline: 1420).copy(using: &tt)!
-    glow(c, 50) { g in fill(g, dollar, heavy) }; fill(c, dollar, heavy)
+    let base: CGFloat = 1760, w: CGFloat = 170, gap: CGFloat = 45, x0: CGFloat = 540
+    var tops: [CGPoint] = []
+    for i in 0..<9 {
+      let h = 110 * pow(CGFloat(1.33), CGFloat(i)), x = x0 + CGFloat(i) * (w + gap)
+      let bar = rounded(CGRect(x: x, y: base - h, width: w, height: h), 40)
+      glass(c, bar, tint: i < 4 ? aqua : heavy, rim: 8)
+      fill(c, rounded(CGRect(x: x + 30, y: base - h + 30, width: w - 60, height: 40), 20), a(i < 5 ? aqua : heavy, 0.55 + 0.4 * CGFloat(i) / 8))
+      tops.append(CGPoint(x: x + w / 2, y: base - h))
+    }
+    let line = CGMutablePath(); line.addLines(between: tops)
+    glow(c, 50) { g in stroke(g, line, aqua, 40) }; stroke(c, line, a(aqua, 0.9), 16)
+    let top = tops[tops.count - 1]
+    glow(c, 50) { g in fill(g, star(top.x, top.y - 230, 170), heavy) }; fill(c, star(top.x, top.y - 230, 140), heavy)
   },
   // Ten Blue Links, Zero Ads: a lens that keeps the good ones and sends the rest to sit down.
   "signal": { c in
@@ -215,9 +222,11 @@ let art: [String: Art] = [
     fill(c, pill, heavy)
     let t = text("Skip Ad  ›", 110, .semibold); fill(c, place(t.path, x: 2110 - t.width / 2, baseline: 1645), white)
   },
-  // Version 26 (Groundbreaking): the year, as a number, in glass.
+  // Version 27.2 (We Asked iOS): the version, as a number, in glass, sized to fit.
   "made-to-last": { c in
-    let t = text("26", 1500, .black, tracking: -60, rounded: true), p = place(t.path, x: 1500 - t.width / 2 - 20, baseline: 1720)
+    var size: CGFloat = 1500, t = text("27.2", size, .black, tracking: -60, rounded: true)
+    if t.width > 2300 { size *= 2300 / t.width; t = text("27.2", size, .black, tracking: -60 * size / 1500, rounded: true) }
+    let p = place(t.path, x: 1500 - t.width / 2 - 20, baseline: 1130 + size * 0.39)
     glow(c, 110) { g in fill(g, p, aqua) }
     fillGradient(c, p, [aqua, rgb(120, 255, 230), heavy], from: CGPoint(x: 700, y: 500), to: CGPoint(x: 2300, y: 1800))
     c.saveGState(); c.addPath(p); c.clip(); c.drawLinearGradient(gradient([a(white, 0.5), a(white, 0)]), start: CGPoint(x: 0, y: 500), end: CGPoint(x: 0, y: 1000), options: []); c.restoreGState()
@@ -251,7 +260,7 @@ func save(_ img: CGImage, _ name: String) {
 
 struct Track: Decodable { let n: Int; let slug: String; let title: String }
 struct Album: Decodable { let album: String; let tracks: [Track] }
-let album = try! JSONDecoder().decode(Album.self, from: Data(contentsOf: music.appendingPathComponent("album-26.json")))
+let album = try! JSONDecoder().decode(Album.self, from: Data(contentsOf: music.appendingPathComponent("album-27.json")))
 let lights: [(CGPoint, CGPoint)] = [(CGPoint(x: 600, y: 500), CGPoint(x: 2600, y: 2300)), (CGPoint(x: 2500, y: 400), CGPoint(x: 400, y: 2000)), (CGPoint(x: 1500, y: 200), CGPoint(x: 2700, y: 1600)),
   (CGPoint(x: 300, y: 1200), CGPoint(x: 2700, y: 600)), (CGPoint(x: 1400, y: 900), CGPoint(x: 2600, y: 2600)), (CGPoint(x: 2400, y: 1300), CGPoint(x: 500, y: 300)),
   (CGPoint(x: 900, y: 2200), CGPoint(x: 2300, y: 500)), (CGPoint(x: 1500, y: 1100), CGPoint(x: 300, y: 2600))]

@@ -103,16 +103,16 @@
     var T = root.FG.TRACKS, list = which === 'all' ? T : T.filter(function (t) { return t.n === which || t.slug === which; }), out = [];
     for (var k = 0; k < list.length; k++) {
       var t = list[k], t0 = Date.now(), name = String(t.n).padStart(2, '0') + '-' + t.slug;
-      var cr = await fetch('../../site/media/music/covers-26/' + name + '-600.png'), cover = cr.ok ? new Uint8Array(await cr.arrayBuffer()) : null;
+      var cr = await fetch('../../site/media/music/covers-27/' + name + '-600.png'), cover = cr.ok ? new Uint8Array(await cr.arrayBuffer()) : null;
       var c = await compose(t), song = c.host.getSong();
       var r = await NS.audio.renderSong(B, song, { sampleRate: RATE, loops: 1, yieldEvery: 50 });
       var m = master(r.L, r.R);
       await save('asteria-music/src/' + name + '.song.json', JSON.stringify(song.toJsonObject(), null, 1));
-      await save('asteria-music/mp3-26/' + name + '.mp3', new Blob(id3(t, cover).concat(await mp3(r.L, r.R))));
+      await save('asteria-music/mp3-27/' + name + '.mp3', new Blob(id3(t, cover).concat(await mp3(r.L, r.R))));
       var info = { n: t.n, slug: t.slug, title: t.title, about: t.about, key: t.key + ' ' + t.mode, tempo: t.tempo, seconds: +r.seconds.toFixed(1), gainDb: m.gainDb, peakDbfs: m.peakDbfs };
       out.push(info); log(name + ' ' + info.seconds + 's ' + Math.round((Date.now() - t0) / 1000) + 's work | ' + c.mix.slice(0, 120));
     }
-    if (which === 'all') await save('asteria-music/album-26.json', JSON.stringify({ album: ALBUM, artist: ARTIST, year: YEAR, tracks: out }, null, 1));
+    if (which === 'all') await save('asteria-music/album-27.json', JSON.stringify({ album: ALBUM, artist: ARTIST, year: YEAR, tracks: out }, null, 1));
     return out;
   }
   root.FG = { make: make, check: check, compose: compose, seq: seq, ALBUM: ALBUM, ARTIST: ARTIST };

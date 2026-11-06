@@ -112,7 +112,7 @@ BOX = """
 </div></section>
 <section class="music" id="music" aria-labelledby="music-title">
   <div class="album reveal">
-    <img id="albumCover" src="/media/music/covers-26/album-600.png" width="600" height="600" alt="Made to Last, cover">
+    <img id="albumCover" src="/media/music/covers-27/album-600.png" width="600" height="600" alt="Made to Last, cover">
     <div>
       <p class="eyebrow">Made in Asteria Box</p>
       <h2 id="music-title" class="display">Made to Last</h2>

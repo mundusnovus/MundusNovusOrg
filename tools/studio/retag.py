@@ -52,11 +52,11 @@ def retag(path, replacements):
 
 
 if __name__ == '__main__':
-    album = json.loads((MUSIC / 'album-26.json').read_text())
+    album = json.loads((MUSIC / 'album-27.json').read_text())
     for track in album['tracks']:
         stem = f"{track['n']:02d}-{track['slug']}"
-        cover = (MUSIC / 'covers-26' / (stem + '-600.png')).read_bytes()
-        retag(MUSIC / 'mp3-26' / (stem + '.mp3'), {
+        cover = (MUSIC / 'covers-27' / (stem + '-600.png')).read_bytes()
+        retag(MUSIC / 'mp3-27' / (stem + '.mp3'), {
             'TIT2': text(track['title']), 'TALB': text(album['album']),
             'APIC': b'\x00image/png\x00\x03Cover\x00' + cover,
         })

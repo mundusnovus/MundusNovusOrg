@@ -55,10 +55,10 @@ python3 tools/studio/server.py 8790
 ```
 
 Open http://localhost:8790/MundusNovusOrg/tools/studio/soundtrack.html and run `await FG.make('all')` in the console.
-Files go to `site/media/music/`. Track titles and notes live in `tools/studio/album.js` and `site/media/music/album-26.json`.
+Files go to `site/media/music/`. Track titles and notes live in `tools/studio/album.js` and `site/media/music/album-27.json`.
 
 The server lets browsers keep everything under `/media/` for a week, so music files are named for their edition:
-`album-26.json`, `covers-26/` and `mp3-26/`. When titles, covers or tags change again, rename them (to `-27`, say) and
+`album-27.json`, `covers-27/` and `mp3-27/`. When titles, covers or tags change again, rename them (to `-28`, say) and
 change the same names in `site/js/site.js`, `site/index.html`, `tools/pages.py`, `tools/studio/engine.js`,
 `tools/studio/covers.swift` and `tools/studio/retag.py`, or visitors keep the old ones.
 

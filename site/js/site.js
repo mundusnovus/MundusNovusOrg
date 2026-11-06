@@ -161,12 +161,12 @@
   var playBtn = $('playBtn'), rollPlay = $('rollPlay'), soundBtn = $('soundBtn'), miniPlay = $('miniPlay'), mini = $('mini'), root = document.documentElement;
   function fmt(s) { s = Math.round(s || 0); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); }
   function name(t) { return String(t.n).padStart(2, '0') + '-' + t.slug; }
-  function cover(t, size) { return '/media/music/covers-26/' + (t ? name(t) : 'album') + '-' + size + (size === 3000 ? '.jpg' : '.png'); }
+  function cover(t, size) { return '/media/music/covers-27/' + (t ? name(t) : 'album') + '-' + size + (size === 3000 ? '.jpg' : '.png'); }
   function icon(btn, sym) { var u = btn && btn.querySelector('use'); if (u) u.setAttribute('href', '/css/symbols.svg?v=26.1#' + sym); }
   function select(k, play) {
     if (!album) return;
     cur = (k + album.tracks.length) % album.tracks.length; var t = album.tracks[cur];
-    audio.src = '/media/music/mp3-26/' + name(t) + '.mp3';
+    audio.src = '/media/music/mp3-27/' + name(t) + '.mp3';
     $('nowTitle').textContent = t.title; $('nowAbout').textContent = t.about;
     var img = $('albumCover'); if (img) { img.src = cover(t, 1200); img.alt = 'The cover of ' + t.title + ', track ' + t.n + ' of Made to Last.'; }
     var link = $('coverLink'); if (link) { link.href = cover(t, 3000); link.textContent = 'Download this cover, 3000 × 3000'; }
@@ -220,7 +220,7 @@
     navigator.mediaSession.setActionHandler('nexttrack', function () { select(cur + 1, true); });
     navigator.mediaSession.setActionHandler('previoustrack', function () { select(cur - 1, true); });
   }
-  if ($('tracks')) fetch('/media/music/album-26.json').then(function (r) { return r.json(); }).then(function (a) {
+  if ($('tracks')) fetch('/media/music/album-27.json').then(function (r) { return r.json(); }).then(function (a) {
     album = a;
     if ($('music-title')) $('music-title').textContent = a.album;
     var ol = $('tracks');
