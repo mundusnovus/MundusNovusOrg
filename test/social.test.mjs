@@ -218,3 +218,29 @@ test('Asteria Cloud service: contacts from Social, shares recorded on the PDS', 
     assert.equal((await (await svc('POST', 'cloud-unshare', { from: 'ann', uri: rec.uri })).json()).ok, true);
   } finally { server.close(); }
 });
+
+test('asteria.technology/wire/v1 reaches the Asteria relay, and only that', async () => {
+  const { createServer } = await import('node:http');
+  const seen = [];
+  const relay = createServer((req, res) => {
+    let body = ''; req.on('data', (c) => { body += c; }); req.on('end', () => {
+      seen.push({ method: req.method, url: req.url, auth: req.headers.authorization, body });
+      res.writeHead(req.url === '/v1/me' ? 401 : 200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ ok: true, path: req.url }));
+    });
+  });
+  await new Promise((r) => relay.listen(0, '127.0.0.1', r));
+  const { server, base } = await start({ WIRE_RELAY_URL: 'http://127.0.0.1:' + relay.address().port + '/' });
+  try {
+    const h = { 'x-forwarded-host': 'asteria.test' };
+    let r = await fetch(base + '/wire/v1/health?x=1', { headers: h });
+    assert.equal(r.status, 200); assert.deepEqual(await r.json(), { ok: true, path: '/v1/health?x=1' });
+    r = await fetch(base + '/wire/v1/signup', { method: 'POST', headers: { ...h, 'content-type': 'application/json', authorization: 'Bearer t' }, body: '{"username":"maya"}' });
+    assert.equal(r.status, 200);
+    assert.deepEqual(seen.at(-1), { method: 'POST', url: '/v1/signup', auth: 'Bearer t', body: '{"username":"maya"}' });
+    r = await fetch(base + '/wire/v1/me', { headers: h }); assert.equal(r.status, 401);
+    r = await fetch(base + '/wire/v1/health', { headers: { 'x-forwarded-host': 'social.asteria.test' } }); assert.notEqual((await r.text()).includes('"ok":true'), true);
+  } finally { server.close(); relay.close(); }
+  const { server: off, base: offBase } = await start();
+  try { const r = await fetch(offBase + '/wire/v1/health', { headers: { 'x-forwarded-host': 'asteria.test' } }); assert.equal(r.status, 503); } finally { off.close(); }
+});

@@ -10,11 +10,15 @@
 //   COOKIE_DOMAIN (asteria.technology), so one sign-in counts on every address: one Asteria account.
 //   SERVICE_SECRET lets Asteria Cloud ask Social for contacts and record shares on the PDS.
 //   STAFF names Social's owner and moderators, with titles: dac=owner:Chief Organizer, anna=moderator
+//   WIRE_RELAY_URL is where Asteria (the app)'s account server and message relay runs (AsteriaRelay, on Railway's private
+//   network, like http://asteria-relay.railway.internal:8080). asteria.technology/wire/v1/… is passed to it as /v1/…;
+//   the pages at /wire/ are this site's own. Asteria Accounts are Asteria Post accounts (post.asteria.technology).
 import { createServer } from 'node:http';
 import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs';
 import { extname, join, normalize } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createGzip } from 'node:zlib';
+import { Readable } from 'node:stream';
 import { createOidc } from './social/oidc.mjs';
 import { createSocial } from './social/app.mjs';
 import { previewPds, remotePds } from './social/pds.mjs';
@@ -78,6 +82,29 @@ export function makeServer(env = process.env) {
     return ['www', 'social', 'sprite', 'box'].includes(first) && host.includes('.') ? { kind: first, base: host.slice(first.length + 1) } : { kind: 'main', base: host };
   }
   const MOVED_FROM = (env.MOVED_FROM ?? 'christiansystems.org,mundusnovus.org').split(',').map((d) => d.trim()).filter(Boolean), MOVED_TO = env.MOVED_TO || 'asteria.technology';
+  // Asteria's relay: everything under /wire/v1/ is forwarded as it is (method, body, sign-in token), so the app and
+  // Post reach it at asteria.technology/wire without an address of its own. Bodies stream both ways (attachments).
+  const wireRelay = (env.WIRE_RELAY_URL || '').replace(/\/+$/, '');
+  async function wire(req, res, path, search) {
+    const json = (status, message) => { res.writeHead(status, { 'content-type': 'application/json' }); res.end(JSON.stringify({ error: { message } })); };
+    if (!wireRelay) return json(503, "Asteria's server isn't connected yet.");
+    const headers = {};
+    for (const name of ['content-type', 'authorization', 'accept', 'user-agent']) if (req.headers[name]) headers[name] = req.headers[name];
+    headers['x-forwarded-for'] = req.headers['x-forwarded-for'] || req.socket.remoteAddress || '';
+    try {
+      const body = req.method === 'GET' || req.method === 'HEAD' ? undefined : Readable.toWeb(req);
+      const r = await fetch(wireRelay + path + search, { method: req.method, headers, body, duplex: 'half', redirect: 'manual', signal: AbortSignal.timeout(600_000) });
+      const out = { 'cache-control': 'no-store' };
+      for (const name of ['content-type', 'www-authenticate']) { const v = r.headers.get(name); if (v) out[name] = v; }
+      res.writeHead(r.status, out);
+      if (!r.body || req.method === 'HEAD') return res.end();
+      Readable.fromWeb(r.body).pipe(res);
+    } catch (e) {
+      console.error('wire:', e.message);
+      if (!res.headersSent) json(502, "Asteria's server didn't answer. Try again soon."); else res.end();
+    }
+  }
+
   function redirect(res, to) { res.writeHead(301, { location: to, 'cache-control': 'public, max-age=3600' }); res.end(); }
   function notFound(res) {
     res.writeHead(404, { ...SECURITY, 'content-type': 'text/html; charset=utf-8' });
@@ -95,6 +122,7 @@ export function makeServer(env = process.env) {
         return res.end();
       }
       if (kind === 'www') return redirect(res, to('', path));
+      if (kind === 'main' && path.startsWith('/wire/v1/')) return wire(req, res, path.slice(5), url.search);
       if (oidc && await oidc.serve(req, res)) return;
       if (await social.serve(req, res, secure, '/api/', env.COOKIE_DOMAIN)) return; // one account everywhere: every address answers /api/
       if (req.method !== 'GET' && req.method !== 'HEAD') { res.writeHead(405); return res.end(); }
