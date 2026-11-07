@@ -11,8 +11,9 @@
 //   SERVICE_SECRET lets Asteria Cloud ask Social for contacts and record shares on the PDS.
 //   STAFF names Social's owner and moderators, with titles: dac=owner:Chief Organizer, anna=moderator
 //   WIRE_RELAY_URL is where Asteria (the app)'s account server and message relay runs (AsteriaRelay, on Railway's private
-//   network, like http://asteria-relay.railway.internal:8080). asteria.technology/wire/v1/… is passed to it as /v1/…;
-//   the pages at /wire/ are this site's own. Asteria Accounts are Asteria Post accounts (post.asteria.technology).
+//   network, like http://asteria-relay.railway.internal:8080). asteria.technology/wire/v1/… is passed to it as /v1/…
+//   (the Smartz app, which was called Asteria, still reaches it there); the app's pages are at /smartz/, and the old
+//   /wire/ pages move there. Asteria Accounts are Asteria Post accounts (post.asteria.technology).
 //   asteria.technology/intelligence/v1/… is Asteria Intelligence, every Asteria app's AI, run by the same relay
 //   (passed to it as /v1/intelligence/…; answers stream back as they are written).
 import { createServer } from 'node:http';
@@ -141,6 +142,9 @@ export function makeServer(env = process.env) {
         return file(req, res, '/hosts/' + kind + path) || notFound(res);
       }
       // the main site; the apps and Social now live at their own addresses
+      // The Asteria app became Smartz: its pages moved from /wire/ (the relay stays at /wire/v1/, above)
+      const wirePage = /^\/wire(\/.*)?$/.exec(path);
+      if (wirePage) return redirect(res, '/smartz' + (wirePage[1] || '/') + url.search);
       const old = /^\/(sprite|box|social)(\/.*)?$/.exec(path);
       if (old) return redirect(res, to(old[1], old[1] === 'social' ? (old[2] || '/') : '/app' + (old[2] || '/')));
       if (path.startsWith('/hosts/')) return notFound(res);
