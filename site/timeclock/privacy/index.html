@@ -51,10 +51,16 @@
 <main id="main" class="page">
 <p class="eyebrow">Asteria Timeclock · Privacy</p>
 <h1 class="display">Your hours are not our business.</h1>
-<p class="lede">Effective 2 November 2026. The short version: no account, no tracking, no analytics, no ads. Your shifts are in your private iCloud database, and we cannot read them.</p>
+<p class="lede">Effective 7 November 2026. The short version: no account needed, no tracking, no analytics, no ads. Your shifts are in your private iCloud database. If you sign in to an Asteria Account, they also sync through it, sealed, and only your devices read them back.</p>
 
 <h2 class="display">What is stored</h2>
-<p>Clients, tags, shifts, breaks, rates, rounding and overtime rules, and your settings. On device they live in SwiftData. With iCloud available they live in your private CloudKit database, tied to your Apple Account. There is no Asteria account and no Asteria server.</p>
+<p>Clients, tags, shifts, breaks, rates, rounding and overtime rules, and your settings. On device they live in SwiftData. With iCloud available they live in your private CloudKit database, tied to your Apple Account.</p>
+
+<h2 class="display">Your Asteria Account</h2>
+<p>An Asteria Account is optional. If you sign in and leave Sync on (Settings › Sync), your clients, tags and shifts, with their notes, rates and breaks, are also kept on Asteria’s server for your account, so a punch on one device reaches your others in seconds. They’re sealed (encrypted) before they’re stored and read back only to your devices; we don’t read them, use them for ads or sell them. Turn Sync off to stop. Delete all data erases the account’s copy too, and deleting your Asteria Account deletes it. Signing in also gives Smartz your account’s daily Smartz tokens, described in the general <a href="/privacy/#asteria-account">privacy policy</a>.</p>
+
+<h2 class="display">Apple Watch</h2>
+<p>The Watch app talks to Timeclock on your iPhone directly, through Apple’s WatchConnectivity, so punches go both ways without a server in between. It keeps your clients and tags and the last few weeks of shifts. Smartz on the Watch works through your iPhone: what you say on the Watch goes to the iPhone, which asks Smartz as described below.</p>
 
 <h2 class="display">What is not collected</h2>
 <p>No analytics, crash telemetry, advertising identifiers, tracking, or third-party SDKs. We do not collect your shifts, clients, rates, notes, exports or calendar. We do not want them. We have our own timesheets to ignore.</p>
@@ -62,8 +68,8 @@
 <h2 class="display">Siri, Spotlight and Calendar</h2>
 <p>Siri and Spotlight sharing are opt-in and can be removed from Settings. Siri requests are handled by Apple under Apple’s privacy policy. Calendar access is optional and read-only: the app can suggest a shift from an event, and never writes to the calendar.</p>
 
-<h2 class="display">Apple Intelligence</h2>
-<p>Shift drafts and period summaries use Apple’s Foundation Models framework. The draft is shown for confirmation and is not saved until you accept it. The model never changes pay. Private Cloud Compute is compiled in but disabled until Apple grants the managed entitlement.</p>
+<h2 class="display">Smartz</h2>
+<p>Smartz, the AI by Asteria, drafts a shift from a sentence, writes period summaries, and answers questions about your hours in its chat. Nothing is sent until you turn it on, and you can turn it off in Settings. With it on, each feature sends what it needs: the sentence you typed or said (with your client and tag names) for a draft; the period’s shifts, totals and notes for a summary; and, for the chat, the running shift, your clients and rates, and the last 30 days of shifts with their notes. It goes through Asteria’s gateway to our AI provider, DeepInfra, in the United States, which keeps nothing. A draft is shown to you and isn’t saved until you accept it, and Smartz never changes pay. If you speak instead of typing, your words show on screen with Apple’s speech recognition, and the recording goes through the gateway to ElevenLabs to be written down, under its own privacy policy. Signed in, your chats with Smartz follow your Asteria Account. The general <a href="/privacy/#smartz">privacy policy</a> has the details.</p>
 
 <h2 class="display">Exports</h2>
 <p>CSV and PDF exports are files you choose to create. They are written where you send them; Asteria never receives a copy. Your client’s payroll department, unfortunately, will.</p>
