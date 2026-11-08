@@ -49,7 +49,7 @@
 </header>
 
 <main id="main" class="page">
-<p class="eyebrow">Privacy · Effective 7 November 2026</p>
+<p class="eyebrow">Privacy · Effective 8 November 2026</p>
 <h1 class="display">One kit. Nothing extra kept.</h1>
 <p class="lede">Asteria's apps work as one system: one Asteria Account, one Smartz (the AI in every app), and chats that follow you from app to app. This page says exactly what each part keeps, what passes through our server, and what our AI provider sees, because “we don't collect your data” has been used to mean several things, and we would like to be specific.</p>
 
@@ -88,11 +88,18 @@
 <p>Your wiki is private until you publish it. Published, it's public at smartz.chat/your-username for anyone with the link, until you turn publishing off.</p>
 <p>Unified intelligence is off unless you turn it on. With it on, a harvest may also write a general skill, like a good way to plan a trip, into a shared library that makes Smartz better for everyone. Skills are written to carry nothing personal, emails, phone numbers, links and handles are removed before they're stored, and a skill is used for everyone only once several different people's harvests have produced it.</p>
 
+<h2 class="display" id="files-connectors">Photos, files and connectors</h2>
+<p>In any Asteria app you can attach photos and files to a message to Smartz. A photo is sent with that message, through our gateway, to our AI provider. A file (a PDF, a text file, or a Word, Excel or PowerPoint document) is read on your device, and its text is sent with the message the same way. The file itself is never uploaded; its text stays on your device with the chat so later questions about it still work, and our server keeps only its name in the chat.</p>
+<p>If you add a connector (a service such as Notion, GitHub or Linear, through the Model Context Protocol), your device talks to that service directly; Asteria's servers are never in between. Your connectors and their sign-ins are kept in your iCloud Keychain, shared by the Asteria apps on your devices, never on our servers. Smartz uses a connector only in your own chats with it, and what the connector returns is sent with that message to our AI provider so Smartz can answer.</p>
+
 <h2 class="display" id="asteria-account">Your Asteria Account, Smartz tokens and chats</h2>
 <p>Every Asteria app can sign in to an Asteria Account: your username and password, the same as your Asteria Post account. It's optional in Browse, Box, Food and Mood, Timeclock and Swift: Zero to Hero. You can also sign in at smartz.chat (an account can't be made there). Signing in once in Smartz or Post signs in those apps on the same device, each with a sign-in of its own kept in the device's Keychain.</p>
-<p>Smartz is measured in Smartz tokens, a daily allowance per account (or per device without one), shown in each app; answers, speaking and listening all count against it, and every answer shows what it cost. The Smartz Subscription's plans will raise the allowance; during the beta every account is on Dedicated, free. We keep how many tokens each account used each day, under a label that can't be traced back to you, for 40 days.</p>
+<p>Smartz is measured in Smartz tokens, a daily allowance per account (or per device without one), shown in each app; answers, speaking and listening all count against it, and every answer shows what it cost. The Smartz Subscription's plans raise the allowance. We keep how many tokens each account used each day, under a label that can't be traced back to you, for 40 days.</p>
 <p>When you're signed in, your chats with Smartz (and with Food and Mood's coach) are kept on Asteria's server for your account, so a chat started in one app continues in any other, on any device, and at smartz.chat. They're sealed (encrypted) before they're stored, and only read back to you. Deleting a chat in any app deletes it everywhere; deleting your Asteria Account deletes them all, with everything Smartz learned about you. Signed out, chats stay on the device. Asteria Technology doesn't read your chats, use them for ads, or sell them; to answer, the words you send in a chat go to Smartz like any other request.</p>
 <p>An app can also sync your work through your Asteria Account. Timeclock does when you're signed in with Sync on: your clients, tags and shifts are kept on Asteria's server for your account, sealed (encrypted) before they're stored, and read back only to your devices. Turning Sync off stops it; Delete all data in Timeclock erases the account's copy, and deleting your Asteria Account deletes it.</p>
+
+<h2 class="display" id="subscription">The Smartz Subscription</h2>
+<p>The apps are free. The Smartz Subscription's plans, sold in each Asteria app through the App Store, give your Asteria Account more Smartz tokens every day, in every app and at smartz.chat. Apple handles the payment; we never see your payment details or your Apple Account. When you buy or restore a plan, the app sends Asteria's server the App Store's signed record of the purchase (which plan, when it started and ends, and its transaction number), and the App Store tells our server when a plan renews, changes, ends or is refunded. We keep that record with your Asteria Account to give it the plan, and delete it when you delete the account. A purchase carries an anonymous token for your account, so a plan can't be claimed by someone else's account. Deleting your Asteria Account doesn't cancel a plan: cancel it in your App Store subscriptions.</p>
 
 <h2 class="display">Apple Intelligence</h2>
 <p>Keys uses Apple Intelligence through Apple's Foundation Models framework, on your device. Writing Tools, Image Playground and Siri are Apple's, under Apple's privacy policy.</p>
